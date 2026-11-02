@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { handleError, jsonError, parseBody } from "@/lib/api";
 import { maskEmail, sendLoginCode } from "@/lib/auth-code";
+import { isAdminEmail } from "@/lib/admin";
 import { normalizeEmail, provisionFromCheckout, userIdByEmail } from "@/lib/billing";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 
 const schema = z.union([
   z.object({ checkoutSessionId: z.string().startsWith("cs_").max(255) }),
@@ -22,9 +24,14 @@ export async function POST(req: Request) {
       email = provisioned.email;
     } else {
       email = normalizeEmail(body.data.email);
-      // On ne dit pas si le compte existe ou non (pas de fuite d'info).
       if (!(await userIdByEmail(email))) {
-        return NextResponse.json({ ok: true, email: maskEmail(email) });
+        if (isAdminEmail(email)) {
+          // Le compte admin (ADMIN_EMAIL) est créé à sa première connexion.
+          await supabaseAdmin().auth.admin.createUser({ email, email_confirm: true });
+        } else {
+          // On ne dit pas si le compte existe ou non (pas de fuite d'info).
+          return NextResponse.json({ ok: true, email: maskEmail(email) });
+        }
       }
     }
     const result = await sendLoginCode(email);

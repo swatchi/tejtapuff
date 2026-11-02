@@ -70,3 +70,8 @@ test("aucun pixel publicitaire sans consentement", async ({ page }) => {
   await page.waitForTimeout(500);
   expect(thirdParty).toEqual([]);
 });
+
+test("l'admin n'est pas accessible sans connexion", async ({ page }) => {
+  await page.goto("/admin");
+  await expect(page).toHaveURL(/\/connexion\?suivant=\/admin/);
+});

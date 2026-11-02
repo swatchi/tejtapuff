@@ -22,7 +22,12 @@ insert into public.payments (id, user_id, amount_cents, status) values
 insert into public.consents (user_id, kind, version, text) values
   ('11111111-1111-1111-1111-111111111111', 'age_18', 'v', 't'),
   ('22222222-2222-2222-2222-222222222222', 'age_18', 'v', 't');
-insert into public.funnel_events (visitor_id, type) values (gen_random_uuid(), 'visit');
+insert into public.funnel_events (visitor_id, type, utm_content, browser) values
+  ('a0000000-0000-0000-0000-000000000001', 'visit', 'video_1', 'tiktok'),
+  ('a0000000-0000-0000-0000-000000000001', 'visit', 'video_1', 'tiktok'),
+  ('a0000000-0000-0000-0000-000000000001', 'paid', 'video_1', 'tiktok'),
+  ('a0000000-0000-0000-0000-000000000002', 'visit', 'video_2', 'instagram'),
+  ('a0000000-0000-0000-0000-000000000003', 'visit', null, 'other');
 insert into public.quit_attempts (user_id) values
   ('11111111-1111-1111-1111-111111111111'), ('22222222-2222-2222-2222-222222222222');
 insert into public.mission_completions (user_id, mission_id) values
@@ -119,6 +124,26 @@ end $$;
 insert into results select 'anon ne peut pas chercher un compte par email', pg_temp.exec_denied('anon');
 insert into results select 'A ne peut pas chercher un compte par email', pg_temp.exec_denied('authenticated');
 insert into results select 'contrôle : le serveur peut chercher un compte par email', not pg_temp.exec_denied('service_role');
+
+create function pg_temp.stats_denied(r text) returns boolean language plpgsql as $$
+begin
+  execute format('set local role %I', r);
+  perform * from public.admin_funnel_stats(now() - interval '1 day', now() + interval '1 day');
+  return false;
+exception when insufficient_privilege then
+  return true;
+end $$;
+insert into results select 'anon ne peut pas lire les stats admin', pg_temp.stats_denied('anon');
+insert into results select 'A ne peut pas lire les stats admin', pg_temp.stats_denied('authenticated');
+insert into results select 'contrôle : le serveur lit les stats admin', not pg_temp.stats_denied('service_role');
+insert into results select 'stats : 3 visiteurs uniques au total',
+  (select visitors = 3 from public.admin_funnel_stats(now() - interval '1 day', now() + interval '1 day') where dimension = 'total' and step = 'visit');
+insert into results select 'stats : video_1 = 1 visiteur et 1 vente',
+  (select bool_and(visitors = 1) and count(*) = 2 from public.admin_funnel_stats(now() - interval '1 day', now() + interval '1 day') where dimension = 'video' and value = 'video_1');
+insert into results select 'stats : visites sans vidéo regroupées',
+  (select visitors = 1 from public.admin_funnel_stats(now() - interval '1 day', now() + interval '1 day') where dimension = 'video' and value = '(sans vidéo)' and step = 'visit');
+insert into results select 'stats : par navigateur (TikTok)',
+  (select visitors = 1 from public.admin_funnel_stats(now() - interval '1 day', now() + interval '1 day') where dimension = 'browser' and value = 'tiktok' and step = 'visit');
 
 -- Contrôle : le serveur (service_role) peut écrire, sinon le test ci-dessus ne prouverait rien.
 insert into results select 'contrôle : le serveur peut écrire', not pg_temp.write_denied($$insert into public.stripe_events (id, type) values ('evt_ctrl', 'x')$$, 'service_role');

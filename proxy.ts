@@ -28,7 +28,7 @@ export async function proxy(request: NextRequest) {
   if (!data.user) {
     const login = request.nextUrl.clone();
     login.pathname = "/connexion";
-    login.search = "";
+    login.search = request.nextUrl.pathname.startsWith("/admin") ? "?suivant=/admin" : "";
     return NextResponse.redirect(login);
   }
   return response;

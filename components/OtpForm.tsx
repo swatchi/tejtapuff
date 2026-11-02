@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LIMITS } from "@/config/site";
 
-type Props = { mode: "checkout"; checkoutSessionId: string } | { mode: "email" };
+type Props = { mode: "checkout"; checkoutSessionId: string } | { mode: "email"; next?: string };
 
 /**
  * Connexion par code à 6 chiffres reçu par email.
@@ -81,7 +81,8 @@ export function OtpForm(props: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error ?? "Code invalide");
-      router.replace("/app");
+      const next = props.mode === "email" && props.next ? props.next : "/app";
+      router.replace(next);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Code invalide");

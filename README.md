@@ -82,6 +82,30 @@ La tâche quotidienne (rappel au moins 48 h avant le 1er prélèvement, email de
 
 ---
 
+## Étape 4 : admin (`/admin`)
+
+### À faire une fois
+1. **Supabase → SQL Editor** : colle et lance `supabase/migrations/0005_admin.sql` (fonction de statistiques, appelable uniquement par le serveur).
+2. Vérifie que `ADMIN_EMAIL` (sur Vercel) est bien ton email. Seul ce compte peut ouvrir `/admin` ; il peut se connecter même sans abonnement.
+3. Va sur **`/admin`** et connecte-toi avec le code reçu par email.
+
+### Ce qu'on y voit (période : 24 h, 7 jours, 30 jours ou tout)
+- **Encaissé** sur la période, abonnés actifs, revenu des 7 derniers jours, revenu de la semaine prochaine si tous les abonnés actifs renouvellent, taux visite → vente, résiliations, impayés.
+- **Parcours de vente** : visiteurs uniques à chaque étape (visite → calculateur → quiz commencé → quiz terminé → page de paiement → paiement lancé → payé), avec le taux d'une étape à l'autre.
+- **Ventes par vidéo** : visites, quiz finis, paiements lancés, ventes, taux de conversion et chiffre encaissé pour chaque `utm_content`.
+- **Revenu par semaine** sur 8 semaines (avec le tableau des valeurs).
+- **D'où viennent les visites** : navigateur intégré TikTok, Instagram, ou autre.
+- **Programme** : envies SOS surmontées, rechutes, messages au coach, appareils avec notifications.
+
+Tout est lu en base. Aucun chiffre n'est inventé.
+
+### Le lien en bio, pour savoir quelle vidéo vend
+Mets un lien différent par vidéo, avec l'ID de la vidéo dans `utm_content` :
+`https://TON-SITE/?utm_source=tiktok&utm_content=video_042`
+Il est conservé jusqu'au paiement, même si la personne revient plus tard (30 jours).
+
+---
+
 ## Tester le paiement (mode test Stripe)
 
 | Carte | Résultat |
@@ -114,7 +138,7 @@ Sans `RESEND_API_KEY` en local, les emails (dont le code de connexion) s'affiche
 npm run typecheck   # types
 npm run lint        # lint
 npm run test:unit   # calculs du programme (jour X/21, compteur, économies, missions)
-npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (61 contrôles)
+npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (68 contrôles)
 npm run test:e2e    # parcours landing → quiz → paywall sur écran mobile
 ```
 
