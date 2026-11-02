@@ -30,10 +30,38 @@ function msg(err: unknown) {
   return err instanceof Error ? err.message : String(err);
 }
 
+const clean = (s: string | null | undefined) => (s ?? "").trim().replace(/^["']|["']$/g, "").trim();
+
 export async function GET(req: Request) {
-  const key = new URL(req.url).searchParams.get("cle");
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) {
-    return html([{ label: "Accès refusé", ok: false, detail: "Ajoute ?cle=TON_CRON_SECRET à la fin de l'adresse." }], "");
+  const key = clean(new URL(req.url).searchParams.get("cle"));
+  const expected = clean(process.env.CRON_SECRET);
+  if (!expected) {
+    return html(
+      [
+        {
+          label: "La variable CRON_SECRET n'est pas active sur le site",
+          ok: false,
+          detail:
+            "Vercel → Settings → Environment Variables : vérifie que CRON_SECRET existe et que « Production » est coché. Puis Deployments → dernier déploiement → ⋯ → Redeploy (les variables ne comptent qu'après un redéploiement).",
+        },
+      ],
+      "",
+    );
+  }
+  if (!key) {
+    return html([{ label: "Il manque la clé dans l'adresse", ok: false, detail: "Ajoute ?cle=TON_CRON_SECRET à la fin de l'adresse." }], "");
+  }
+  if (key !== expected) {
+    return html(
+      [
+        {
+          label: "La clé dans l'adresse ne correspond pas à CRON_SECRET",
+          ok: false,
+          detail: `Vérifie qu'il n'y a pas d'espace ou de caractère en trop. Clé reçue : ${key.length} caractères, attendue : ${expected.length} caractères.`,
+        },
+      ],
+      "",
+    );
   }
 
   const base = siteUrl();

@@ -13,7 +13,7 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
  * 2. Filet de sécurité : email de bienvenue s'il n'est pas parti au moment du paiement.
  */
 export async function GET(req: Request) {
-  if (req.headers.get("authorization") !== `Bearer ${requireEnv("CRON_SECRET")}`) {
+  if (req.headers.get("authorization") !== `Bearer ${requireEnv("CRON_SECRET").trim()}`) {
     return new Response("Non autorisé", { status: 401 });
   }
   try {
