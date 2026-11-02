@@ -25,49 +25,32 @@ Web app par abonnement pour arrêter la puff en 21 jours. Éditeur : Nombre One 
 
 ---
 
-## Mise en ligne (étape 1, paiement en mode TEST)
+## Mise en ligne (paiement en mode TEST)
 
-### 1. Supabase (base de données + connexion)
-1. Crée un projet sur [supabase.com](https://supabase.com), **région Europe (Paris `eu-west-3`)**.
-2. **SQL Editor** → colle le contenu de `supabase/migrations/0001_init.sql` → Run.
-3. **Project Settings → API** : récupère l'URL, la clé *publishable* et la clé *secret*.
-4. **Authentication → Providers → Email** : laisse « Email » activé. (Les codes de connexion sont envoyés par l'app via Resend, pas besoin de configurer le SMTP Supabase.)
+1. **Supabase → SQL Editor** : colle et lance, dans l'ordre, `supabase/migrations/0001_init.sql`, `0002_app.sql`, `0003_settings.sql`.
+2. **Vercel → Add New → Project** → importe le repo `tejtapuff` → **Environment Variables** : colle le bloc de `.env.example` rempli (Vercel découpe tout seul) → **Deploy**.
+   `NEXT_PUBLIC_SITE_URL` et `STRIPE_WEBHOOK_SECRET` sont facultatives.
+3. Ouvre **`https://TON-SITE/api/setup?cle=TON_CRON_SECRET`** : la page vérifie tout et configure Stripe toute seule
+   (produit, prix, remise 1re semaine, **webhook**, **portail « mettre à jour ma carte »**). Relance-la autant de fois que tu veux.
+4. Fais un paiement test (voir plus bas).
 
-### 2. Stripe (paiement)
-1. Sur [dashboard.stripe.com](https://dashboard.stripe.com), active le **mode test** (interrupteur en haut).
-2. **Developers → API keys** : copie la clé secrète `sk_test_…`.
-3. Le produit, le prix hebdo et la remise 1re semaine sont **créés automatiquement** au premier paiement, à partir de `config/pricing.ts`.
-4. Après le 1er déploiement Vercel : **Developers → Webhooks → Add endpoint**
-   - URL : `https://TON-DOMAINE/api/webhooks/stripe`
-   - Événements : `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `customer.subscription.paused`, `customer.subscription.resumed`, `invoice.paid`, `invoice.payment_failed`
-   - Copie le *Signing secret* `whsec_…` → `STRIPE_WEBHOOK_SECRET`.
-5. **Settings → Business → Public details** : nom « TejTaPuff », email de support, lien vers les CGV (`/legal/cgv`).
-6. **Settings → Billing → Revenue recovery** : active les relances automatiques (Smart Retries) et choisis « annuler l'abonnement » si toutes les tentatives échouent.
-7. **Settings → Emails** : active les reçus de paiement.
-
-### 3. Resend (emails)
-1. Crée un compte sur [resend.com](https://resend.com), ajoute le domaine `tejtapuff.fr`, ajoute les enregistrements DNS demandés chez ton registrar.
-2. Crée une clé API → `RESEND_API_KEY`.
-
-### 4. Vercel (hébergement)
-1. **Plan Pro obligatoire** : le plan gratuit interdit l'usage commercial (et les tâches planifiées horaires de l'étape 2 en ont besoin).
-2. **Add New → Project** → importe le repo GitHub `tejtapuff`.
-3. **Settings → Environment Variables** : ajoute toutes les variables de `.env.example`.
-4. **Settings → Domains** : ajoute `tejtapuff.fr`.
+Plus tard :
+- **Domaine** : Vercel → Settings → Domains → `tejtapuff.fr`, puis mets `NEXT_PUBLIC_SITE_URL=https://tejtapuff.fr`, redéploie et **relance `/api/setup`** (le webhook est recréé sur le nouveau domaine).
+- **Emails** : vérifie ton domaine dans Resend (enregistrements DNS) et mets `EMAIL_FROM="TejTaPuff <bonjour@tejtapuff.fr>"`. Avec `onboarding@resend.dev`, Resend n'envoie qu'à l'adresse de ton propre compte.
+- **Vercel Pro** avant de vendre pour de vrai (le plan gratuit interdit l'usage commercial).
+- **Passage en live** : remplace `STRIPE_SECRET_KEY` par la clé `sk_live_…`, redéploie, relance `/api/setup`.
 
 ---
 
-## Étape 2 : l'app (à faire en plus de l'étape 1)
+## Étape 2 : l'app
 
-1. **Supabase → SQL Editor** : colle `supabase/migrations/0002_app.sql` → Run.
-2. **Vercel → Environment Variables** : ajoute `CRON_SECRET` (une longue chaîne aléatoire, ex. `openssl rand -hex 32`). La tâche horaire (rappel 48 h, email de bienvenue de secours) est déclarée dans `vercel.json`.
-3. **Stripe → Settings → Billing → Customer portal** : active « mettre à jour le moyen de paiement » puis **Save** (en mode test aussi). C'est ce qu'ouvre le bouton « Mettre à jour ma carte ».
+La tâche quotidienne (rappel au moins 48 h avant le 1er prélèvement, email de bienvenue de secours) est déclarée dans `vercel.json` et protégée par `CRON_SECRET`.
 
 ### Tester l'étape 2
 - **Programme** : connecte-toi → « J'ai tej ma dernière puff » → le compteur et les € démarrent. Fais la mission 1, un SOS (« C'est passé »), puis « J'ai craqué » : le compteur repart, les envies et missions restent.
 - **Résiliation (3 clics)** : Compte → Résilier mon abonnement → Confirmer. Vérifie dans Stripe que l'abonnement est « annulé à la fin de la période » et que l'email de confirmation arrive.
-- **Rappel 48 h** : dans Supabase, table `subscriptions`, mets `first_renewal_at` de ton abonnement de test à « maintenant + 24 h », puis lance la tâche à la main :
-  `curl -H "Authorization: Bearer TON_CRON_SECRET" https://TON-DOMAINE/api/cron/hourly` → l'email de rappel arrive (une seule fois).
+- **Rappel avant prélèvement** : dans Supabase, table `subscriptions`, mets `first_renewal_at` de ton abonnement de test à « maintenant + 2 jours et demi », puis lance la tâche à la main :
+  `curl -H "Authorization: Bearer TON_CRON_SECRET" https://TON-SITE/api/cron/daily` → l'email de rappel arrive (une seule fois).
 - **Suppression** : Compte → Supprimer mon compte et mes données → vérifie que les lignes ont disparu dans Supabase et que le client a disparu dans Stripe.
 - **Installation** : depuis Safari (iPhone) ou Chrome (Android), Compte → Installer l'app.
 
@@ -105,7 +88,7 @@ Sans `RESEND_API_KEY` en local, les emails (dont le code de connexion) s'affiche
 npm run typecheck   # types
 npm run lint        # lint
 npm run test:unit   # calculs du programme (jour X/21, compteur, économies, missions)
-npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (46 contrôles)
+npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (50 contrôles)
 npm run test:e2e    # parcours landing → quiz → paywall sur écran mobile
 ```
 

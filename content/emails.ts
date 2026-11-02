@@ -50,10 +50,10 @@ export function welcomeEmail(p: {
 export function firstRenewalReminderEmail(p: { accountUrl: string; weekly: string; date: string }): EmailContent {
   return {
     subject: `Rappel : ${p.weekly} prélevés le ${p.date}`,
-    preheader: `Ta 1re semaine se termine. Dans 48 h, ton abonnement passe à ${p.weekly}/semaine.`,
+    preheader: `Ta 1re semaine se termine bientôt. Le ${p.date}, ton abonnement passe à ${p.weekly}/semaine.`,
     heading: "Ta 1re semaine se termine",
     paragraphs: [
-      `Dans 48 h, le ${p.date}, ton abonnement passe à ${p.weekly} par semaine.`,
+      `Le ${p.date}, ton abonnement passe à ${p.weekly} par semaine.`,
       "Tu veux continuer ? Tu n'as rien à faire.",
       `Tu veux arrêter ? Résilie avant le ${p.date} depuis l'app : Compte → Résilier → Confirmer. Aucun prélèvement ne sera fait.`,
     ],

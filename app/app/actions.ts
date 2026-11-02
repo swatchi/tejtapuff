@@ -12,6 +12,7 @@ import { ACTIVE_STATUSES, getMember } from "@/lib/member";
 import { isMissionUnlocked } from "@/lib/program";
 import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSetting } from "@/lib/settings";
 import { supabaseServer } from "@/lib/supabase/server";
 
 /**
@@ -119,8 +120,10 @@ export async function openPaymentUpdate() {
   const m = await member();
   const customer = m.profile?.stripe_customer_id;
   if (!customer) redirect("/app/compte");
+  const configuration = (await getSetting("stripe_portal_configuration")) ?? undefined;
   const session = await stripe().billingPortal.sessions.create({
     customer,
+    configuration,
     return_url: `${siteUrl()}/app/compte`,
     flow_data: { type: "payment_method_update" },
     locale: "fr",

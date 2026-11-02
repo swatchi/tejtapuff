@@ -1,7 +1,9 @@
 export const SITE = {
   name: "TejTaPuff",
   domain: "tejtapuff.fr",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000"),
   company: "Nombre One SAS",
   medicalDisclaimer: "TejTaPuff est un programme d'accompagnement, pas un traitement médical.",
   tabacInfoService: {

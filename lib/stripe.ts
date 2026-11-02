@@ -17,6 +17,19 @@ export function stripe(): Stripe {
 
 const PRODUCT_ID = "tejtapuff_programme";
 
+/** Événements Stripe écoutés par /api/webhooks/stripe */
+export const WEBHOOK_EVENTS: Stripe.WebhookEndpointCreateParams.EnabledEvent[] = [
+  "checkout.session.completed",
+  "checkout.session.async_payment_succeeded",
+  "customer.subscription.created",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
+  "customer.subscription.paused",
+  "customer.subscription.resumed",
+  "invoice.paid",
+  "invoice.payment_failed",
+];
+
 type Catalog = { priceId: string; couponId: string };
 let catalogCache: { key: string; value: Catalog } | null = null;
 

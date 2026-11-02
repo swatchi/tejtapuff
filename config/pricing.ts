@@ -10,7 +10,7 @@ export const PRICING = {
   firstWeekCents: 499,
   /** Prix de chaque semaine suivante */
   weeklyCents: 1499,
-  /** Rappel envoyé avant le 1er prélèvement au prix plein */
+  /** Rappel envoyé AU MOINS ce nombre d'heures avant le 1er prélèvement au prix plein */
   reminderHoursBeforeFirstRenewal: 48,
 } as const;
 

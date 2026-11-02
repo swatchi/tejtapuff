@@ -1,12 +1,12 @@
 import type Stripe from "stripe";
 import { provisionFromCheckout, recordInvoice, syncSubscription } from "@/lib/billing";
-import { requireEnv } from "@/lib/env";
+import { getSetting } from "@/lib/settings";
 import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
 /**
  * Webhook Stripe : source de vérité des paiements et des statuts d'abonnement.
- * Événements à cocher dans Stripe (voir README) :
+ * Créé automatiquement par /api/setup (sinon, à créer à la main dans Stripe avec ces événements) :
  * checkout.session.completed, checkout.session.async_payment_succeeded,
  * customer.subscription.created / updated / deleted / paused / resumed,
  * invoice.paid, invoice.payment_failed
@@ -16,9 +16,20 @@ export async function POST(req: Request) {
   const signature = req.headers.get("stripe-signature");
   if (!signature) return new Response("Signature manquante", { status: 400 });
 
+  let secret = process.env.STRIPE_WEBHOOK_SECRET || null;
+  try {
+    secret ??= await getSetting("stripe_webhook_secret");
+  } catch (err) {
+    console.error("[stripe webhook] lecture du secret impossible", err);
+  }
+  if (!secret) {
+    console.error("[stripe webhook] aucun secret : ouvre /api/setup pour créer le webhook");
+    return new Response("Webhook pas encore configuré", { status: 503 });
+  }
+
   let event: Stripe.Event;
   try {
-    event = stripe().webhooks.constructEvent(payload, signature, requireEnv("STRIPE_WEBHOOK_SECRET"));
+    event = stripe().webhooks.constructEvent(payload, signature, secret);
   } catch (err) {
     console.error("[stripe webhook] signature invalide", err);
     return new Response("Signature invalide", { status: 400 });

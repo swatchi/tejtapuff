@@ -22,6 +22,11 @@ export const configured = {
   resend: () => Boolean(process.env.RESEND_API_KEY),
 };
 
+/**
+ * URL publique du site. Sur Vercel, si NEXT_PUBLIC_SITE_URL n'est pas renseignée,
+ * on prend automatiquement le domaine de production du projet.
+ */
 export function siteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  return (process.env.NEXT_PUBLIC_SITE_URL || (vercel ? `https://${vercel}` : "http://localhost:3000")).replace(/\/$/, "");
 }

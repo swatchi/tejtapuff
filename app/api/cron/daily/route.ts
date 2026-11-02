@@ -6,8 +6,10 @@ import { sendFirstRenewalReminder, sendWelcome } from "@/lib/lifecycle-emails";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
 /**
- * Tâche planifiée (Vercel Cron, toutes les heures — voir vercel.json).
- * 1. Rappel obligatoire 48 h avant le 1er prélèvement au prix plein.
+ * Tâche planifiée (Vercel Cron, 1 fois par jour — voir vercel.json ; marche avec tous les plans Vercel).
+ * 1. Rappel obligatoire AU MOINS 48 h avant le 1er prélèvement au prix plein :
+ *    on prévient tous ceux dont le 1er prélèvement tombe dans les 48 à 72 h
+ *    (et, en rattrapage, ceux à moins de 48 h qui n'auraient rien reçu).
  * 2. Filet de sécurité : email de bienvenue s'il n'est pas parti au moment du paiement.
  */
 export async function GET(req: Request) {
@@ -17,7 +19,8 @@ export async function GET(req: Request) {
   try {
     const db = supabaseAdmin();
     const now = new Date();
-    const horizon = new Date(now.getTime() + PRICING.reminderHoursBeforeFirstRenewal * 3600_000);
+    // Tâche quotidienne : fenêtre de 24 h au-delà du minimum de 48 h.
+    const horizon = new Date(now.getTime() + (PRICING.reminderHoursBeforeFirstRenewal + 24) * 3600_000);
     const result = { reminders: 0, welcomes: 0, errors: 0 };
 
     const emailOf = async (userId: string) => {

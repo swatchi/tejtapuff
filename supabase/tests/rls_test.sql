@@ -30,10 +30,22 @@ insert into public.mission_completions (user_id, mission_id) values
 insert into public.cravings (user_id, exercise, outcome) values
   ('11111111-1111-1111-1111-111111111111', 'defi5', 'overcome'), ('22222222-2222-2222-2222-222222222222', 'defi5', 'overcome');
 insert into public.stripe_events (id, type) values ('evt_1', 'x');
+insert into public.app_settings (key, value) values ('stripe_webhook_secret', 'whsec_secret');
 insert into public.email_log (user_id, kind) values ('11111111-1111-1111-1111-111111111111', 'login_code');
 
 create temp table results (check_name text, ok boolean);
 grant all on results to anon, authenticated;
+
+create function pg_temp.sees_nothing(tbl text, r text) returns boolean language plpgsql as $$
+declare n bigint;
+begin
+  execute format('set local role %I', r);
+  execute 'set local request.jwt.claim.sub = ''11111111-1111-1111-1111-111111111111''';
+  execute format('select count(*) from %s', tbl) into n;
+  return n = 0;
+exception when insufficient_privilege then
+  return true;
+end $$;
 
 -- ── Utilisateur A connecté ──
 set role authenticated;
@@ -60,6 +72,10 @@ insert into results select 'anon ne voit aucun abonnement', (select count(*) = 0
 insert into results select 'anon ne voit aucun paiement', (select count(*) = 0 from public.payments);
 insert into results select 'anon ne voit aucune tentative', (select count(*) = 0 from public.quit_attempts);
 reset role;
+
+insert into results select 'A ne voit pas les réglages (secret webhook)', pg_temp.sees_nothing('public.app_settings', 'authenticated');
+insert into results select 'anon ne voit pas les réglages', pg_temp.sees_nothing('public.app_settings', 'anon');
+insert into results select 'contrôle : le serveur voit les réglages', not pg_temp.sees_nothing('public.app_settings', 'service_role');
 
 -- ── Écritures interdites depuis le navigateur ──
 create function pg_temp.write_denied(sql text, r text) returns boolean language plpgsql as $$
