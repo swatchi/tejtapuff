@@ -5,6 +5,10 @@ import { cache } from "react";
 import { attemptStats, programDay, type Attempt } from "@/lib/program";
 import { currentUser, supabaseServer } from "@/lib/supabase/server";
 
+const PROFILE_COLUMNS_V2 =
+  "user_id, email, stripe_customer_id, vape_unit, units_per_week, unit_price_cents, vaping_since, triggers, reasons, start_date, timezone";
+const PROFILE_COLUMNS = `${PROFILE_COLUMNS_V2}, units_per_month, notify_morning, notify_risk, notify_email, morning_hour`;
+
 /** Statuts Stripe qui donnent accès à l'app (past_due = période de relance de paiement). */
 export const ACTIVE_STATUSES = ["active", "trialing", "past_due"];
 
@@ -46,13 +50,7 @@ export const getMember = cache(async () => {
   if (!user) return null;
   const db = await supabaseServer();
   const [profileRes, subsRes, attemptsRes, completionsRes, cravingsRes] = await Promise.all([
-    db
-      .from("profiles")
-      .select(
-        "user_id, email, stripe_customer_id, vape_unit, units_per_week, units_per_month, unit_price_cents, vaping_since, triggers, reasons, start_date, timezone, notify_morning, notify_risk, notify_email, morning_hour",
-      )
-      .eq("user_id", user.id)
-      .maybeSingle(),
+    db.from("profiles").select(PROFILE_COLUMNS).eq("user_id", user.id).maybeSingle(),
     db
       .from("subscriptions")
       .select("id, status, price_cents, current_period_end, first_renewal_at, cancel_at_period_end")
@@ -64,7 +62,13 @@ export const getMember = cache(async () => {
     db.from("cravings").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("outcome", "overcome"),
   ]);
 
-  const profile = (profileRes.data as Profile | null) ?? null;
+  let profileData = profileRes.data as Profile | null;
+  if (profileRes.error) {
+    // Migration 0004 pas encore appliquée : on relit sans les colonnes de l'étape 3.
+    const { data } = await db.from("profiles").select(PROFILE_COLUMNS_V2).eq("user_id", user.id).maybeSingle();
+    profileData = data ? ({ notify_morning: true, notify_risk: true, notify_email: true, morning_hour: 9, units_per_month: null, ...data } as Profile) : null;
+  }
+  const profile = profileData ?? null;
   const subscription = (subsRes.data?.[0] as Subscription | undefined) ?? null;
   const attempts = (attemptsRes.data as Attempt[] | null) ?? [];
   const now = new Date();
