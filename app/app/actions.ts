@@ -2,10 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import Stripe from "stripe";
 import { MISSIONS } from "@/content/missions";
 import { SOS } from "@/content/sos";
 import { syncSubscription } from "@/lib/billing";
+import { sendRelapseMessage } from "@/lib/coach";
 import { siteUrl } from "@/lib/env";
 import { sendCancellation } from "@/lib/lifecycle-emails";
 import { ACTIVE_STATUSES, getMember } from "@/lib/member";
@@ -84,6 +86,8 @@ export async function relapse(formData: FormData) {
   if (SOS.exercises.some((e) => e.id === fromSos)) {
     await db.from("cravings").insert({ user_id: m.user.id, exercise: fromSos, outcome: "relapse" });
   }
+  // Le coach écrit un message de relance, sans faire attendre la personne.
+  after(() => sendRelapseMessage(m).catch((err) => console.error("[relapse coach]", err)));
   refresh();
   redirect("/app/craque?ok=1");
 }
@@ -172,3 +176,21 @@ export async function deleteAccount() {
   redirect("/?compte=supprime");
 }
 
+
+/** Préférences de notification (Compte → Notifications). */
+export async function updateNotificationPrefs(formData: FormData) {
+  const m = await member();
+  const hour = Math.min(12, Math.max(5, Math.round(Number(formData.get("morning_hour")) || 9)));
+  const { error } = await supabaseAdmin()
+    .from("profiles")
+    .update({
+      notify_morning: formData.get("notify_morning") === "on",
+      notify_risk: formData.get("notify_risk") === "on",
+      notify_email: formData.get("notify_email") === "on",
+      morning_hour: hour,
+    })
+    .eq("user_id", m.user.id);
+  if (error) throw new Error(error.message);
+  refresh();
+  redirect("/app/compte?prefs=1#notifications");
+}

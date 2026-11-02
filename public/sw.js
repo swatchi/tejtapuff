@@ -15,3 +15,62 @@ self.addEventListener("fetch", (event) => {
     fetch(event.request).catch(() => new Response(OFFLINE_HTML, { headers: { "content-type": "text/html; charset=utf-8" } })),
   );
 });
+
+/* ───────── Notifications ───────── */
+self.addEventListener("push", (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    data = { title: "TejTaPuff", body: event.data ? event.data.text() : "" };
+  }
+  const title = data.title || "TejTaPuff";
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: data.body || "",
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      tag: data.tag || undefined,
+      renotify: Boolean(data.tag),
+      data: { url: data.url || "/app" },
+      lang: "fr",
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const target = new URL((event.notification.data && event.notification.data.url) || "/app", self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if (client.url.startsWith(self.location.origin) && "focus" in client) {
+          client.navigate(target);
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(target);
+    }),
+  );
+});
+
+self.addEventListener("pushsubscriptionchange", (event) => {
+  // L'ancien abonnement a expiré : on se réabonne avec la même clé et on prévient le serveur.
+  event.waitUntil(
+    (async () => {
+      const res = await fetch("/api/push/key");
+      if (!res.ok) return;
+      const { publicKey } = await res.json();
+      const padding = "=".repeat((4 - (publicKey.length % 4)) % 4);
+      const raw = atob((publicKey + padding).replace(/-/g, "+").replace(/_/g, "/"));
+      const key = Uint8Array.from(raw, (c) => c.charCodeAt(0));
+      const sub = await self.registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+      await fetch("/api/push/subscribe", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ subscription: sub.toJSON() }),
+        credentials: "include",
+      });
+    })(),
+  );
+});

@@ -23,7 +23,7 @@ type Draft = {
   step: number;
   consent: boolean;
   unit: UnitId;
-  perWeek: number;
+  perMonth: number;
   priceText: string;
   since: string | null;
   triggers: string[];
@@ -32,7 +32,7 @@ type Draft = {
   startDate: string;
 };
 
-const STEPS = ["intro", "unit", "perWeek", "price", "since", "triggers", "reasons", "startDate"] as const;
+const STEPS = ["intro", "unit", "perMonth", "price", "since", "triggers", "reasons", "startDate"] as const;
 const QUESTION_COUNT = STEPS.length - 1;
 
 /** Date locale AAAA-MM-JJ, décalée de n jours */
@@ -51,7 +51,7 @@ function initialDraft(): Draft {
     step: 0,
     consent: false,
     unit: unit.id,
-    perWeek: calc?.perWeek ?? unit.defaultPerWeek,
+    perMonth: calc?.perMonth ?? unit.defaultPerMonth,
     priceText: String(calc?.unitPrice || unit.defaultPrice),
     since: null,
     triggers: [],
@@ -69,8 +69,9 @@ export function QuizClient() {
 
   useEffect(() => {
     // Reprise du brouillon (sessionStorage n'existe pas côté serveur)
+    const saved = readSession<Draft>(KEYS.quizDraft);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDraft(readSession<Draft>(KEYS.quizDraft) ?? initialDraft());
+    setDraft(saved && typeof saved.perMonth === "number" ? saved : initialDraft());
   }, []);
 
   useEffect(() => {
@@ -97,7 +98,7 @@ export function QuizClient() {
     setError(null);
     const answers = {
       unit: draft.unit,
-      perWeek: draft.perWeek,
+      perMonth: draft.perMonth,
       unitPrice: parsePrice(draft.priceText),
       since: draft.since,
       triggers: draft.triggers,
@@ -125,7 +126,7 @@ export function QuizClient() {
   const canContinue: Record<(typeof STEPS)[number], boolean> = {
     intro: draft.consent,
     unit: true,
-    perWeek: draft.perWeek >= 1,
+    perMonth: draft.perMonth >= 1,
     price: price >= 0.5,
     since: Boolean(draft.since),
     triggers: draft.triggers.length > 0,
@@ -196,7 +197,7 @@ export function QuizClient() {
                     const changed = u.id !== draft.unit;
                     update({
                       unit: u.id,
-                      ...(changed ? { perWeek: u.defaultPerWeek, priceText: String(u.defaultPrice) } : {}),
+                      ...(changed ? { perMonth: u.defaultPerMonth, priceText: String(u.defaultPrice) } : {}),
                       step: draft.step + 1,
                     });
                   }}
@@ -208,30 +209,30 @@ export function QuizClient() {
           </Question>
         )}
 
-        {stepName === "perWeek" && (
-          <Question title={QUESTIONS.perWeek.title} hint={QUESTIONS.perWeek.hint}>
+        {stepName === "perMonth" && (
+          <Question title={QUESTIONS.perMonth.title} hint={QUESTIONS.perMonth.hint}>
             <div className="flex items-center justify-center gap-5 py-6">
               <button
                 type="button"
                 className="btn btn-light h-16 min-h-16 w-16 p-0 text-3xl"
                 aria-label="Moins"
-                disabled={draft.perWeek <= 1}
-                onClick={() => update({ perWeek: Math.max(1, draft.perWeek - 1) })}
+                disabled={draft.perMonth <= 1}
+                onClick={() => update({ perMonth: Math.max(1, draft.perMonth - 1) })}
               >
                 −
               </button>
               <output className="min-w-[6rem] text-center text-6xl font-extrabold tabular-nums" aria-live="polite">
-                {draft.perWeek}
+                {draft.perMonth}
                 <span className="block text-base font-semibold text-gris">
-                  {draft.perWeek > 1 ? unit.plural : unit.singular} / semaine
+                  {draft.perMonth > 1 ? unit.plural : unit.singular} / mois
                 </span>
               </output>
               <button
                 type="button"
                 className="btn btn-light h-16 min-h-16 w-16 p-0 text-3xl"
                 aria-label="Plus"
-                disabled={draft.perWeek >= unit.maxPerWeek}
-                onClick={() => update({ perWeek: Math.min(unit.maxPerWeek, draft.perWeek + 1) })}
+                disabled={draft.perMonth >= unit.maxPerMonth}
+                onClick={() => update({ perMonth: Math.min(unit.maxPerMonth, draft.perMonth + 1) })}
               >
                 +
               </button>

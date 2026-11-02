@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Polices lues sur le disque pour générer la carte à partager
+  outputFileTracingIncludes: {
+    "/api/story-card": ["./assets/fonts/**/*"],
+  },
   turbopack: {
     rules: {
       "*.css": {

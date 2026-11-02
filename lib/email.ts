@@ -21,6 +21,12 @@ export function renderEmail(c: EmailContent): { html: string; text: string } {
   const cta = c.cta
     ? `<p style="margin:8px 0 24px"><a href="${esc(c.cta.url)}" style="display:inline-block;background:#1b1a17;color:#ffffff;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:999px">${esc(c.cta.label)}</a></p>`
     : "";
+  const image = c.image
+    ? `<p style="margin:8px 0 24px;text-align:center"><img src="${esc(c.image.src)}" alt="${esc(c.image.alt)}" width="${c.image.width}" height="${c.image.height}" style="border:2px solid #1b1a17;border-radius:16px;max-width:100%;height:auto"></p>`
+    : "";
+  const unsubscribe = c.unsubscribeUrl
+    ? `<p style="margin:0;font-size:12px;color:#5c584f"><a href="${esc(c.unsubscribeUrl)}" style="color:#5c584f">Ne plus recevoir ces rappels</a></p>`
+    : "";
   const foot = c.footnote
     ? `<p style="margin:0 0 16px;font-size:14px;line-height:1.5;color:#5c584f">${esc(c.footnote)}</p>`
     : "";
@@ -33,7 +39,7 @@ export function renderEmail(c: EmailContent): { html: string; text: string } {
 <tr><td style="background:#ffd43b;border-radius:18px 18px 0 0;padding:18px 24px;font-size:22px;font-weight:800;color:#1b1a17">tej ta <s style="text-decoration-color:#ff5b3a;text-decoration-thickness:3px">puff</s></td></tr>
 <tr><td style="padding:24px">
 <h1 style="margin:0 0 16px;font-size:24px;line-height:1.2;color:#1b1a17">${esc(c.heading)}</h1>
-${p}${highlight}${cta}${foot}
+${p}${highlight}${image}${cta}${foot}${unsubscribe}
 </td></tr></table>
 <p style="max-width:520px;margin:16px auto 0;font-size:12px;line-height:1.5;color:#5c584f">${esc(SITE.medicalDisclaimer)}<br>${esc(SITE.company)} · <a href="${siteUrl()}" style="color:#5c584f">${esc(SITE.domain)}</a></p>
 </td></tr></table></body></html>`;
@@ -45,6 +51,7 @@ ${p}${highlight}${cta}${foot}
     c.highlight ? `\n${c.highlight}\n` : "",
     c.cta ? `${c.cta.label} : ${c.cta.url}` : "",
     c.footnote ?? "",
+    c.unsubscribeUrl ? `Ne plus recevoir ces rappels : ${c.unsubscribeUrl}` : "",
     "",
     `${SITE.medicalDisclaimer} ${SITE.company} · ${SITE.domain}`,
   ]

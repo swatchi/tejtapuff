@@ -67,3 +67,21 @@ test("impossible de valider une mission pas encore débloquée", () => {
   assert.equal(isMissionUnlocked("w1", 22, IDS), false);
   assert.equal(isMissionUnlocked("nimportequoi", 30, IDS), false);
 });
+
+import { costs, unitsPerMonthOf, unitsPerWeekOf } from "../../lib/savings.ts";
+
+test("coûts à partir d'une conso par mois", () => {
+  const c = costs(16, 4); // 16 pods à 4 € par mois
+  assert.equal(c.month, 64);
+  assert.equal(c.year, 768);
+  assert.equal(c.halfYear, 384);
+  assert.ok(Math.abs(c.week - 768 / 52) < 1e-9);
+  assert.equal(costs(-3, 4).month, 0);
+});
+
+test("conso du profil : mensuelle prioritaire, hebdo pour les anciens comptes", () => {
+  assert.ok(Math.abs(unitsPerWeekOf({ units_per_month: 52 / 12 * 4 }) - 4) < 1e-9);
+  assert.equal(unitsPerWeekOf({ units_per_week: 3 }), 3);
+  assert.ok(Math.abs(unitsPerMonthOf({ units_per_week: 3 }) - 13) < 1e-9);
+  assert.equal(unitsPerWeekOf(null), 0);
+});

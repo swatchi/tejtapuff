@@ -19,6 +19,8 @@ Web app par abonnement pour arrêter la puff en 21 jours. Éditeur : Nombre One 
 | Les emails | `content/emails.ts` |
 | Les 21 missions + 8 missions de consolidation | `content/missions.ts` |
 | Les exercices SOS et l'écran « J'ai craqué » | `content/sos.ts` |
+| Le prompt et le ton du coach IA | `content/coach-prompt.ts` |
+| Les textes et horaires des notifications | `content/notifications.ts` |
 | Les pages légales | `content/legal/*.md` (les `[À COMPLÉTER]` sont surlignés en jaune sur le site) |
 | Les vrais témoignages | `content/testimonials.ts` + `FEATURES.testimonials` dans `config/site.ts` |
 | Les couleurs / la typo | `app/globals.css` |
@@ -56,6 +58,30 @@ La tâche quotidienne (rappel au moins 48 h avant le 1er prélèvement, email de
 
 ---
 
+## Étape 3 : coach IA, notifications, carte story, emails
+
+### À faire une fois
+1. **Supabase → SQL Editor** : colle et lance `supabase/migrations/0004_coach_notifications.sql` (**avant** de déployer l'étape 3).
+2. **Vercel → Environment Variables** : ajoute `ANTHROPIC_API_KEY` (console.anthropic.com → API Keys), puis Redeploy.
+3. **Supabase → SQL Editor** : ouvre `supabase/cron.sql`, remplace `<ADRESSE_DU_SITE>` et `<CRON_SECRET>`, puis lance-le. Supabase appellera le site toutes les heures (notifications, emails J7/J21, relances). Ça marche avec tous les plans Vercel.
+4. Rouvre **`/api/setup?cle=…`** : elle crée les clés de notification et vérifie le coach et la tâche horaire.
+
+### Ce qui tourne
+- **Coach** (`/app/coach`) : `claude-haiku-5-5`, réponse affichée au fil de l'eau, 20 messages par jour et par personne (`config/site.ts` → `LIMITS`). Prompt et garde-fous dans `content/coach-prompt.ts`. Message automatique du coach après « J'ai craqué ». Si quelqu'un écrit des mots de détresse, une carte 3114 / 112 s'affiche en plus de la réponse.
+- **Notifications** (Compte → Notifications) : mission du matin à l'heure choisie, 2 petits mots maximum par jour aux moments à risque du quiz (`content/notifications.ts`), rappel avant le 1er prélèvement. Sans notifications sur le téléphone : la mission arrive par email (désactivable).
+- **Carte à partager** (`/app/partager`) : image 1080×1920 générée avec les vraies données (jour sans puff, € économisés, envies battues).
+- **Emails** : J7, J21 (avec la carte), relances du quiz non payé (2 maximum, seulement si la case a été cochée, lien de désinscription).
+
+### Tester l'étape 3
+- **Coach** : écris « j'ai une grosse envie », puis « j'ai craqué » via le bouton : un message du coach apparaît dans `/app/coach`.
+- **Notifications** : sur iPhone, installe d'abord l'app sur l'écran d'accueil depuis Safari. Ensuite : Compte → Activer les notifications → Tester.
+- **Notification du matin, emails J7 / J21** : dans Supabase, mets `morning_hour` (table `profiles`) à l'heure actuelle. Pour J7, recule `started_at` (table `quit_attempts`) de 6 jours. Puis lance la tâche à la main :
+  `curl -H "Authorization: Bearer TON_CRON_SECRET" https://TON-SITE/api/cron/hourly`
+- **Relance du quiz** : fais le quiz avec la case de rappel cochée sans payer. Une heure plus tard, la tâche horaire envoie le 1er rappel.
+- **Carte** : `/app/partager` → Partager en story.
+
+---
+
 ## Tester le paiement (mode test Stripe)
 
 | Carte | Résultat |
@@ -88,7 +114,7 @@ Sans `RESEND_API_KEY` en local, les emails (dont le code de connexion) s'affiche
 npm run typecheck   # types
 npm run lint        # lint
 npm run test:unit   # calculs du programme (jour X/21, compteur, économies, missions)
-npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (50 contrôles)
+npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (61 contrôles)
 npm run test:e2e    # parcours landing → quiz → paywall sur écran mobile
 ```
 

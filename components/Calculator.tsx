@@ -16,10 +16,10 @@ export function parsePrice(text: string): number {
 export function Calculator() {
   const [unitId, setUnitId] = useState<UnitId>("puff");
   const unit = getUnit(unitId);
-  const [perWeek, setPerWeek] = useState(unit.defaultPerWeek);
+  const [perMonth, setPerMonth] = useState(unit.defaultPerMonth);
   const [priceText, setPriceText] = useState(String(unit.defaultPrice));
   const price = parsePrice(priceText);
-  const c = costs(perWeek, price);
+  const c = costs(perMonth, price);
   const touched = useRef(false);
 
   const touch = () => {
@@ -29,20 +29,20 @@ export function Calculator() {
   };
 
   useEffect(() => {
-    writeSession(KEYS.calc, { unit: unitId, perWeek, unitPrice: price });
-  }, [unitId, perWeek, price]);
+    writeSession(KEYS.calc, { unit: unitId, perMonth, unitPrice: price });
+  }, [unitId, perMonth, price]);
 
   const pickUnit = (id: UnitId) => {
     touch();
     const u = getUnit(id);
     setUnitId(id);
-    setPerWeek(u.defaultPerWeek);
+    setPerMonth(u.defaultPerMonth);
     setPriceText(String(u.defaultPrice));
   };
 
   const step = (delta: number) => {
     touch();
-    setPerWeek((n) => Math.min(unit.maxPerWeek, Math.max(1, n + delta)));
+    setPerMonth((n) => Math.min(unit.maxPerMonth, Math.max(1, n + delta)));
   };
 
   const equivalent = Math.floor(c.year / CALCULATOR.equivalent.unitPrice);
@@ -69,29 +69,29 @@ export function Calculator() {
 
         <div className="mt-4 grid grid-cols-[1fr_auto] items-end gap-3">
           <div>
-            <p id="perweek-label" className="text-sm font-bold uppercase tracking-wide text-gris">
-              {CALCULATOR.perWeekQuestion}
+            <p id="permonth-label" className="text-sm font-bold uppercase tracking-wide text-gris">
+              {CALCULATOR.perMonthQuestion}
             </p>
-            <div className="mt-2 flex items-center gap-2" role="group" aria-labelledby="perweek-label">
+            <div className="mt-2 flex items-center gap-2" role="group" aria-labelledby="permonth-label">
               <button
                 type="button"
                 className="btn btn-light h-12 min-h-12 w-12 p-0 text-2xl"
                 onClick={() => step(-1)}
                 aria-label="Moins"
-                disabled={perWeek <= 1}
+                disabled={perMonth <= 1}
               >
                 −
               </button>
               <output className="min-w-[4.5rem] text-center text-3xl font-extrabold tabular-nums" aria-live="polite">
-                {perWeek}
-                <span className="block text-xs font-semibold text-gris">{perWeek > 1 ? unit.plural : unit.singular}</span>
+                {perMonth}
+                <span className="block text-xs font-semibold text-gris">{perMonth > 1 ? unit.plural : unit.singular}</span>
               </output>
               <button
                 type="button"
                 className="btn btn-light h-12 min-h-12 w-12 p-0 text-2xl"
                 onClick={() => step(1)}
                 aria-label="Plus"
-                disabled={perWeek >= unit.maxPerWeek}
+                disabled={perMonth >= unit.maxPerMonth}
               >
                 +
               </button>
@@ -123,13 +123,13 @@ export function Calculator() {
             ★ {CALCULATOR.title} ★
           </p>
           <p className="mt-1 text-center text-xs text-gris">
-            {perWeek} {perWeek > 1 ? unit.plural : unit.singular} × {formatEuros(price)} / semaine
+            {perMonth} {perMonth > 1 ? unit.plural : unit.singular} × {formatEuros(price)} / mois
           </p>
           <div className="my-3 border-t-2 border-dashed border-encre/40" />
           {(
             [
-              [CALCULATOR.lines.week, c.week],
               [CALCULATOR.lines.month, c.month],
+              [CALCULATOR.lines.halfYear, c.halfYear],
               [CALCULATOR.lines.year, c.year],
             ] as const
           ).map(([label, amount]) => (

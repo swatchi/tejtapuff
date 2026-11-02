@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InstallBanner } from "@/components/app/InstallBanner";
+import { NotificationsCard } from "@/components/app/NotificationsCard";
 import { LiveCounter, LiveSavings } from "@/components/app/LiveStats";
 import { SubmitButton } from "@/components/app/SubmitButton";
 import { Logo } from "@/components/Logo";
@@ -8,6 +9,7 @@ import { CONSOLIDATION, MISSIONS, personalize, PHASES } from "@/content/missions
 import { formatDayFr, fromDateOnly } from "@/lib/dates";
 import { requireMember } from "@/lib/member";
 import { currentMission, PROGRAM_DAYS, streakDays } from "@/lib/program";
+import { unitsPerWeekOf } from "@/lib/savings";
 import { startProgram } from "./actions";
 
 export const metadata: Metadata = { title: "Mon programme", robots: { index: false } };
@@ -91,7 +93,7 @@ export default async function Dashboard() {
                   <LiveSavings
                     closedMs={closedMs}
                     currentStartIso={stats.currentStart}
-                    unitsPerWeek={Number(profile?.units_per_week ?? 0)}
+                    unitsPerWeek={unitsPerWeekOf(profile)}
                     unitPriceCents={profile?.unit_price_cents ?? 0}
                     serverNow={serverNow}
                   />
@@ -160,6 +162,17 @@ export default async function Dashboard() {
                 <span className="block text-white/90">Un exercice de 1 à 5 min pour passer le pic.</span>
               </span>
             </Link>
+            <div className="grid grid-cols-2 gap-3">
+              <Link href="/app/coach" className="rounded-3xl border-2 border-encre bg-ciel p-4">
+                <span aria-hidden className="text-2xl">💬</span>
+                <span className="mt-1 block font-extrabold leading-tight">Parler au coach</span>
+              </Link>
+              <Link href="/app/partager" className="rounded-3xl border-2 border-encre bg-rose p-4">
+                <span aria-hidden className="text-2xl">📸</span>
+                <span className="mt-1 block font-extrabold leading-tight">Partager ma carte</span>
+              </Link>
+            </div>
+            <NotificationsCard compact />
             <InstallBanner />
             <p className="pt-2 text-center">
               <Link href="/app/craque" className="font-semibold text-encre/70 underline underline-offset-4">

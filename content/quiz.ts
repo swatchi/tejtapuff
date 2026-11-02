@@ -38,7 +38,7 @@ export const SINCE = [
 
 export const QUESTIONS = {
   unit: { title: "Tu vapes quoi, surtout ?", hint: "Si tu mélanges, prends ce que tu achètes le plus." },
-  perWeek: { title: "T'en finis combien par semaine ?", hint: "Une moyenne, pas besoin d'être précis." },
+  perMonth: { title: "T'en finis combien par mois ?", hint: "Une moyenne, pas besoin d'être précis." },
   price: { title: "Tu les payes combien, en moyenne ?", hint: "Prix à l'unité, en euros." },
   since: { title: "Tu vapes depuis quand ?" },
   triggers: { title: "Quand l'envie frappe le plus ?", hint: "Choisis tout ce qui te parle." },

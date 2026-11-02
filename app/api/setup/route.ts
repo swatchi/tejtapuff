@@ -1,4 +1,6 @@
 import { Resend } from "resend";
+import { anthropic, COACH_MODEL } from "@/lib/coach";
+import { ensureVapidKeys } from "@/lib/push";
 import { SITE } from "@/config/site";
 import { siteUrl } from "@/lib/env";
 import { getSetting, setSetting } from "@/lib/settings";
@@ -79,12 +81,25 @@ export async function GET(req: Request) {
   // 2. Supabase
   try {
     const db = supabaseAdmin();
-    const tables = ["profiles", "subscriptions", "payments", "quit_attempts", "mission_completions", "cravings", "app_settings"];
+    const tables = [
+      "profiles",
+      "subscriptions",
+      "payments",
+      "quit_attempts",
+      "mission_completions",
+      "cravings",
+      "app_settings",
+      "coach_messages",
+      "push_subscriptions",
+      "notification_log",
+    ];
     const absent: string[] = [];
     for (const t of tables) {
       const { error } = await db.from(t).select("*", { count: "exact", head: true });
       if (error) absent.push(t);
     }
+    const { error: colError } = await db.from("profiles").select("units_per_month, notify_morning, morning_hour").limit(1);
+    if (colError) absent.push("profiles (colonnes de l'étape 3)");
     checks.push({
       label: "Base Supabase",
       ok: absent.length === 0,
@@ -173,7 +188,44 @@ export async function GET(req: Request) {
     }
   }
 
-  // 4. Resend
+  // 4. Coach IA
+  const ai = anthropic();
+  if (!ai) {
+    checks.push({ label: "Coach IA", ok: false, detail: "Ajoute ANTHROPIC_API_KEY dans les variables Vercel, puis Redeploy." });
+  } else {
+    try {
+      await ai.models.retrieve(COACH_MODEL);
+      checks.push({ label: "Coach IA", ok: true, detail: `Clé valide, modèle ${COACH_MODEL}` });
+    } catch (err) {
+      checks.push({ label: "Coach IA", ok: false, detail: `Clé ANTHROPIC_API_KEY refusée : ${msg(err)}` });
+    }
+  }
+
+  // 5. Notifications
+  try {
+    const created = await ensureVapidKeys();
+    checks.push({ label: "Notifications (clés)", ok: true, detail: created ? "Clés créées" : "Déjà en place" });
+  } catch (err) {
+    checks.push({ label: "Notifications (clés)", ok: false, detail: msg(err) });
+  }
+  try {
+    const last = await getSetting("hourly_last_run");
+    const ageH = last ? (Date.now() - Date.parse(last)) / 3600_000 : null;
+    checks.push({
+      label: "Tâche horaire (notifications, emails J7/J21, relances)",
+      ok: ageH !== null && ageH < 2 ? true : false,
+      detail:
+        ageH === null
+          ? "Jamais lancée : colle supabase/cron.sql dans Supabase (SQL Editor) en y mettant l'adresse du site et le CRON_SECRET."
+          : ageH < 2
+            ? `Dernier passage il y a ${Math.round(ageH * 60)} min`
+            : `Dernier passage il y a ${Math.round(ageH)} h : vérifie la tâche dans Supabase (Integrations → Cron).`,
+    });
+  } catch (err) {
+    checks.push({ label: "Tâche horaire", ok: false, detail: msg(err) });
+  }
+
+  // 6. Resend
   if (process.env.RESEND_API_KEY) {
     try {
       const { data, error } = await new Resend(process.env.RESEND_API_KEY).domains.list();

@@ -125,11 +125,14 @@ export async function provisionFromCheckout(
       .eq("id", quizId)
       .maybeSingle();
     if (quiz && (!quiz.user_id || quiz.user_id === userId)) {
-      const a = quiz.answers as QuizAnswers;
+      const a = quiz.answers as QuizAnswers & { perWeek?: number };
+      // Les quiz d'avant le passage « par mois » contenaient perWeek.
+      const perMonth = a.perMonth ?? (a.perWeek ? (a.perWeek * 52) / 12 : null);
       Object.assign(profile, {
         quiz_id: quiz.id,
         vape_unit: a.unit,
-        units_per_week: a.perWeek,
+        units_per_month: perMonth === null ? null : Math.round(perMonth * 100) / 100,
+        units_per_week: perMonth === null ? null : Math.round(((perMonth * 12) / 52) * 100) / 100,
         unit_price_cents: Math.round(a.unitPrice * 100),
         vaping_since: a.since,
         triggers: a.triggers,
@@ -141,7 +144,12 @@ export async function provisionFromCheckout(
     }
   }
 
-  const { error: profileError } = await db.from("profiles").upsert(profile, { onConflict: "user_id" });
+  let { error: profileError } = await db.from("profiles").upsert(profile, { onConflict: "user_id" });
+  if (profileError && /units_per_month/.test(profileError.message)) {
+    // Migration 0004 pas encore appliquée : on enregistre sans la colonne mensuelle.
+    delete profile.units_per_month;
+    ({ error: profileError } = await db.from("profiles").upsert(profile, { onConflict: "user_id" }));
+  }
   if (profileError) throw new Error(`profiles upsert : ${profileError.message}`);
 
   const sub = session.subscription;

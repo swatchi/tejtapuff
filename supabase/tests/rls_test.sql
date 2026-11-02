@@ -31,6 +31,12 @@ insert into public.cravings (user_id, exercise, outcome) values
   ('11111111-1111-1111-1111-111111111111', 'defi5', 'overcome'), ('22222222-2222-2222-2222-222222222222', 'defi5', 'overcome');
 insert into public.stripe_events (id, type) values ('evt_1', 'x');
 insert into public.app_settings (key, value) values ('stripe_webhook_secret', 'whsec_secret');
+insert into public.coach_messages (user_id, role, content) values
+  ('11111111-1111-1111-1111-111111111111', 'user', 'salut'), ('22222222-2222-2222-2222-222222222222', 'user', 'secret de B');
+insert into public.push_subscriptions (user_id, endpoint, p256dh, auth) values
+  ('11111111-1111-1111-1111-111111111111', 'https://push/a', 'k', 'a'), ('22222222-2222-2222-2222-222222222222', 'https://push/b', 'k', 'a');
+insert into public.notification_log (user_id, kind, day_key, channel) values
+  ('11111111-1111-1111-1111-111111111111', 'morning', '2026-11-02', 'push');
 insert into public.email_log (user_id, kind) values ('11111111-1111-1111-1111-111111111111', 'login_code');
 
 create temp table results (check_name text, ok boolean);
@@ -58,6 +64,8 @@ insert into results select 'A voit 1 consentement', (select count(*) = 1 from pu
 insert into results select 'A voit 1 tentative', (select count(*) = 1 from public.quit_attempts);
 insert into results select 'A voit 1 mission faite', (select count(*) = 1 from public.mission_completions);
 insert into results select 'A voit 1 envie', (select count(*) = 1 from public.cravings);
+insert into results select 'A voit 1 message coach (le sien)', (select count(*) = 1 and bool_and(content = 'salut') from public.coach_messages);
+insert into results select 'A voit 1 appareil', (select count(*) = 1 from public.push_subscriptions);
 insert into results select 'A ne voit pas funnel_events', (select count(*) = 0 from public.funnel_events);
 insert into results select 'A ne voit pas stripe_events', (select count(*) = 0 from public.stripe_events);
 insert into results select 'A ne voit pas email_log', (select count(*) = 0 from public.email_log);
@@ -73,6 +81,8 @@ insert into results select 'anon ne voit aucun paiement', (select count(*) = 0 f
 insert into results select 'anon ne voit aucune tentative', (select count(*) = 0 from public.quit_attempts);
 reset role;
 
+insert into results select 'A ne voit pas le journal des notifications', pg_temp.sees_nothing('public.notification_log', 'authenticated');
+insert into results select 'anon ne voit aucun message coach', pg_temp.sees_nothing('public.coach_messages', 'anon');
 insert into results select 'A ne voit pas les réglages (secret webhook)', pg_temp.sees_nothing('public.app_settings', 'authenticated');
 insert into results select 'anon ne voit pas les réglages', pg_temp.sees_nothing('public.app_settings', 'anon');
 insert into results select 'contrôle : le serveur voit les réglages', not pg_temp.sees_nothing('public.app_settings', 'service_role');
@@ -93,6 +103,8 @@ insert into results select 'A ne peut pas créer de paiement', pg_temp.write_den
 insert into results select 'A ne peut pas modifier son profil', pg_temp.write_denied($$update public.profiles set email = 'x@x.fr'$$, 'authenticated');
 insert into results select 'A ne peut pas valider une mission lui-même', pg_temp.write_denied($$insert into public.mission_completions (user_id, mission_id) values ('11111111-1111-1111-1111-111111111111', 'j2')$$, 'authenticated');
 insert into results select 'A ne peut pas trafiquer son compteur', pg_temp.write_denied($$update public.quit_attempts set started_at = now() - interval '1 year'$$, 'authenticated');
+insert into results select 'A ne peut pas écrire au nom du coach', pg_temp.write_denied($$insert into public.coach_messages (user_id, role, content) values ('11111111-1111-1111-1111-111111111111', 'assistant', 'x')$$, 'authenticated');
+insert into results select 'A ne peut pas modifier ses préférences directement', pg_temp.write_denied($$update public.profiles set notify_morning = false$$, 'authenticated');
 insert into results select 'anon ne peut pas écrire dans funnel_events', pg_temp.write_denied($$insert into public.funnel_events (visitor_id, type) values (gen_random_uuid(), 'visit')$$, 'anon');
 insert into results select 'anon ne peut pas créer de quiz', pg_temp.write_denied($$insert into public.quiz_answers (answers, consent_version) values ('{}', 'v')$$, 'anon');
 
@@ -125,6 +137,8 @@ insert into results select 'suppression : consentements A effacés', (select cou
 insert into results select 'suppression : tentatives A effacées', (select count(*) = 1 from public.quit_attempts);
 insert into results select 'suppression : missions A effacées', (select count(*) = 1 from public.mission_completions);
 insert into results select 'suppression : envies A effacées', (select count(*) = 1 from public.cravings);
+insert into results select 'suppression : messages coach A effacés', (select count(*) = 1 from public.coach_messages);
+insert into results select 'suppression : appareils A effacés', (select count(*) = 1 from public.push_subscriptions);
 insert into results select 'suppression : abonnement A détaché', (select user_id is null from public.subscriptions where id = 'sub_a');
 insert into results select 'suppression : paiement A anonymisé', (select user_id is null from public.payments where id = 'in_a');
 

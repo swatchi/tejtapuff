@@ -29,7 +29,12 @@ export default async function CraquePage({ searchParams }: PageProps<"/app/craqu
             </li>
           ))}
         </ul>
-        <Link href="/app" className="btn btn-primary mt-8 w-full">
+        <Link href="/app/coach" className="mt-8 flex items-center gap-3 rounded-3xl border-2 border-encre bg-ciel p-4 font-bold">
+          <span aria-hidden className="text-2xl">💬</span>
+          <span className="flex-1">Ton coach t&apos;a écrit un message</span>
+          <span aria-hidden>→</span>
+        </Link>
+        <Link href="/app" className="btn btn-primary mt-4 w-full">
           Retour à l&apos;accueil
         </Link>
       </main>

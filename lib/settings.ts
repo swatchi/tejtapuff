@@ -2,7 +2,13 @@ import "server-only";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
 /** Réglages techniques stockés en base (serveur uniquement, jamais lisibles depuis le navigateur). */
-export type SettingKey = "stripe_webhook_secret" | "stripe_webhook_id" | "stripe_portal_configuration";
+export type SettingKey =
+  | "stripe_webhook_secret"
+  | "stripe_webhook_id"
+  | "stripe_portal_configuration"
+  | "vapid_public_key"
+  | "vapid_private_key"
+  | "hourly_last_run";
 
 const cache = new Map<SettingKey, { value: string | null; at: number }>();
 

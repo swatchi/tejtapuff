@@ -41,7 +41,7 @@ export function PlanClient() {
 
   useEffect(() => {
     const stored = readSession<StoredQuiz>(KEYS.quiz);
-    if (!stored) {
+    if (!stored || typeof stored.answers?.perMonth !== "number") {
       router.replace("/quiz");
       return;
     }
@@ -54,7 +54,7 @@ export function PlanClient() {
 
   const a = quiz.answers;
   const unit = getUnit(a.unit);
-  const c = costs(a.perWeek, a.unitPrice);
+  const c = costs(a.perMonth, a.unitPrice);
   const triggerPhrases = a.triggers.map((id) => TRIGGERS.find((t) => t.id === id)?.phrase).filter(Boolean) as string[];
   const reasonLabels = a.reasons.map((id) => REASONS.find((r) => r.id === id)?.label).filter(Boolean) as string[];
   const canPay = /\S+@\S+\.\S+/.test(email) && age18 && immediate && !loading;
@@ -122,7 +122,7 @@ export function PlanClient() {
               ))}
             </div>
             <p className="mt-3 text-xs text-gris">
-              Calculé avec tes réponses : {a.perWeek} {a.perWeek > 1 ? unit.plural : unit.singular} × {formatEuros(a.unitPrice)} par semaine.
+              Calculé avec tes réponses : {a.perMonth} {a.perMonth > 1 ? unit.plural : unit.singular} × {formatEuros(a.unitPrice)} par mois.
             </p>
           </div>
         </div>

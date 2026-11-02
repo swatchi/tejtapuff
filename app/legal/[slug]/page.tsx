@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { FIRST_WEEK, PRICE_SENTENCE, PRICING, WEEKLY } from "@/config/pricing";
-import { SITE } from "@/config/site";
+import { LIMITS, SITE } from "@/config/site";
 
 const PAGES = {
   "mentions-legales": { file: "mentions.md", title: "Mentions légales" },
@@ -37,6 +37,7 @@ const VARS: Record<string, string> = {
   COMPANY: SITE.company,
   DOMAIN: SITE.domain,
   MEDICAL: SITE.medicalDisclaimer,
+  COACH_LIMIT: String(LIMITS.coachMessagesPerDay),
 };
 
 export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) {

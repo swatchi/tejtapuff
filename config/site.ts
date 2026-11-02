@@ -22,8 +22,8 @@ export const SITE = {
  * quand elle existe vraiment dans l'app.
  */
 export const FEATURES = {
-  coach: false, // étape 3
-  pushNotifications: false, // étape 3
+  coach: true,
+  pushNotifications: true,
   /** Ne passe à true que lorsque content/testimonials.ts contient de vrais témoignages avec consentement écrit. */
   testimonials: false,
 } as const;

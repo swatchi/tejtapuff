@@ -10,16 +10,17 @@ export type VapeUnit = {
   /** "2 puffs", "4 pods"… */
   plural: string;
   singular: string;
-  defaultPerWeek: number;
+  /** Consommation par mois proposée par défaut */
+  defaultPerMonth: number;
   /** en euros */
   defaultPrice: number;
-  maxPerWeek: number;
+  maxPerMonth: number;
 };
 
 export const UNITS: VapeUnit[] = [
-  { id: "puff", label: "Puff", singular: "puff", plural: "puffs", defaultPerWeek: 2, defaultPrice: 10, maxPerWeek: 30 },
-  { id: "pod", label: "Pod / cartouche", singular: "pod", plural: "pods", defaultPerWeek: 4, defaultPrice: 4, maxPerWeek: 40 },
-  { id: "flacon", label: "Flacon e-liquide", singular: "flacon", plural: "flacons", defaultPerWeek: 2, defaultPrice: 6, maxPerWeek: 30 },
+  { id: "puff", label: "Puff", singular: "puff", plural: "puffs", defaultPerMonth: 8, defaultPrice: 10, maxPerMonth: 90 },
+  { id: "pod", label: "Pod / cartouche", singular: "pod", plural: "pods", defaultPerMonth: 16, defaultPrice: 4, maxPerMonth: 150 },
+  { id: "flacon", label: "Flacon e-liquide", singular: "flacon", plural: "flacons", defaultPerMonth: 8, defaultPrice: 6, maxPerMonth: 90 },
 ];
 
 export function getUnit(id: string | undefined | null): VapeUnit {

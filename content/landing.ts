@@ -14,11 +14,11 @@ export const HERO = {
 export const CALCULATOR = {
   title: "Ton ticket de caisse",
   unitQuestion: "Tu vapes quoi ?",
-  perWeekQuestion: "Combien par semaine ?",
+  perMonthQuestion: "Combien par mois ?",
   priceQuestion: "Prix à l'unité",
   lines: {
-    week: "1 semaine",
     month: "1 mois",
+    halfYear: "6 mois",
     year: "1 an",
   },
   totalLabel: "Cramé en 1 an",

@@ -5,13 +5,15 @@ import { euros, PRICE_SENTENCE } from "@/config/pricing";
 import { SITE } from "@/config/site";
 import { formatDayFr } from "@/lib/dates";
 import { ACTIVE_STATUSES, requireMember } from "@/lib/member";
-import { openPaymentUpdate, resumeSubscription } from "../actions";
+import { NotificationsCard } from "@/components/app/NotificationsCard";
+import { openPaymentUpdate, resumeSubscription, updateNotificationPrefs } from "../actions";
 
 export const metadata: Metadata = { title: "Compte", robots: { index: false } };
 
 export default async function ComptePage({ searchParams }: PageProps<"/app/compte">) {
   const m = await requireMember({ allowInactive: true });
-  const { resilie, repris } = await searchParams;
+  const { resilie, repris, prefs } = await searchParams;
+  const p = m.profile;
   const sub = m.subscription;
   const active = Boolean(sub && ACTIVE_STATUSES.includes(sub.status));
 
@@ -73,6 +75,44 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
           </>
         )}
       </section>
+
+      {/* ───────── Notifications ───────── */}
+      {active && (
+        <section id="notifications" className="mt-6 space-y-3">
+          <NotificationsCard />
+          <form action={updateNotificationPrefs} className="rounded-3xl border-2 border-encre bg-white p-4">
+            <p className="font-extrabold">Ce que tu reçois</p>
+            <label className="mt-3 flex items-start gap-3">
+              <input type="checkbox" name="notify_morning" defaultChecked={p?.notify_morning ?? true} className="mt-0.5 h-6 w-6 accent-encre" />
+              <span>
+                Ma mission le matin, à{" "}
+                <select name="morning_hour" defaultValue={p?.morning_hour ?? 9} className="rounded-lg border-2 border-encre bg-white px-1 font-bold">
+                  {[6, 7, 8, 9, 10, 11, 12].map((h) => (
+                    <option key={h} value={h}>
+                      {h}h
+                    </option>
+                  ))}
+                </select>
+              </span>
+            </label>
+            <label className="mt-3 flex items-start gap-3">
+              <input type="checkbox" name="notify_risk" defaultChecked={p?.notify_risk ?? true} className="mt-0.5 h-6 w-6 accent-encre" />
+              <span>Un petit mot aux moments où l&apos;envie frappe (2 max par jour)</span>
+            </label>
+            <label className="mt-3 flex items-start gap-3">
+              <input type="checkbox" name="notify_email" defaultChecked={p?.notify_email ?? true} className="mt-0.5 h-6 w-6 accent-encre" />
+              <span>Ma mission par email si les notifications ne sont pas activées</span>
+            </label>
+            <SubmitButton className="btn btn-light mt-4 min-h-11 w-full py-1.5 text-base" pendingLabel="Enregistrement…">
+              Enregistrer
+            </SubmitButton>
+            {prefs && <p className="mt-2 text-sm font-semibold">Enregistré ✅</p>}
+            <p className="mt-3 text-xs text-gris">
+              Les emails importants (rappel avant prélèvement, résiliation) sont toujours envoyés.
+            </p>
+          </form>
+        </section>
+      )}
 
       {/* ───────── App ───────── */}
       <section className="mt-6 space-y-3">

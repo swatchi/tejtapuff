@@ -14,11 +14,17 @@ export type Profile = {
   stripe_customer_id: string | null;
   vape_unit: string | null;
   units_per_week: number | null;
+  units_per_month: number | null;
   unit_price_cents: number | null;
+  vaping_since: string | null;
   triggers: string[];
   reasons: string[];
   start_date: string | null;
   timezone: string;
+  notify_morning: boolean;
+  notify_risk: boolean;
+  notify_email: boolean;
+  morning_hour: number;
 };
 
 export type Subscription = {
@@ -42,7 +48,9 @@ export const getMember = cache(async () => {
   const [profileRes, subsRes, attemptsRes, completionsRes, cravingsRes] = await Promise.all([
     db
       .from("profiles")
-      .select("user_id, email, stripe_customer_id, vape_unit, units_per_week, unit_price_cents, triggers, reasons, start_date, timezone")
+      .select(
+        "user_id, email, stripe_customer_id, vape_unit, units_per_week, units_per_month, unit_price_cents, vaping_since, triggers, reasons, start_date, timezone, notify_morning, notify_risk, notify_email, morning_hour",
+      )
       .eq("user_id", user.id)
       .maybeSingle(),
     db

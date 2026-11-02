@@ -24,4 +24,4 @@ export const KEYS = {
   quiz: "ttp_quiz",
 } as const;
 
-export type CalcState = { unit: string; perWeek: number; unitPrice: number };
+export type CalcState = { unit: string; perMonth: number; unitPrice: number };

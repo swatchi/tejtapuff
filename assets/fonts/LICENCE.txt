@@ -1,0 +1,2 @@
+Bricolage Grotesque — © The Bricolage Grotesque Project Authors, licence SIL Open Font License 1.1 (https://openfontlicense.org).
+Utilisée pour générer la carte à partager (ImageResponse ne lit que les .ttf/.otf/.woff).

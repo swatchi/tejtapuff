@@ -22,10 +22,10 @@ test("de la vidéo TikTok jusqu'au paiement, les UTM suivent", async ({ page }) 
   await page.goto("/?utm_source=tiktok&utm_content=video_042");
   await page.getByRole("button", { name: "Refuser" }).click();
 
-  // Calculateur : 5 pods × 4 € = 20 €/semaine → 1 040 €/an
+  // Calculateur : 17 pods × 4 € = 68 €/mois → 816 €/an
   await page.getByRole("button", { name: "Pod / cartouche" }).click();
   await page.getByRole("button", { name: "Plus" }).first().click();
-  await expect(page.getByText("1 040 €").first()).toBeVisible();
+  await expect(page.getByText("816 €").first()).toBeVisible();
 
   await page.getByRole("link", { name: /Je fais mon plan/ }).click();
   const start = page.getByRole("button", { name: /C'est parti/ });

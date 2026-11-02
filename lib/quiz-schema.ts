@@ -8,7 +8,7 @@ const ids = <T extends readonly { id: string }[]>(list: T) =>
 export const quizAnswersSchema = z
   .object({
     unit: z.enum(ids(UNITS)),
-    perWeek: z.number().min(0.5).max(60),
+    perMonth: z.number().min(1).max(200),
     unitPrice: z.number().min(0.5).max(100),
     since: z.enum(ids(SINCE)),
     triggers: z.array(z.enum(ids(TRIGGERS))).min(1).max(TRIGGERS.length),

@@ -6,7 +6,9 @@
 
 Les présentes conditions s'appliquent à l'abonnement au programme **TejTaPuff**, vendu par {{COMPANY}} (voir les [mentions légales](/legal/mentions-legales)) à des consommateurs, via le site {{DOMAIN}}.
 
-TejTaPuff est une application web d'accompagnement pour arrêter la puff et la cigarette électronique : programme de 21 jours, missions quotidiennes puis hebdomadaires, exercices « SOS envie », suivi des économies et de la progression.
+TejTaPuff est une application web d'accompagnement pour arrêter la puff et la cigarette électronique : programme de 21 jours, missions quotidiennes puis hebdomadaires, exercices « SOS envie », coach conversationnel basé sur une intelligence artificielle (dans la limite de {{COACH_LIMIT}} messages par jour), notifications et rappels, suivi des économies et de la progression.
+
+Le coach est une intelligence artificielle : il ne remplace ni un professionnel de santé ni un service d'urgence.
 
 **{{MEDICAL}}** Aucun résultat n'est garanti. Pour les substituts nicotiniques ou tout problème de santé, demande conseil à un pharmacien ou à un médecin.
 

@@ -7,6 +7,7 @@ const ITEMS = [
   { href: "/app", label: "Accueil", icon: "⌂" },
   { href: "/app/mission", label: "Mission", icon: "✓" },
   { href: "/app/sos", label: "SOS", icon: "SOS", sos: true },
+  { href: "/app/coach", label: "Coach", icon: "💬" },
   { href: "/app/compte", label: "Compte", icon: "☺" },
 ];
 
@@ -17,7 +18,7 @@ export function BottomNav() {
       aria-label="Navigation de l'app"
       className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-encre bg-creme pb-[env(safe-area-inset-bottom)]"
     >
-      <ul className="mx-auto grid max-w-xl grid-cols-4">
+      <ul className="mx-auto grid max-w-xl grid-cols-5">
         {ITEMS.map((item) => {
           const active = item.href === "/app" ? pathname === "/app" : pathname.startsWith(item.href);
           return (

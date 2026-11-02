@@ -12,6 +12,10 @@ export type EmailContent = {
   highlight?: string;
   cta?: { label: string; url: string };
   footnote?: string;
+  /** Image (ex. la carte à partager) */
+  image?: { src: string; alt: string; width: number; height: number };
+  /** Lien de désinscription (obligatoire pour les emails de relance) */
+  unsubscribeUrl?: string;
 };
 
 export function loginCodeEmail(code: string): EmailContent {
@@ -86,5 +90,73 @@ export function paymentFailedEmail(p: { accountUrl: string; amount: string }): E
       "Si tu préfères arrêter, tu peux aussi résilier depuis ton compte.",
     ],
     cta: { label: "Mettre à jour mon paiement", url: p.accountUrl },
+  };
+}
+
+export function day7Email(p: { appUrl: string; streakDays: number; saved: string; cravings: number; missions: number }): EmailContent {
+  const clean = p.streakDays >= 7;
+  return {
+    subject: clean ? "1 semaine sans puff 💪" : "Ta 1re semaine de programme",
+    preheader: clean ? `${p.saved} économisés, et ce n'est que le début.` : "On fait le point, sans jugement.",
+    heading: clean ? "Une semaine. Respect." : "Une semaine de programme",
+    paragraphs: [
+      clean
+        ? "7 jours sans puff, c'est souvent la semaine la plus dure. Tu l'as passée."
+        : "Ta 1re semaine de programme est passée. Avec ses hauts et ses bas, et c'est normal.",
+      `Tes chiffres : ${p.saved} économisés, ${p.cravings} envie${p.cravings > 1 ? "s" : ""} battue${p.cravings > 1 ? "s" : ""} avec le bouton SOS, ${p.missions} mission${p.missions > 1 ? "s" : ""} faite${p.missions > 1 ? "s" : ""}.`,
+      "Cette semaine, on passe à « Je tiens » : remplacer les automatismes et apprendre à laisser passer une envie.",
+    ],
+    cta: { label: "Voir ma mission du jour", url: p.appUrl },
+  };
+}
+
+export function day21Email(p: { shareUrl: string; cardUrl: string; streakDays: number; saved: string; cravings: number }): EmailContent {
+  return {
+    subject: "21 jours. Tu l'as fait. 🎉",
+    preheader: `${p.saved} économisés, ${p.cravings} envies battues.`,
+    heading: "21 jours de programme ✅",
+    paragraphs: [
+      "Tu as tenu le programme jusqu'au bout. Prends deux secondes pour mesurer le chemin.",
+      `Tes chiffres : ${p.saved} économisés, ${p.cravings} envie${p.cravings > 1 ? "s" : ""} battue${p.cravings > 1 ? "s" : ""}, série en cours : ${p.streakDays} jour${p.streakDays > 1 ? "s" : ""}.`,
+      "La suite : une mission par semaine pour rester clean sur la durée. Et ta carte est prête si tu veux la partager en story.",
+    ],
+    image: { src: p.cardUrl, alt: "Ta carte TejTaPuff", width: 270, height: 480 },
+    cta: { label: "Partager ma carte", url: p.shareUrl },
+  };
+}
+
+export function quizFollowupEmail(p: {
+  resumeUrl: string;
+  unsubscribeUrl: string;
+  yearlyCost: string;
+  second: boolean;
+  priceSentence: string;
+}): EmailContent {
+  return {
+    subject: p.second ? "Dernier rappel : ton plan 21 jours" : "Ton plan 21 jours t'attend",
+    preheader: `D'après tes réponses, la puff te coûte ${p.yearlyCost} par an.`,
+    heading: p.second ? "On ne te relancera plus après ça" : "Ton plan est prêt",
+    paragraphs: [
+      `Tu as fait le quiz : d'après tes réponses, la puff te coûte environ ${p.yearlyCost} par an.`,
+      "Ton plan 21 jours est prêt, construit sur tes moments à risque. Il ne reste qu'à commencer.",
+      p.priceSentence,
+    ],
+    cta: { label: "Reprendre là où j'en étais", url: p.resumeUrl },
+    footnote: "Tu reçois cet email parce que tu as coché la case de rappel à la fin du quiz.",
+    unsubscribeUrl: p.unsubscribeUrl,
+  };
+}
+
+export function morningEmail(p: { appUrl: string; day: number; missionTitle: string; saved: string; consolidation: boolean }): EmailContent {
+  return {
+    subject: p.consolidation ? `Ta mission de la semaine : ${p.missionTitle}` : `Jour ${p.day} : ${p.missionTitle}`,
+    preheader: p.saved ? `${p.saved} économisés jusqu'ici.` : "Ta mission du jour t'attend.",
+    heading: p.consolidation ? "Ta mission de la semaine" : `Jour ${p.day} sur 21`,
+    paragraphs: [
+      `Mission : « ${p.missionTitle} ». 5 minutes max.`,
+      p.saved ? `Déjà ${p.saved} économisés. Continue comme ça.` : "Un jour après l'autre.",
+    ],
+    cta: { label: "Voir ma mission", url: p.appUrl },
+    footnote: "Tu peux couper ces emails dans l'app : Compte → Notifications.",
   };
 }

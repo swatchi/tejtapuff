@@ -18,6 +18,8 @@ Le responsable du traitement de tes données est **{{COMPANY}}** (voir les [ment
 | Réponses du quiz : type de produit, quantité, prix, ancienneté, moments à risque, raisons d'arrêter, date de démarrage | Construire et personnaliser ton plan, calculer tes économies | Ton **consentement explicite** (art. 9.2.a RGPD) | Tant que ton compte existe. Sans paiement : 30 jours [À COMPLÉTER : durée à confirmer] |
 | Email | Créer ton compte, te connecter (code), emails liés à ton abonnement | Exécution du contrat | Tant que ton compte existe |
 | Progression dans l'app (missions, envies surmontées, rechutes) | Faire fonctionner le programme | Exécution du contrat + consentement | Tant que ton compte existe |
+| Messages échangés avec le coach IA | Te répondre en tenant compte de la conversation | Exécution du contrat + consentement | Tant que ton compte existe |
+| Abonnement aux notifications (adresse technique fournie par ton navigateur, fuseau horaire) et préférences de notification | T'envoyer ta mission et des rappels aux moments que tu as choisis | Exécution du contrat | Jusqu'à ce que tu les coupes ou supprimes ton compte |
 | Données de paiement (gérées par Stripe), historique des factures | Encaisser l'abonnement, comptabilité | Exécution du contrat, obligation légale | Factures : 10 ans (obligation comptable) |
 | Preuves de consentement (texte coché, date) | Prouver ton accord en cas de litige | Intérêt légitime | Tant que ton compte existe |
 | Mesure d'audience interne (identifiant aléatoire, pages vues, vidéo d'origine, type de navigateur, sans adresse IP) | Savoir quelles vidéos amènent du monde, améliorer le site | Intérêt légitime (mesure d'audience exemptée de consentement) | 13 mois |
@@ -32,7 +34,8 @@ Uniquement {{COMPANY}} et nos prestataires techniques, qui agissent sur nos inst
 - **Supabase** : base de données et connexion (hébergement dans l'Union européenne).
 - **Stripe** : paiement.
 - **Resend** : envoi des emails.
-- [À COMPLÉTER à l'étape 3 : **Anthropic**, fournisseur de l'IA du coach. Les messages que tu envoies au coach, et le résumé de ton plan nécessaire pour te répondre, lui sont transmis ; ni ton nom ni ton email.]
+- **Anthropic** : fournisseur de l'intelligence artificielle du coach. Lui sont transmis : les messages que tu écris au coach et un résumé de ton programme (ce que tu vapais, tes moments à risque, tes raisons, ta progression), jamais ton nom ni ton email. D'après les conditions d'utilisation de son API, Anthropic n'utilise pas ces données pour entraîner ses modèles.
+- **Services de notification** de ton navigateur (Apple, Google, Mozilla…) : ils acheminent les notifications que tu as activées.
 - **TikTok** et **Meta** : uniquement si tu acceptes les cookies publicitaires.
 
 Certains de ces prestataires sont situés aux États-Unis. Les transferts sont encadrés par les clauses contractuelles types de la Commission européenne et/ou le Data Privacy Framework.
