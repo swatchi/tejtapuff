@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+/* ───────── Identité TejTaPuff : jaune soleil, encre, et des touches de couleur ───────── */
+@theme {
+  --color-jaune: #ffd43b;
+  --color-jaune-pale: #fff3c4;
+  --color-creme: #fffbef;
+  --color-encre: #1b1a17;
+  --color-gris: #5c584f;
+  --color-trait: #e9e1c8;
+  --color-braise: #ff5b3a;
+  --color-menthe: #1fb57a;
+  --color-ciel: #8fd3ff;
+  --color-rose: #ffb8cb;
+
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  --shadow-dur: 3px 4px 0 0 var(--color-encre);
+  --shadow-dur-lg: 5px 6px 0 0 var(--color-encre);
+  --shadow-braise: 3px 4px 0 0 var(--color-braise);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-creme);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-creme);
+  color: var(--color-encre);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-jaune);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-encre);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 36rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3.5rem;
+    padding: 0.875rem 1.5rem;
+    border: 2px solid var(--color-encre);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.12s ease,
+      background-color 0.15s ease;
+  }
+  .btn:active:not(:disabled) {
+    transform: translate(2px, 3px);
+    box-shadow: 1px 1px 0 0 var(--color-encre);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-encre);
+    color: #fff;
+    box-shadow: var(--shadow-braise);
+  }
+  .btn-primary:active:not(:disabled) {
+    box-shadow: 1px 1px 0 0 var(--color-braise);
+  }
+  .btn-light {
+    background: #fff;
+    color: var(--color-encre);
+    box-shadow: var(--shadow-dur);
+  }
+
+  .card {
+    background: #fff;
+    border: 2px solid var(--color-encre);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-dur);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.625rem 1rem;
+    border: 2px solid var(--color-encre);
+    border-radius: 999px;
+    background: #fff;
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.12s ease,
+      transform 0.12s ease;
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-checked="true"] {
+    background: var(--color-jaune);
+    box-shadow: 2px 3px 0 0 var(--color-encre);
+  }
+  .chip:active {
+    transform: scale(0.97);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-encre);
+    border-radius: 1rem;
+    background: #fff;
+    font-size: 1.125rem; /* ≥16px : pas de zoom auto sur iPhone */
+  }
+  .field:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-jaune);
+  }
+
+  /* Ticket de caisse : bord inférieur en dents de scie */
+  .receipt {
+    --z: 9px;
+    background: #fff;
+    padding-bottom: calc(var(--z) + 1rem);
+    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%;
+  }
+
+  .prose-legal {
+    line-height: 1.6;
+  }
+  .prose-legal h1 {
+    font-size: 2rem;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 1.25rem;
+  }
+  .prose-legal h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 2rem 0 0.75rem;
+  }
+  .prose-legal h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 1.25rem 0 0.5rem;
+  }
+  .prose-legal p,
+  .prose-legal ul,
+  .prose-legal ol {
+    margin: 0 0 0.9rem;
+  }
+  .prose-legal ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .prose-legal ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
+  .prose-legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-legal table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    display: block;
+    overflow-x: auto;
+  }
+  .prose-legal th,
+  .prose-legal td {
+    border: 1px solid var(--color-trait);
+    padding: 0.5rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .prose-legal mark {
+    background: var(--color-jaune);
+    padding: 0 0.2em;
+    border-radius: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
