@@ -56,7 +56,7 @@ alter table public.profiles
   add column notify_morning boolean not null default true,  -- mission du jour, le matin
   add column notify_risk boolean not null default true,     -- moments à risque du quiz
   add column notify_email boolean not null default true,    -- email du matin si pas de notifications sur le téléphone
-  add column morning_hour smallint not null default 9 check (morning_hour between 5 and 12);
+  add column morning_hour smallint not null default 9 check (morning_hour between 0 and 23);
 
 -- ─────────────────────────────────────────────────────────────
 -- RLS
