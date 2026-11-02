@@ -17,6 +17,8 @@ Web app par abonnement pour arrêter la puff en 21 jours. Éditeur : Nombre One 
 | L'écran « Ton plan 21 jours » | `content/plan.ts` |
 | Les cases à cocher (consentements) | `content/consents.ts` (change la `version` si tu modifies un texte) |
 | Les emails | `content/emails.ts` |
+| Les 21 missions + 8 missions de consolidation | `content/missions.ts` |
+| Les exercices SOS et l'écran « J'ai craqué » | `content/sos.ts` |
 | Les pages légales | `content/legal/*.md` (les `[À COMPLÉTER]` sont surlignés en jaune sur le site) |
 | Les vrais témoignages | `content/testimonials.ts` + `FEATURES.testimonials` dans `config/site.ts` |
 | Les couleurs / la typo | `app/globals.css` |
@@ -55,6 +57,22 @@ Web app par abonnement pour arrêter la puff en 21 jours. Éditeur : Nombre One 
 
 ---
 
+## Étape 2 : l'app (à faire en plus de l'étape 1)
+
+1. **Supabase → SQL Editor** : colle `supabase/migrations/0002_app.sql` → Run.
+2. **Vercel → Environment Variables** : ajoute `CRON_SECRET` (une longue chaîne aléatoire, ex. `openssl rand -hex 32`). La tâche horaire (rappel 48 h, email de bienvenue de secours) est déclarée dans `vercel.json`.
+3. **Stripe → Settings → Billing → Customer portal** : active « mettre à jour le moyen de paiement » puis **Save** (en mode test aussi). C'est ce qu'ouvre le bouton « Mettre à jour ma carte ».
+
+### Tester l'étape 2
+- **Programme** : connecte-toi → « J'ai tej ma dernière puff » → le compteur et les € démarrent. Fais la mission 1, un SOS (« C'est passé »), puis « J'ai craqué » : le compteur repart, les envies et missions restent.
+- **Résiliation (3 clics)** : Compte → Résilier mon abonnement → Confirmer. Vérifie dans Stripe que l'abonnement est « annulé à la fin de la période » et que l'email de confirmation arrive.
+- **Rappel 48 h** : dans Supabase, table `subscriptions`, mets `first_renewal_at` de ton abonnement de test à « maintenant + 24 h », puis lance la tâche à la main :
+  `curl -H "Authorization: Bearer TON_CRON_SECRET" https://TON-DOMAINE/api/cron/hourly` → l'email de rappel arrive (une seule fois).
+- **Suppression** : Compte → Supprimer mon compte et mes données → vérifie que les lignes ont disparu dans Supabase et que le client a disparu dans Stripe.
+- **Installation** : depuis Safari (iPhone) ou Chrome (Android), Compte → Installer l'app.
+
+---
+
 ## Tester le paiement (mode test Stripe)
 
 | Carte | Résultat |
@@ -86,7 +104,8 @@ Sans `RESEND_API_KEY` en local, les emails (dont le code de connexion) s'affiche
 ```bash
 npm run typecheck   # types
 npm run lint        # lint
-npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (33 contrôles)
+npm run test:unit   # calculs du programme (jour X/21, compteur, économies, missions)
+npm run test:rls    # sécurité de la base : Postgres jetable + vérification RLS (46 contrôles)
 npm run test:e2e    # parcours landing → quiz → paywall sur écran mobile
 ```
 

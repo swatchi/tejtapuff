@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { DeletedNotice } from "@/components/DeletedNotice";
 import { Calculator } from "@/components/Calculator";
 import { Burst, Squiggle } from "@/components/Doodles";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -16,6 +18,9 @@ export default function Home() {
 
   return (
     <>
+      <Suspense>
+        <DeletedNotice />
+      </Suspense>
       <SiteHeader />
       <main>
         {/* ───────── Hero + calculateur ───────── */}

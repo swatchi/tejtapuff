@@ -23,6 +23,12 @@ insert into public.consents (user_id, kind, version, text) values
   ('11111111-1111-1111-1111-111111111111', 'age_18', 'v', 't'),
   ('22222222-2222-2222-2222-222222222222', 'age_18', 'v', 't');
 insert into public.funnel_events (visitor_id, type) values (gen_random_uuid(), 'visit');
+insert into public.quit_attempts (user_id) values
+  ('11111111-1111-1111-1111-111111111111'), ('22222222-2222-2222-2222-222222222222');
+insert into public.mission_completions (user_id, mission_id) values
+  ('11111111-1111-1111-1111-111111111111', 'j1'), ('22222222-2222-2222-2222-222222222222', 'j1');
+insert into public.cravings (user_id, exercise, outcome) values
+  ('11111111-1111-1111-1111-111111111111', 'defi5', 'overcome'), ('22222222-2222-2222-2222-222222222222', 'defi5', 'overcome');
 insert into public.stripe_events (id, type) values ('evt_1', 'x');
 insert into public.email_log (user_id, kind) values ('11111111-1111-1111-1111-111111111111', 'login_code');
 
@@ -37,6 +43,9 @@ insert into results select 'A voit 1 quiz', (select count(*) = 1 from public.qui
 insert into results select 'A voit 1 abonnement', (select count(*) = 1 and bool_and(id = 'sub_a') from public.subscriptions);
 insert into results select 'A voit 1 paiement', (select count(*) = 1 from public.payments);
 insert into results select 'A voit 1 consentement', (select count(*) = 1 from public.consents);
+insert into results select 'A voit 1 tentative', (select count(*) = 1 from public.quit_attempts);
+insert into results select 'A voit 1 mission faite', (select count(*) = 1 from public.mission_completions);
+insert into results select 'A voit 1 envie', (select count(*) = 1 from public.cravings);
 insert into results select 'A ne voit pas funnel_events', (select count(*) = 0 from public.funnel_events);
 insert into results select 'A ne voit pas stripe_events', (select count(*) = 0 from public.stripe_events);
 insert into results select 'A ne voit pas email_log', (select count(*) = 0 from public.email_log);
@@ -49,6 +58,7 @@ insert into results select 'anon ne voit aucun profil', (select count(*) = 0 fro
 insert into results select 'anon ne voit aucun quiz', (select count(*) = 0 from public.quiz_answers);
 insert into results select 'anon ne voit aucun abonnement', (select count(*) = 0 from public.subscriptions);
 insert into results select 'anon ne voit aucun paiement', (select count(*) = 0 from public.payments);
+insert into results select 'anon ne voit aucune tentative', (select count(*) = 0 from public.quit_attempts);
 reset role;
 
 -- ── Écritures interdites depuis le navigateur ──
@@ -65,6 +75,8 @@ end $$;
 insert into results select 'A ne peut pas modifier son abonnement', pg_temp.write_denied($$update public.subscriptions set status = 'active'$$, 'authenticated');
 insert into results select 'A ne peut pas créer de paiement', pg_temp.write_denied($$insert into public.payments (id, amount_cents, status) values ('in_x', 0, 'paid')$$, 'authenticated');
 insert into results select 'A ne peut pas modifier son profil', pg_temp.write_denied($$update public.profiles set email = 'x@x.fr'$$, 'authenticated');
+insert into results select 'A ne peut pas valider une mission lui-même', pg_temp.write_denied($$insert into public.mission_completions (user_id, mission_id) values ('11111111-1111-1111-1111-111111111111', 'j2')$$, 'authenticated');
+insert into results select 'A ne peut pas trafiquer son compteur', pg_temp.write_denied($$update public.quit_attempts set started_at = now() - interval '1 year'$$, 'authenticated');
 insert into results select 'anon ne peut pas écrire dans funnel_events', pg_temp.write_denied($$insert into public.funnel_events (visitor_id, type) values (gen_random_uuid(), 'visit')$$, 'anon');
 insert into results select 'anon ne peut pas créer de quiz', pg_temp.write_denied($$insert into public.quiz_answers (answers, consent_version) values ('{}', 'v')$$, 'anon');
 
@@ -94,6 +106,10 @@ delete from auth.users where id = '11111111-1111-1111-1111-111111111111';
 insert into results select 'suppression : profil A effacé', (select count(*) = 0 from public.profiles where email = 'a@test.fr');
 insert into results select 'suppression : quiz A effacé', (select count(*) = 0 from public.quiz_answers where id = 'aaaaaaaa-0000-0000-0000-000000000001');
 insert into results select 'suppression : consentements A effacés', (select count(*) = 1 from public.consents);
+insert into results select 'suppression : tentatives A effacées', (select count(*) = 1 from public.quit_attempts);
+insert into results select 'suppression : missions A effacées', (select count(*) = 1 from public.mission_completions);
+insert into results select 'suppression : envies A effacées', (select count(*) = 1 from public.cravings);
+insert into results select 'suppression : abonnement A détaché', (select user_id is null from public.subscriptions where id = 'sub_a');
 insert into results select 'suppression : paiement A anonymisé', (select user_id is null from public.payments where id = 'in_a');
 
 select case when ok then '✅' else '❌' end as " ", check_name as "vérification" from results order by ok, check_name;

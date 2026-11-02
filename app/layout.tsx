@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     description: "Fais le calcul. Puis arrête en 21 jours.",
   },
   formatDetection: { telephone: false },
+  appleWebApp: { capable: true, title: "TejTaPuff", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

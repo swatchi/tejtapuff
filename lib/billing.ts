@@ -3,6 +3,7 @@ import type Stripe from "stripe";
 import type { QuizAnswers } from "@/lib/quiz-schema";
 import { customerId, periodEnd, stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase/admin";
+import { sendPaymentFailed, sendWelcome } from "@/lib/lifecycle-emails";
 import { recordFunnelEvent } from "@/lib/track";
 
 const WEEK_SECONDS = 7 * 24 * 3600;
@@ -146,6 +147,12 @@ export async function provisionFromCheckout(
   const sub = session.subscription;
   if (sub && typeof sub !== "string") {
     const created = await syncSubscription(sub, userId);
+    try {
+      await sendWelcome({ userId, email, firstRenewalAt: iso(sub.start_date + WEEK_SECONDS) });
+    } catch (err) {
+      // Pas bloquant : la tâche horaire réessaiera.
+      console.error("[welcome email]", err);
+    }
     if (created && session.metadata?.visitor_id) {
       await recordFunnelEvent({
         visitorId: session.metadata.visitor_id,
@@ -190,6 +197,17 @@ export async function recordInvoice(invoice: Stripe.Invoice, failed = false): Pr
     { onConflict: "id" },
   );
   if (error) throw new Error(`payments upsert : ${error.message}`);
+
+  if (failed && userId && invoice.id) {
+    const { data: profile } = await db.from("profiles").select("email").eq("user_id", userId).maybeSingle();
+    if (profile?.email) {
+      try {
+        await sendPaymentFailed({ invoiceId: invoice.id, userId, email: profile.email, amountCents: invoice.amount_due });
+      } catch (err) {
+        console.error("[payment failed email]", err);
+      }
+    }
+  }
 
   if (subscriptionId) {
     await syncSubscription(await stripe().subscriptions.retrieve(subscriptionId));
