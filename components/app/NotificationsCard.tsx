@@ -109,7 +109,7 @@ export function NotificationsCard({ compact = false }: { compact?: boolean }) {
   if (compact && (state === "on" || state === "unsupported")) return null;
 
   return (
-    <div className="rounded-3xl border-2 border-encre bg-white p-4">
+    <div className="card p-4">
       <p className="font-extrabold">🔔 Notifications</p>
       {state === "needs-install" && (
         <p className="mt-1 text-[0.95rem]">

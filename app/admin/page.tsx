@@ -107,7 +107,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                   <span
                     tabIndex={0}
                     className="group relative mt-1.5 block h-5 rounded-r-[4px] bg-[#f3eedd] outline-none focus-visible:ring-2 focus-visible:ring-encre"
-                    aria-label={`${f.label} : ${nf.format(f.visitors)} visiteurs, ${pct(f.fromStart)} des visites`}
+                    aria-label={`${f.label} : ${nf.format(f.visitors)} visiteurs, ${pct(f.fromStart)} des visites`}
                   >
                     <span className="block h-5 rounded-r-[4px] transition-opacity group-hover:opacity-80" style={{ width: `${width}%`, background: BAR }} />
                     <Tip>
@@ -157,7 +157,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
             </div>
           )}
           <p className="mt-3 text-xs text-gris">
-            Exemple de lien en bio : <code className="rounded bg-creme px-1">https://ton-site/?utm_source=tiktok&amp;utm_content=video_042</code>
+            Exemple de lien en bio : <code className="rounded bg-creme px-1">https://ton-site/?utm_source=tiktok&amp;utm_content=video_042</code>
           </p>
         </Card>
 
@@ -263,14 +263,14 @@ function WeeklyBars({ weeks }: { weeks: AdminData["revenue"]["weeks"] }) {
   return (
     <div>
       <p className="text-sm">
-        Semaine en cours : <strong>{eur(last.cents)}</strong> ({nf.format(last.count)} paiement{last.count > 1 ? "s" : ""})
+        Semaine en cours : <strong>{eur(last.cents)}</strong> ({nf.format(last.count)} paiement{last.count > 1 ? "s" : ""})
       </p>
       <div className="mt-6 flex h-44 items-end gap-2 border-b border-trait" role="list" aria-label="Revenu par semaine">
         {weeks.map((w) => (
           <div key={w.week} role="listitem" className="flex h-full flex-1 flex-col justify-end">
             <span
               tabIndex={0}
-              aria-label={`Semaine du ${label(w.week)} : ${eur(w.cents)}, ${w.count} paiements`}
+              aria-label={`Semaine du ${label(w.week)} : ${eur(w.cents)}, ${w.count} paiements`}
               className="group relative mx-auto flex h-full w-full max-w-6 items-end outline-none focus-visible:ring-2 focus-visible:ring-encre"
             >
               <span

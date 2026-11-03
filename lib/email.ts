@@ -49,9 +49,9 @@ ${p}${highlight}${image}${cta}${foot}${unsubscribe}
     "",
     ...c.paragraphs,
     c.highlight ? `\n${c.highlight}\n` : "",
-    c.cta ? `${c.cta.label} : ${c.cta.url}` : "",
+    c.cta ? `${c.cta.label} : ${c.cta.url}` : "",
     c.footnote ?? "",
-    c.unsubscribeUrl ? `Ne plus recevoir ces rappels : ${c.unsubscribeUrl}` : "",
+    c.unsubscribeUrl ? `Ne plus recevoir ces rappels : ${c.unsubscribeUrl}` : "",
     "",
     `${SITE.medicalDisclaimer} ${SITE.company} · ${SITE.domain}`,
   ]
@@ -69,9 +69,9 @@ export async function sendEmail(to: string, content: EmailContent): Promise<void
   const { html, text } = renderEmail(content);
   if (!configured.resend()) {
     if (process.env.NODE_ENV === "production") {
-      throw new Error("RESEND_API_KEY manquante : impossible d'envoyer des emails en production.");
+      throw new Error("RESEND_API_KEY manquante : impossible d'envoyer des emails en production.");
     }
-    console.info(`\n📧 [email non envoyé — RESEND_API_KEY absente]\nÀ : ${to}\nSujet : ${content.subject}\n${text}\n`);
+    console.info(`\n📧 [email non envoyé — RESEND_API_KEY absente]\nÀ : ${to}\nSujet : ${content.subject}\n${text}\n`);
     return;
   }
   resend ??= new Resend(process.env.RESEND_API_KEY);
@@ -82,5 +82,5 @@ export async function sendEmail(to: string, content: EmailContent): Promise<void
     html,
     text,
   });
-  if (error) throw new Error(`Resend : ${error.message}`);
+  if (error) throw new Error(`Resend : ${error.message}`);
 }

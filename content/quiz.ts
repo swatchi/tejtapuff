@@ -37,13 +37,13 @@ export const SINCE = [
 ] as const;
 
 export const QUESTIONS = {
-  unit: { title: "Tu vapes quoi, surtout ?", hint: "Si tu mélanges, prends ce que tu achètes le plus." },
-  perMonth: { title: "T'en finis combien par mois ?", hint: "Une moyenne, pas besoin d'être précis." },
-  price: { title: "Tu les payes combien, en moyenne ?", hint: "Prix à l'unité, en euros." },
-  since: { title: "Tu vapes depuis quand ?" },
-  triggers: { title: "Quand l'envie frappe le plus ?", hint: "Choisis tout ce qui te parle." },
-  reasons: { title: "Pourquoi tu veux lâcher la puff ?", hint: "Choisis tout ce qui te parle. On te les rappellera dans les moments durs." },
-  startDate: { title: "Tu commences quand ?", hint: "Le jour 1 de ton plan. Tu pourras le décaler." },
+  unit: { title: "Tu vapes quoi, surtout ?", hint: "Si tu mélanges, prends ce que tu achètes le plus." },
+  perMonth: { title: "T'en finis combien par mois ?", hint: "Une moyenne, pas besoin d'être précis." },
+  price: { title: "Tu les payes combien, en moyenne ?", hint: "Prix à l'unité, en euros." },
+  since: { title: "Tu vapes depuis quand ?" },
+  triggers: { title: "Quand l'envie frappe le plus ?", hint: "Choisis tout ce qui te parle." },
+  reasons: { title: "Pourquoi tu veux lâcher la puff ?", hint: "Choisis tout ce qui te parle. On te les rappellera dans les moments durs." },
+  startDate: { title: "Tu commences quand ?", hint: "Le jour 1 de ton plan. Tu pourras le décaler." },
 };
 
 export const START_OPTIONS = [

@@ -44,7 +44,7 @@ export async function GET(req: Request) {
           label: "La variable CRON_SECRET n'est pas active sur le site",
           ok: false,
           detail:
-            "Vercel → Settings → Environment Variables : vérifie que CRON_SECRET existe et que « Production » est coché. Puis Deployments → dernier déploiement → ⋯ → Redeploy (les variables ne comptent qu'après un redéploiement).",
+            "Vercel → Settings → Environment Variables : vérifie que CRON_SECRET existe et que « Production » est coché. Puis Deployments → dernier déploiement → ⋯ → Redeploy (les variables ne comptent qu'après un redéploiement).",
         },
       ],
       "",
@@ -65,7 +65,7 @@ export async function GET(req: Request) {
   checks.push({
     label: "Variables Vercel",
     ok: missing.length === 0,
-    detail: missing.length ? `Manquantes : ${missing.join(", ")}` : "Toutes présentes",
+    detail: missing.length ? `Manquantes : ${missing.join(", ")}` : "Toutes présentes",
   });
   checks.push({ label: "Adresse du site", ok: !base.includes("localhost"), detail: base });
 
@@ -94,7 +94,7 @@ export async function GET(req: Request) {
     checks.push({
       label: "Base Supabase",
       ok: absent.length === 0,
-      detail: absent.length ? `Tables introuvables : ${absent.join(", ")} (colle le SQL manquant dans Supabase)` : "Toutes les tables sont là",
+      detail: absent.length ? `Tables introuvables : ${absent.join(", ")} (colle le SQL manquant dans Supabase)` : "Toutes les tables sont là",
     });
   } catch (err) {
     checks.push({ label: "Base Supabase", ok: false, detail: msg(err) });
@@ -106,7 +106,7 @@ export async function GET(req: Request) {
     checks.push({
       label: "Mode Stripe",
       ok: sk.startsWith("sk_test") ? true : "warn",
-      detail: sk.startsWith("sk_test") ? "TEST (aucun vrai paiement)" : "LIVE : les paiements sont réels",
+      detail: sk.startsWith("sk_test") ? "TEST (aucun vrai paiement)" : "LIVE : les paiements sont réels",
     });
     try {
       const { priceId, couponId } = await ensureCatalog();
@@ -118,7 +118,7 @@ export async function GET(req: Request) {
     // Webhook
     const url = `${base}/api/webhooks/stripe`;
     try {
-      if (base.includes("localhost")) throw new Error("Impossible en local : lance cette page sur le site en ligne.");
+      if (base.includes("localhost")) throw new Error("Impossible en local : lance cette page sur le site en ligne.");
       if (process.env.STRIPE_WEBHOOK_SECRET) {
         checks.push({ label: "Webhook Stripe", ok: true, detail: "Secret fourni dans les variables Vercel (configuration manuelle)" });
       } else {
@@ -150,7 +150,7 @@ export async function GET(req: Request) {
           checks.push({
             label: "Webhook Stripe",
             ok: true,
-            detail: `Créé → ${url}${stale.length ? ` (ancienne adresse supprimée : ${stale.map((e) => e.url).join(", ")})` : ""}`,
+            detail: `Créé → ${url}${stale.length ? ` (ancienne adresse supprimée : ${stale.map((e) => e.url).join(", ")})` : ""}`,
           });
         }
       }
@@ -171,7 +171,7 @@ export async function GET(req: Request) {
         const conf = await s.billingPortal.configurations.create({
           name: "TejTaPuff",
           business_profile: {
-            headline: "TejTaPuff : gère ton moyen de paiement",
+            headline: "TejTaPuff : gère ton moyen de paiement",
             privacy_policy_url: `${base}/legal/confidentialite`,
             terms_of_service_url: `${base}/legal/cgv`,
           },
@@ -198,7 +198,7 @@ export async function GET(req: Request) {
       await ai.models.retrieve(COACH_MODEL);
       checks.push({ label: "Coach IA", ok: true, detail: `Clé valide, modèle ${COACH_MODEL}` });
     } catch (err) {
-      checks.push({ label: "Coach IA", ok: false, detail: `Clé ANTHROPIC_API_KEY refusée : ${msg(err)}` });
+      checks.push({ label: "Coach IA", ok: false, detail: `Clé ANTHROPIC_API_KEY refusée : ${msg(err)}` });
     }
   }
 
@@ -217,10 +217,10 @@ export async function GET(req: Request) {
       ok: ageH !== null && ageH < 2 ? true : false,
       detail:
         ageH === null
-          ? "Jamais lancée : colle supabase/cron.sql dans Supabase (SQL Editor) en y mettant l'adresse du site et le CRON_SECRET."
+          ? "Jamais lancée : colle supabase/cron.sql dans Supabase (SQL Editor) en y mettant l'adresse du site et le CRON_SECRET."
           : ageH < 2
             ? `Dernier passage il y a ${Math.round(ageH * 60)} min`
-            : `Dernier passage il y a ${Math.round(ageH)} h : vérifie la tâche dans Supabase (Integrations → Cron).`,
+            : `Dernier passage il y a ${Math.round(ageH)} h : vérifie la tâche dans Supabase (Integrations → Cron).`,
     });
   } catch (err) {
     checks.push({ label: "Tâche horaire", ok: false, detail: msg(err) });
@@ -239,15 +239,15 @@ export async function GET(req: Request) {
         checks.push({
           label: "Emails (Resend)",
           ok: "warn",
-          detail: "Adresse de test resend.dev : les emails ne partent que vers l'adresse de ton compte Resend. Vérifie ton domaine pour envoyer à tout le monde.",
+          detail: "Adresse de test resend.dev : les emails ne partent que vers l'adresse de ton compte Resend. Vérifie ton domaine pour envoyer à tout le monde.",
         });
       } else {
         checks.push({
           label: "Emails (Resend)",
           ok: match?.status === "verified",
           detail: match
-            ? `Domaine ${match.name} : ${match.status === "verified" ? "vérifié" : `pas encore vérifié (${match.status})`}`
-            : `Le domaine de EMAIL_FROM (${fromDomain || "?"}) n'est pas dans Resend. Domaines : ${domains.map((d) => `${d.name} (${d.status})`).join(", ") || "aucun"}`,
+            ? `Domaine ${match.name} : ${match.status === "verified" ? "vérifié" : `pas encore vérifié (${match.status})`}`
+            : `Le domaine de EMAIL_FROM (${fromDomain || "?"}) n'est pas dans Resend. Domaines : ${domains.map((d) => `${d.name} (${d.status})`).join(", ") || "aucun"}`,
         });
       }
     } catch (err) {

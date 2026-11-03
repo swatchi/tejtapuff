@@ -35,7 +35,7 @@ export function InstallGuide() {
         <Box title={`1. Sors de ${p.inApp === "tiktok" ? "TikTok" : p.inApp === "instagram" ? "Instagram" : "Facebook"}`}>
           <p>
             L&apos;installation ne marche pas depuis le navigateur de {p.inApp === "tiktok" ? "TikTok" : "l'app"}. Appuie sur{" "}
-            <strong>•••</strong> en haut à droite, puis <strong>« Ouvrir dans le navigateur »</strong>
+            <strong>•••</strong> en haut à droite, puis <strong>« Ouvrir dans le navigateur »</strong>
             {p.ios ? " (Safari)" : " (Chrome)"}.
           </p>
           <button
@@ -62,14 +62,14 @@ export function InstallGuide() {
               Appuie sur <strong>Partager</strong> (le carré avec une flèche ↑).
             </li>
             <li>
-              Choisis <strong>« Sur l&apos;écran d&apos;accueil »</strong>.
+              Choisis <strong>« Sur l&apos;écran d&apos;accueil »</strong>.
             </li>
             <li>
               Appuie sur <strong>Ajouter</strong>.
             </li>
           </ol>
           <p className="mt-3 text-sm text-gris">
-            Ouvre ensuite TejTaPuff depuis ton écran d&apos;accueil : tu te reconnectes une fois avec un code, et c&apos;est
+            Ouvre ensuite TejTaPuff depuis ton écran d&apos;accueil : tu te reconnectes une fois avec un code, et c&apos;est
             bon. C&apos;est aussi indispensable pour recevoir les notifications sur iPhone.
           </p>
         </Box>
@@ -91,7 +91,7 @@ export function InstallGuide() {
               Appuie sur <strong>⋮</strong> en haut à droite.
             </li>
             <li>
-              Choisis <strong>« Installer l&apos;application »</strong> ou <strong>« Ajouter à l&apos;écran d&apos;accueil »</strong>.
+              Choisis <strong>« Installer l&apos;application »</strong> ou <strong>« Ajouter à l&apos;écran d&apos;accueil »</strong>.
             </li>
           </ol>
         </Box>

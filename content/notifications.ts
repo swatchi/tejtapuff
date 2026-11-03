@@ -25,10 +25,10 @@ export const RISK_MESSAGES: Record<Exclude<TriggerId, "reveil">, { title: string
   ],
   ennui: [
     { title: "Petit creux de l'aprèm", body: "L'ennui, c'est le piège classique. Pioche un truc dans ta liste anti-ennui." },
-    { title: "Tu tournes en rond ?", body: "5 minutes de marche ou un message à quelqu'un. Le SOS est là si besoin." },
+    { title: "Tu tournes en rond ?", body: "5 minutes de marche ou un message à quelqu'un. Le SOS est là si besoin." },
   ],
   stress: [
-    { title: "Grosse journée ?", body: "Si le stress monte : 1 minute de respiration 4-6 avant toute décision." },
+    { title: "Grosse journée ?", body: "Si le stress monte : 1 minute de respiration 4-6 avant toute décision." },
     { title: "Respire 🌬️", body: "Inspire 4 secondes, expire 6. Trois fois. Ton cerveau te remerciera." },
   ],
   soiree: [
@@ -36,7 +36,7 @@ export const RISK_MESSAGES: Record<Exclude<TriggerId, "reveil">, { title: string
     { title: "Ce soir, tu gères", body: "Garde quelque chose dans les mains, et sors prendre l'air si ça tire." },
   ],
   potes: [
-    { title: "Soirée avec les potes ?", body: "Ta phrase est prête : « Non merci, j'ai arrêté ». Et le SOS est dans ta poche." },
+    { title: "Soirée avec les potes ?", body: "Ta phrase est prête : « Non merci, j'ai arrêté ». Et le SOS est dans ta poche." },
     { title: "Ce soir, reste avec ton plan", body: "Reste près de ceux qui ne vapent pas, et pars quand tu veux. Tu n'as rien à prouver." },
   ],
 };
@@ -44,19 +44,19 @@ export const RISK_MESSAGES: Record<Exclude<TriggerId, "reveil">, { title: string
 export function morningPush(p: { day: number; missionTitle: string; saved: string; consolidation: boolean }) {
   return {
     title: p.consolidation ? "Ta mission de la semaine 🎯" : `Jour ${p.day} 🌞`,
-    body: p.saved ? `${p.missionTitle} · ${p.saved} économisés` : `Ta mission : ${p.missionTitle}`,
+    body: p.saved ? `${p.missionTitle} · ${p.saved} économisés` : `Ta mission : ${p.missionTitle}`,
   };
 }
 
 export const START_DAY_PUSH = {
   title: "C'est le jour J 💪",
-  body: "Quand tu as tej ta dernière puff, appuie sur « Je démarre ». On est là.",
+  body: "Quand tu as tej ta dernière puff, appuie sur « Je démarre ». On est là.",
 };
 
 export function reminderPush(p: { weekly: string; date: string }) {
   return {
     title: "Rappel abonnement",
-    body: `Le ${p.date}, ton abonnement passe à ${p.weekly}/semaine. Pour arrêter : Compte → Résilier.`,
+    body: `Le ${p.date}, ton abonnement passe à ${p.weekly}/semaine. Pour arrêter : Compte → Résilier.`,
   };
 }
 

@@ -16,7 +16,7 @@ export function SiteFooter() {
             href={tis.phoneHref}
             className="mt-4 inline-flex items-center gap-3 rounded-full bg-jaune px-5 py-3 font-bold text-encre"
           >
-            <span className="text-xl">📞 {tis.phone}</span>
+            <span className="whitespace-nowrap text-xl">📞 {tis.phone}</span>
             <span className="text-sm font-semibold">{tis.label} · {tis.note}</span>
           </a>
         </div>

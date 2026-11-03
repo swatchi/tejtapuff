@@ -71,7 +71,7 @@ export function QuizClient() {
     // Reprise du brouillon (sessionStorage n'existe pas côté serveur)
     const saved = readSession<Draft>(KEYS.quizDraft);
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDraft(saved && typeof saved.perMonth === "number" ? saved : initialDraft());
+    setDraft(saved && typeof saved.perMonth === "number" ? { ...saved, unit: getUnit(saved.unit).id } : initialDraft());
   }, []);
 
   useEffect(() => {
@@ -202,7 +202,10 @@ export function QuizClient() {
                     });
                   }}
                 >
-                  {u.label}
+                  <span className="flex flex-col items-start leading-tight">
+                    <span>{u.label}</span>
+                    <span className="text-sm font-medium opacity-70">{u.detail}</span>
+                  </span>
                 </button>
               ))}
             </div>

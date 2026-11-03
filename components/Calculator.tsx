@@ -60,6 +60,7 @@ export function Calculator() {
                 className="chip min-h-11 px-3.5 py-2 text-[0.95rem]"
                 aria-pressed={u.id === unitId}
                 onClick={() => pickUnit(u.id)}
+                title={u.detail}
               >
                 {u.label}
               </button>

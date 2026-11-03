@@ -28,6 +28,7 @@
 html {
   background: var(--color-creme);
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -37,6 +38,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -104,6 +106,61 @@ body {
     border: 2px solid var(--color-encre);
     border-radius: 1.5rem;
     box-shadow: var(--shadow-dur);
+  }
+
+  /* Tuile de chiffre (tableau de bord, plan) : même taille, même ombre partout */
+  .tile {
+    background: #fff;
+    border: 2px solid var(--color-encre);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-dur);
+    padding: 1rem;
+  }
+  .tile-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-gris);
+  }
+  .tile-value {
+    margin-top: 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Titre de section (h2) : une seule taille sur tout le site */
+  .h-section {
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Case à cocher : même taille partout, ne rétrécit jamais à côté d'un long texte */
+  .check {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+    accent-color: var(--color-encre);
+  }
+
+  /* Barre de progression */
+  .bar {
+    height: 0.75rem;
+    border: 2px solid var(--color-encre);
+    border-radius: 999px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    background: var(--color-menthe);
+    border-right: 2px solid var(--color-encre);
   }
 
   .chip {
@@ -209,6 +266,32 @@ body {
     background: var(--color-jaune);
     padding: 0 0.2em;
     border-radius: 4px;
+  }
+}
+
+/* Confettis des badges */
+@keyframes ttp-tombe {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--dx, 0), 105vh, 0) rotate(var(--r, 540deg));
+    opacity: 0.9;
+  }
+}
+@keyframes ttp-pop {
+  0% {
+    transform: translateY(20px) scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-4px) scale(1.03);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
   }
 }
 

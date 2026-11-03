@@ -62,6 +62,27 @@ export async function completeMission(formData: FormData) {
   refresh();
 }
 
+/** Objectif d'achat : ce que la personne s'offre avec l'argent gardé. */
+export async function saveGoal(formData: FormData) {
+  const m = await activeMember();
+  const label = String(formData.get("label") ?? "").trim().replace(/\s+/g, " ").slice(0, 60);
+  const euros = parseFloat(String(formData.get("euros") ?? "").replace(",", ".").replace(/[^\d.]/g, ""));
+  if (!label || !Number.isFinite(euros) || euros < 1 || euros > 10000) return;
+  const { error } = await supabaseAdmin()
+    .from("profiles")
+    .update({ goal_label: label, goal_cents: Math.round(euros * 100) })
+    .eq("user_id", m.user.id);
+  if (error) throw new Error(error.message);
+  refresh();
+}
+
+export async function clearGoal() {
+  const m = await activeMember();
+  const { error } = await supabaseAdmin().from("profiles").update({ goal_label: null, goal_cents: null }).eq("user_id", m.user.id);
+  if (error) throw new Error(error.message);
+  refresh();
+}
+
 /** Fin d'un exercice SOS : envie surmontée. */
 export async function logCravingOvercome(exerciseId: string) {
   if (!SOS.exercises.some((e) => e.id === exerciseId)) return { ok: false };
@@ -169,7 +190,7 @@ export async function deleteAccount() {
     await db.from("email_log").delete().eq("email", email);
   }
   const { error } = await db.auth.admin.deleteUser(userId);
-  if (error) throw new Error(`Suppression du compte : ${error.message}`);
+  if (error) throw new Error(`Suppression du compte : ${error.message}`);
 
   const supabase = await supabaseServer();
   await supabase.auth.signOut({ scope: "local" }).catch(() => {});

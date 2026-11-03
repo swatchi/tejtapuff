@@ -1,13 +1,15 @@
 /**
- * Ce que les gens vapent. Les prix par défaut sont juste un point de départ :
- * l'utilisateur met SON prix dans le calculateur et le quiz.
+ * Ce que les gens vapent : la puff (jetable) ou la cigarette électronique (rechargeable).
+ * Les valeurs par défaut sont juste un point de départ : l'utilisateur met SA consommation et SON prix.
  */
-export type UnitId = "puff" | "pod" | "flacon";
+export type UnitId = "puff" | "ecig";
 
 export type VapeUnit = {
   id: UnitId;
   label: string;
-  /** "2 puffs", "4 pods"… */
+  /** Précision affichée sous le bouton */
+  detail: string;
+  /** "2 puffs", "8 recharges"… */
   plural: string;
   singular: string;
   /** Consommation par mois proposée par défaut */
@@ -18,11 +20,23 @@ export type VapeUnit = {
 };
 
 export const UNITS: VapeUnit[] = [
-  { id: "puff", label: "Puff", singular: "puff", plural: "puffs", defaultPerMonth: 8, defaultPrice: 10, maxPerMonth: 90 },
-  { id: "pod", label: "Pod / cartouche", singular: "pod", plural: "pods", defaultPerMonth: 16, defaultPrice: 4, maxPerMonth: 150 },
-  { id: "flacon", label: "Flacon e-liquide", singular: "flacon", plural: "flacons", defaultPerMonth: 8, defaultPrice: 6, maxPerMonth: 90 },
+  { id: "puff", label: "Puff", detail: "jetable", singular: "puff", plural: "puffs", defaultPerMonth: 2, defaultPrice: 10, maxPerMonth: 90 },
+  {
+    id: "ecig",
+    label: "Cigarette électronique",
+    detail: "pods, cartouches ou flacons",
+    singular: "recharge",
+    plural: "recharges",
+    defaultPerMonth: 8,
+    defaultPrice: 5,
+    maxPerMonth: 150,
+  },
 ];
 
+/** Anciennes valeurs (avant la fusion pod / flacon) → cigarette électronique. */
+const ANCIENS: Record<string, UnitId> = { pod: "ecig", flacon: "ecig" };
+
 export function getUnit(id: string | undefined | null): VapeUnit {
-  return UNITS.find((u) => u.id === id) ?? UNITS[0];
+  const vrai = id && ANCIENS[id] ? ANCIENS[id] : id;
+  return UNITS.find((u) => u.id === vrai) ?? UNITS[0];
 }

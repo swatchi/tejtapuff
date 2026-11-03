@@ -122,7 +122,7 @@ export function PlanClient() {
               ))}
             </div>
             <p className="mt-3 text-xs text-gris">
-              Calculé avec tes réponses : {a.perMonth} {a.perMonth > 1 ? unit.plural : unit.singular} × {formatEuros(a.unitPrice)} par mois.
+              Calculé avec tes réponses : {a.perMonth} {a.perMonth > 1 ? unit.plural : unit.singular} × {formatEuros(a.unitPrice)} par mois.
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@ export function PlanClient() {
           <h2 className="pr-20 text-3xl font-extrabold leading-none">{PAYWALL.title}</h2>
           <p className="mt-4 text-lg font-bold leading-snug">{PRICE_SENTENCE}</p>
           <p className="mt-1 text-[0.95rem] text-encre/70">
-            Aujourd&apos;hui : {FIRST_WEEK}. Ensuite : {WEEKLY} tous les 7 jours, avec un rappel 48 h avant le 1er prélèvement à {WEEKLY}.
+            Aujourd&apos;hui : {FIRST_WEEK}. Ensuite : {WEEKLY} tous les 7 jours, avec un rappel 48 h avant le 1er prélèvement à {WEEKLY}.
           </p>
 
           {params.get("annule") && (
@@ -220,6 +220,16 @@ export function PlanClient() {
             <button type="submit" className="btn btn-primary w-full text-lg" disabled={!canPay}>
               {loading ? "Redirection vers le paiement…" : `${PAYWALL.cta} pour ${FIRST_WEEK} →`}
             </button>
+            <ul className="grid grid-cols-3 gap-2 text-center text-xs font-semibold leading-tight">
+              {PAYWALL.garanties.map((g) => (
+                <li key={g.texte} className="rounded-2xl border-2 border-encre/15 bg-creme px-2 py-2.5">
+                  <span aria-hidden className="block text-lg">
+                    {g.emoji}
+                  </span>
+                  {g.texte}
+                </li>
+              ))}
+            </ul>
             <p className="text-center text-sm text-gris">
               🔒 {PAYWALL.secure} {SITE.medicalDisclaimer}
             </p>

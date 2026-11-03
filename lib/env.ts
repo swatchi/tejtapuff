@@ -11,7 +11,7 @@ export function requireEnv(name: string): string {
 
 export class MissingEnvError extends Error {
   constructor(public variable: string) {
-    super(`Variable d'environnement manquante : ${variable} (voir .env.example)`);
+    super(`Variable d'environnement manquante : ${variable} (voir .env.example)`);
   }
 }
 

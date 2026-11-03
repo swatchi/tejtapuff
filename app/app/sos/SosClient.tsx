@@ -23,8 +23,8 @@ export function SosClient({ reasons, savedLabel, streakLabel }: { reasons: strin
               key={e.id}
               type="button"
               onClick={() => setStep({ kind: "exercise", id: e.id })}
-              className={`flex items-center justify-between rounded-3xl border-2 border-encre p-5 text-left shadow-[3px_4px_0_0_#1b1a17] ${
-                ["bg-ciel", "bg-jaune", "bg-rose"][i]
+              className={`card flex items-center justify-between p-5 text-left ${
+                ["bg-ciel", "bg-jaune", "bg-rose", "bg-[#c9f3e6]", "bg-[#ffd9c9]", "bg-[#e3d9ff]"][i % 6]
               }`}
             >
               <span className="text-xl font-extrabold">{e.title}</span>
@@ -50,7 +50,11 @@ export function SosClient({ reasons, savedLabel, streakLabel }: { reasons: strin
           {ex.id === "respiration" && "inhaleSeconds" in ex && (
             <Breathing inhale={ex.inhaleSeconds} exhale={ex.exhaleSeconds} cycles={ex.cycles} onDone={done} />
           )}
-          {ex.id === "defi5" && "seconds" in ex && <Countdown seconds={ex.seconds} actions={[...ex.actions]} onDone={done} />}
+          {(ex.id === "defi5" || ex.id === "bouge") && "seconds" in ex && (
+            <Countdown seconds={ex.seconds} actions={[...ex.actions]} onDone={done} />
+          )}
+          {ex.id === "sens" && "etapes" in ex && <Sens etapes={[...ex.etapes]} onDone={done} />}
+          {ex.id === "pote" && "message" in ex && <Pote message={ex.message} />}
           {ex.id === "raisons" && (
             <div className="space-y-3">
               {reasons.map((r) => (
@@ -108,7 +112,7 @@ export function SosClient({ reasons, savedLabel, streakLabel }: { reasons: strin
             {SOS.after.relapse}
           </Link>
         </div>
-        {error && <p className="mt-4 rounded-2xl border-2 border-braise bg-white p-3">Pas de réseau ? Réessaie dans un instant.</p>}
+        {error && <p className="mt-4 rounded-2xl border-2 border-braise bg-white p-3">Pas de réseau ? Réessaie dans un instant.</p>}
       </>
     );
   }
@@ -120,12 +124,66 @@ export function SosClient({ reasons, savedLabel, streakLabel }: { reasons: strin
       </p>
       <h1 className="mt-4 text-[2.4rem] font-extrabold leading-none">{SOS.after.overcomeMessage}</h1>
       <p className="mt-4 text-xl">
-        Envies battues : <strong className="tabular-nums">{step.total}</strong>
+        Envies battues : <strong className="tabular-nums">{step.total}</strong>
       </p>
       <Link href="/app" className="btn btn-primary mt-8 w-full">
         Retour à l&apos;accueil
       </Link>
     </>
+  );
+}
+
+function Sens({ etapes, onDone }: { etapes: string[]; onDone: () => void }) {
+  const [i, setI] = useState(0);
+  return (
+    <div>
+      <div className="flex gap-1.5" aria-hidden>
+        {etapes.map((_, k) => (
+          <span key={k} className={`h-2 flex-1 rounded-full border-2 border-encre ${k <= i ? "bg-menthe" : "bg-white"}`} />
+        ))}
+      </div>
+      <p className="mt-6 grid min-h-40 place-items-center rounded-3xl border-2 border-encre bg-[#c9f3e6] p-6 text-center text-2xl font-extrabold leading-snug">
+        <span>
+          <span className="block font-mono text-5xl">{etapes.length - i}</span>
+          {etapes[i]}
+        </span>
+      </p>
+      <button type="button" className="btn btn-primary mt-4 w-full" onClick={() => (i + 1 < etapes.length ? setI(i + 1) : onDone())}>
+        {i + 1 < etapes.length ? "Suivant →" : "Terminé"}
+      </button>
+    </div>
+  );
+}
+
+function Pote({ message }: { message: string }) {
+  const [copie, setCopie] = useState(false);
+  const partager = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ text: message });
+        return;
+      }
+    } catch {
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(message);
+      setCopie(true);
+    } catch {}
+  };
+  return (
+    <div>
+      <p className="rounded-3xl rounded-br-md border-2 border-encre bg-jaune p-5 text-lg font-semibold">{message}</p>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <a href={`sms:?&body=${encodeURIComponent(message)}`} className="btn btn-light">
+          SMS
+        </a>
+        <button type="button" className="btn btn-light" onClick={partager}>
+          {copie ? "Copié ✓" : "Autre appli"}
+        </button>
+      </div>
+      <p className="mt-3 text-sm text-encre/70">Pendant qu&apos;il ou elle répond, bois un verre d&apos;eau. L&apos;envie redescend toute seule.</p>
+    </div>
   );
 }
 

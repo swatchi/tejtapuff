@@ -49,7 +49,7 @@ export const getMember = cache(async () => {
   const user = await currentUser();
   if (!user) return null;
   const db = await supabaseServer();
-  const [profileRes, subsRes, attemptsRes, completionsRes, cravingsRes] = await Promise.all([
+  const [profileRes, subsRes, attemptsRes, completionsRes, cravingsRes, goalRes] = await Promise.all([
     db.from("profiles").select(PROFILE_COLUMNS).eq("user_id", user.id).maybeSingle(),
     db
       .from("subscriptions")
@@ -60,6 +60,7 @@ export const getMember = cache(async () => {
     db.from("quit_attempts").select("started_at, ended_at").eq("user_id", user.id).order("started_at"),
     db.from("mission_completions").select("mission_id").eq("user_id", user.id),
     db.from("cravings").select("id", { count: "exact", head: true }).eq("user_id", user.id).eq("outcome", "overcome"),
+    db.from("profiles").select("goal_label, goal_cents").eq("user_id", user.id).maybeSingle(),
   ]);
 
   let profileData = profileRes.data as Profile | null;
@@ -85,6 +86,13 @@ export const getMember = cache(async () => {
     day: programDay(stats.firstStart, now, timeZone),
     completed: new Set((completionsRes.data ?? []).map((c: { mission_id: string }) => c.mission_id)),
     cravingsOvercome: cravingsRes.count ?? 0,
+    /** null = migration 0006 pas encore lancée (la carte objectif est alors masquée) */
+    goal: goalRes.error
+      ? null
+      : {
+          label: (goalRes.data as { goal_label: string | null } | null)?.goal_label ?? null,
+          cents: (goalRes.data as { goal_cents: number | null } | null)?.goal_cents ?? null,
+        },
     timeZone,
     now,
   };

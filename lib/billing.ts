@@ -17,7 +17,7 @@ export function normalizeEmail(email: string) {
 /** Id Supabase du compte lié à cet email, ou null. Sans effet de bord. */
 export async function userIdByEmail(email: string): Promise<string | null> {
   const { data, error } = await supabaseAdmin().rpc("user_id_by_email", { p_email: normalizeEmail(email) });
-  if (error) throw new Error(`user_id_by_email : ${error.message}`);
+  if (error) throw new Error(`user_id_by_email : ${error.message}`);
   return (data as string | null) ?? null;
 }
 
@@ -29,7 +29,7 @@ async function findOrCreateUser(email: string): Promise<string> {
   // Course possible entre le webhook et la page /merci : l'autre a créé le compte entre-temps.
   const again = await userIdByEmail(email);
   if (again) return again;
-  throw new Error(`Création du compte impossible : ${error?.message}`);
+  throw new Error(`Création du compte impossible : ${error?.message}`);
 }
 
 /** Abonnement « en cours » pour cet email (pour éviter un double abonnement). */
@@ -83,12 +83,12 @@ export async function syncSubscription(sub: Stripe.Subscription, knownUserId?: s
       { onConflict: "id", ignoreDuplicates: true },
     )
     .select("id");
-  if (insertError) throw new Error(`subscriptions insert : ${insertError.message}`);
+  if (insertError) throw new Error(`subscriptions insert : ${insertError.message}`);
 
   const created = Boolean(inserted?.length);
   if (!created) {
     const { error } = await db.from("subscriptions").update(row).eq("id", sub.id);
-    if (error) throw new Error(`subscriptions update : ${error.message}`);
+    if (error) throw new Error(`subscriptions update : ${error.message}`);
   }
   return created;
 }
@@ -150,7 +150,7 @@ export async function provisionFromCheckout(
     delete profile.units_per_month;
     ({ error: profileError } = await db.from("profiles").upsert(profile, { onConflict: "user_id" }));
   }
-  if (profileError) throw new Error(`profiles upsert : ${profileError.message}`);
+  if (profileError) throw new Error(`profiles upsert : ${profileError.message}`);
 
   const sub = session.subscription;
   if (sub && typeof sub !== "string") {
@@ -204,7 +204,7 @@ export async function recordInvoice(invoice: Stripe.Invoice, failed = false): Pr
     },
     { onConflict: "id" },
   );
-  if (error) throw new Error(`payments upsert : ${error.message}`);
+  if (error) throw new Error(`payments upsert : ${error.message}`);
 
   if (failed && userId && invoice.id) {
     const { data: profile } = await db.from("profiles").select("email").eq("user_id", userId).maybeSingle();

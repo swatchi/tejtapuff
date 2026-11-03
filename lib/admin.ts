@@ -78,7 +78,7 @@ export async function loadAdminData(period: PeriodKey) {
       db.from("payments").select("amount_cents, status, paid_at, subscription_id, billing_reason").eq("status", "paid").order("paid_at").range(a, b),
     ),
   ]);
-  if (statsRes.error) throw new Error(`Statistiques : ${statsRes.error.message} (as-tu lancé supabase/migrations/0005_admin.sql ?)`);
+  if (statsRes.error) throw new Error(`Statistiques : ${statsRes.error.message} (as-tu lancé supabase/migrations/0005_admin.sql ?)`);
   const stats = (statsRes.data ?? []) as StatRow[];
 
   // ───────── Parcours ─────────

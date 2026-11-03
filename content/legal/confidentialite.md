@@ -1,13 +1,13 @@
 # Politique de confidentialité
 
-*Dernière mise à jour : [À COMPLÉTER : date]*
+*Dernière mise à jour : [À COMPLÉTER : date]*
 
-Le responsable du traitement de tes données est **{{COMPANY}}** (voir les [mentions légales](/legal/mentions-legales)). Contact : [À COMPLÉTER : email de contact].
+Le responsable du traitement de tes données est **{{COMPANY}}** (voir les [mentions légales](/legal/mentions-legales)). Contact : [À COMPLÉTER : email de contact].
 
 ## En bref
 
 - On collecte le minimum pour faire fonctionner ton programme.
-- Tes réponses au quiz (ta consommation, tes habitudes) sont des **données sensibles** : on ne les utilise qu'avec ton accord explicite, et seulement pour ton plan.
+- Tes réponses au quiz (ta consommation, tes habitudes) sont des **données sensibles** : on ne les utilise qu'avec ton accord explicite, et seulement pour ton plan.
 - On ne vend aucune donnée. Jamais.
 - Tu peux **supprimer ton compte et toutes tes données en un clic** depuis l'app.
 
@@ -15,12 +15,12 @@ Le responsable du traitement de tes données est **{{COMPANY}}** (voir les [ment
 
 | Données | Pourquoi | Base légale | Durée |
 |---|---|---|---|
-| Réponses du quiz : type de produit, quantité, prix, ancienneté, moments à risque, raisons d'arrêter, date de démarrage | Construire et personnaliser ton plan, calculer tes économies | Ton **consentement explicite** (art. 9.2.a RGPD) | Tant que ton compte existe. Sans paiement : 30 jours [À COMPLÉTER : durée à confirmer] |
+| Réponses du quiz : type de produit, quantité, prix, ancienneté, moments à risque, raisons d'arrêter, date de démarrage | Construire et personnaliser ton plan, calculer tes économies | Ton **consentement explicite** (art. 9.2.a RGPD) | Tant que ton compte existe. Sans paiement : 30 jours [À COMPLÉTER : durée à confirmer] |
 | Email | Créer ton compte, te connecter (code), emails liés à ton abonnement | Exécution du contrat | Tant que ton compte existe |
 | Progression dans l'app (missions, envies surmontées, rechutes) | Faire fonctionner le programme | Exécution du contrat + consentement | Tant que ton compte existe |
 | Messages échangés avec le coach IA | Te répondre en tenant compte de la conversation | Exécution du contrat + consentement | Tant que ton compte existe |
 | Abonnement aux notifications (adresse technique fournie par ton navigateur, fuseau horaire) et préférences de notification | T'envoyer ta mission et des rappels aux moments que tu as choisis | Exécution du contrat | Jusqu'à ce que tu les coupes ou supprimes ton compte |
-| Données de paiement (gérées par Stripe), historique des factures | Encaisser l'abonnement, comptabilité | Exécution du contrat, obligation légale | Factures : 10 ans (obligation comptable) |
+| Données de paiement (gérées par Stripe), historique des factures | Encaisser l'abonnement, comptabilité | Exécution du contrat, obligation légale | Factures : 10 ans (obligation comptable) |
 | Preuves de consentement (texte coché, date) | Prouver ton accord en cas de litige | Intérêt légitime | Tant que ton compte existe |
 | Mesure d'audience interne (identifiant aléatoire, pages vues, vidéo d'origine, type de navigateur, sans adresse IP) | Savoir quelles vidéos amènent du monde, améliorer le site | Intérêt légitime (mesure d'audience exemptée de consentement) | 13 mois |
 | Pixels TikTok et Meta | Mesurer l'efficacité de nos publicités | Ton **consentement** (bandeau cookies) | Voir la [politique cookies](/legal/cookies) |
@@ -28,21 +28,21 @@ Le responsable du traitement de tes données est **{{COMPANY}}** (voir les [ment
 
 ## Qui y a accès
 
-Uniquement {{COMPANY}} et nos prestataires techniques, qui agissent sur nos instructions :
+Uniquement {{COMPANY}} et nos prestataires techniques, qui agissent sur nos instructions :
 
-- **Vercel** : hébergement du site (serveurs en Europe).
-- **Supabase** : base de données et connexion (hébergement dans l'Union européenne).
-- **Stripe** : paiement.
-- **Resend** : envoi des emails.
-- **Anthropic** : fournisseur de l'intelligence artificielle du coach. Lui sont transmis : les messages que tu écris au coach et un résumé de ton programme (ce que tu vapais, tes moments à risque, tes raisons, ta progression), jamais ton nom ni ton email. D'après les conditions d'utilisation de son API, Anthropic n'utilise pas ces données pour entraîner ses modèles.
-- **Services de notification** de ton navigateur (Apple, Google, Mozilla…) : ils acheminent les notifications que tu as activées.
-- **TikTok** et **Meta** : uniquement si tu acceptes les cookies publicitaires.
+- **Vercel** : hébergement du site (serveurs en Europe).
+- **Supabase** : base de données et connexion (hébergement dans l'Union européenne).
+- **Stripe** : paiement.
+- **Resend** : envoi des emails.
+- **Anthropic** : fournisseur de l'intelligence artificielle du coach. Lui sont transmis : les messages que tu écris au coach et un résumé de ton programme (ce que tu vapais, tes moments à risque, tes raisons, ta progression), jamais ton nom ni ton email. D'après les conditions d'utilisation de son API, Anthropic n'utilise pas ces données pour entraîner ses modèles.
+- **Services de notification** de ton navigateur (Apple, Google, Mozilla…) : ils acheminent les notifications que tu as activées.
+- **TikTok** et **Meta** : uniquement si tu acceptes les cookies publicitaires.
 
 Certains de ces prestataires sont situés aux États-Unis. Les transferts sont encadrés par les clauses contractuelles types de la Commission européenne et/ou le Data Privacy Framework.
 
 ## Tes droits
 
-Tu peux à tout moment accéder à tes données, les rectifier, les supprimer, en demander une copie, t'opposer à un traitement ou **retirer ton consentement**. Le plus simple : supprime ton compte depuis l'app. Sinon, écris-nous à [À COMPLÉTER : email de contact].
+Tu peux à tout moment accéder à tes données, les rectifier, les supprimer, en demander une copie, t'opposer à un traitement ou **retirer ton consentement**. Le plus simple : supprime ton compte depuis l'app. Sinon, écris-nous à [À COMPLÉTER : email de contact].
 
 Tu peux aussi déposer une réclamation auprès de la **CNIL** ([cnil.fr](https://www.cnil.fr)).
 

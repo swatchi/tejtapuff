@@ -17,7 +17,7 @@ export default async function ReprendrePage({ searchParams }: PageProps<"/repren
   return (
     <main className="wrap pt-16">
       <h1 className="text-3xl font-extrabold">Lien expiré</h1>
-      <p className="mt-3 text-lg">Pas grave : refais le quiz, ça prend 2 minutes.</p>
+      <p className="mt-3 text-lg">Pas grave : refais le quiz, ça prend 2 minutes.</p>
       <Link href="/quiz" className="btn btn-primary mt-6 w-full">
         Refaire le quiz
       </Link>

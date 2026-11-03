@@ -1,6 +1,6 @@
 # Politique cookies
 
-On fait simple : **rien de publicitaire n'est chargé sans ton accord.**
+On fait simple : **rien de publicitaire n'est chargé sans ton accord.**
 
 ## Ce qui est toujours actif (nécessaire au fonctionnement)
 
@@ -14,9 +14,9 @@ On fait simple : **rien de publicitaire n'est chargé sans ton accord.**
 
 | Nom | À quoi ça sert | Durée |
 |---|---|---|
-| `ttp_vid`, `ttp_utm` (stockage local) | Identifiant aléatoire et vidéo d'origine, pour compter les visites et savoir quelles vidéos amènent du monde. Données utilisées uniquement par nous, en statistiques, jamais partagées, sans adresse IP. | 13 mois max (vidéo d'origine : 30 jours) |
+| `ttp_vid`, `ttp_utm` (stockage local) | Identifiant aléatoire et vidéo d'origine, pour compter les visites et savoir quelles vidéos amènent du monde. Données utilisées uniquement par nous, en statistiques, jamais partagées, sans adresse IP. | 13 mois max (vidéo d'origine : 30 jours) |
 
-## Publicité (uniquement si tu cliques sur « Accepter »)
+## Publicité (uniquement si tu cliques sur « Accepter »)
 
 | Service | À quoi ça sert | Plus d'infos |
 |---|---|---|
@@ -27,4 +27,4 @@ Ces outils déposent leurs propres cookies et peuvent transférer des données h
 
 ## Changer d'avis
 
-Tu peux modifier ton choix à tout moment via le lien **« Gérer les cookies »** en bas de chaque page. Ton choix est redemandé tous les 6 mois.
+Tu peux modifier ton choix à tout moment via le lien **« Gérer les cookies »** en bas de chaque page. Ton choix est redemandé tous les 6 mois.

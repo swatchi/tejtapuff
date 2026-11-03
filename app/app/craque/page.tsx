@@ -29,7 +29,7 @@ export default async function CraquePage({ searchParams }: PageProps<"/app/craqu
             </li>
           ))}
         </ul>
-        <Link href="/app/coach" className="mt-8 flex items-center gap-3 rounded-3xl border-2 border-encre bg-ciel p-4 font-bold">
+        <Link href="/app/coach" className="card mt-8 flex items-center gap-3 bg-ciel p-4 font-bold">
           <span aria-hidden className="text-2xl">💬</span>
           <span className="flex-1">Ton coach t&apos;a écrit un message</span>
           <span aria-hidden>→</span>
@@ -53,7 +53,7 @@ export default async function CraquePage({ searchParams }: PageProps<"/app/craqu
         </Link>
       </form>
       <p className="mt-8 text-sm text-encre/75">
-        Besoin d&apos;en parler à quelqu&apos;un ?{" "}
+        Besoin d&apos;en parler à quelqu&apos;un ?{" "}
         <a href={SITE.tabacInfoService.phoneHref} className="font-bold underline">
           {SITE.tabacInfoService.label} : {SITE.tabacInfoService.phone}
         </a>{" "}

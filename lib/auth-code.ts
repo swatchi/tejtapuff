@@ -22,7 +22,7 @@ export async function sendLoginCode(email: string): Promise<"sent" | "cooldown">
   if (count) return "cooldown";
 
   const { data, error } = await db.auth.admin.generateLink({ type: "magiclink", email });
-  if (error) throw new Error(`generateLink : ${error.message}`);
+  if (error) throw new Error(`generateLink : ${error.message}`);
   const code = data.properties?.email_otp;
   if (!code) throw new Error("Supabase n'a pas renvoyé de code");
 

@@ -37,33 +37,33 @@ export function buildCoachContext(m: Member): string {
   const perMonth = Math.round(unitsPerMonthOf(p));
   if (perMonth && p?.unit_price_cents) {
     lines.push(
-      `- Ce qu'elle vapait : ${unit.label.toLowerCase()}, environ ${perMonth} par mois à ${formatEuros(p.unit_price_cents / 100)} l'unité`,
+      `- Ce qu'elle vapait : ${unit.label.toLowerCase()}, environ ${perMonth} par mois à ${formatEuros(p.unit_price_cents / 100)} l'unité`,
     );
   }
-  if (p?.vaping_since) lines.push(`- Vape depuis : ${label(SINCE, p.vaping_since).toLowerCase()}`);
+  if (p?.vaping_since) lines.push(`- Vape depuis : ${label(SINCE, p.vaping_since).toLowerCase()}`);
   if (p?.triggers?.length) {
-    lines.push(`- Moments où l'envie frappe le plus : ${p.triggers.map((t) => TRIGGERS.find((x) => x.id === t)?.phrase ?? t).join(", ")}`);
+    lines.push(`- Moments où l'envie frappe le plus : ${p.triggers.map((t) => TRIGGERS.find((x) => x.id === t)?.phrase ?? t).join(", ")}`);
   }
-  if (p?.reasons?.length) lines.push(`- Ses raisons d'arrêter : ${p.reasons.map((r) => label(REASONS, r).toLowerCase()).join(", ")}`);
+  if (p?.reasons?.length) lines.push(`- Ses raisons d'arrêter : ${p.reasons.map((r) => label(REASONS, r).toLowerCase()).join(", ")}`);
 
   if (!m.stats.firstStart) {
-    lines.push("- Programme : pas encore démarré (elle n'a pas encore lancé son compteur)");
+    lines.push("- Programme : pas encore démarré (elle n'a pas encore lancé son compteur)");
   } else {
     const phase = PHASES.find((ph) => m.day >= ph.from && m.day <= ph.to);
     lines.push(
       m.day <= PROGRAM_DAYS
-        ? `- Programme : jour ${m.day} sur ${PROGRAM_DAYS}${phase ? ` (phase « ${phase.title} »)` : ""}`
-        : `- Programme : jour ${m.day}, les 21 jours sont passés, phase de consolidation (une mission par semaine)`,
+        ? `- Programme : jour ${m.day} sur ${PROGRAM_DAYS}${phase ? ` (phase « ${phase.title} »)` : ""}`
+        : `- Programme : jour ${m.day}, les 21 jours sont passés, phase de consolidation (une mission par semaine)`,
     );
     lines.push(
-      `- Sans puff depuis : ${streakDays(m.stats.currentMs)} jour(s) complet(s) (record : ${streakDays(m.stats.bestMs)} j), craquages déclarés : ${m.stats.relapses}`,
+      `- Sans puff depuis : ${streakDays(m.stats.currentMs)} jour(s) complet(s) (record : ${streakDays(m.stats.bestMs)} j), craquages déclarés : ${m.stats.relapses}`,
     );
     const saved = savedEuros(m.stats.totalMs, unitsPerWeekOf(p), p?.unit_price_cents ?? 0);
-    if (saved > 0) lines.push(`- Argent économisé depuis le début : ${formatEuros(saved)}`);
-    lines.push(`- Envies surmontées avec le bouton SOS : ${m.cravingsOvercome}`);
+    if (saved > 0) lines.push(`- Argent économisé depuis le début : ${formatEuros(saved)}`);
+    lines.push(`- Envies surmontées avec le bouton SOS : ${m.cravingsOvercome}`);
     const slot = currentMission(m.day, m.completed, MISSIONS.map((x) => x.id), CONSOLIDATION.length);
-    if (slot.kind === "program") lines.push(`- Mission en cours : « ${personalize(MISSIONS[slot.number - 1], p?.triggers ?? []).title} »`);
-    if (slot.kind === "consolidation") lines.push(`- Mission de la semaine : « ${CONSOLIDATION[slot.contentIndex].title} »`);
+    if (slot.kind === "program") lines.push(`- Mission en cours : « ${personalize(MISSIONS[slot.number - 1], p?.triggers ?? []).title} »`);
+    if (slot.kind === "consolidation") lines.push(`- Mission de la semaine : « ${CONSOLIDATION[slot.contentIndex].title} »`);
   }
 
   const now = new Date();
@@ -75,7 +75,7 @@ export function buildCoachContext(m: Member): string {
     hour: "2-digit",
     minute: "2-digit",
   });
-  lines.push(`- Date et heure chez elle : ${when}`);
+  lines.push(`- Date et heure chez elle : ${when}`);
 
   return `# Ce que tu sais de la personne (quiz et app TejTaPuff)\n${lines.join("\n")}`;
 }

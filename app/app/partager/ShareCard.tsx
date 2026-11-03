@@ -26,7 +26,7 @@ export function ShareCard({ imageUrl }: { imageUrl: string }) {
         setStatus("Image enregistrée. Ajoute-la à ta story depuis ta galerie.");
       }
     } catch (e) {
-      if ((e as Error).name !== "AbortError") setStatus("Partage impossible ici : appuie longuement sur l'image pour l'enregistrer.");
+      if ((e as Error).name !== "AbortError") setStatus("Partage impossible ici : appuie longuement sur l'image pour l'enregistrer.");
     } finally {
       setBusy(false);
     }
@@ -62,7 +62,7 @@ export function ShareCard({ imageUrl }: { imageUrl: string }) {
               download(await getFile());
               setStatus("Image enregistrée ✅");
             } catch {
-              setStatus("Téléchargement impossible ici : appuie longuement sur l'image pour l'enregistrer.");
+              setStatus("Téléchargement impossible ici : appuie longuement sur l'image pour l'enregistrer.");
             }
           }}
         >
@@ -71,7 +71,7 @@ export function ShareCard({ imageUrl }: { imageUrl: string }) {
       </div>
       {status && <p className="mt-3 text-center text-sm font-semibold">{status}</p>}
       <p className="mt-6 text-center text-sm text-gris">
-        Sur Instagram ou TikTok : nouvelle story → choisis l&apos;image dans ta galerie.
+        Sur Instagram ou TikTok : nouvelle story → choisis l&apos;image dans ta galerie.
       </p>
     </div>
   );

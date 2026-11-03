@@ -60,7 +60,7 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
           <>
             <p className="mt-2 text-2xl font-extrabold">{sub.status === "past_due" ? "Paiement en échec ⚠️" : "Actif"}</p>
             <p className="mt-1">
-              Prochain prélèvement : <strong>{sub.price_cents ? euros(sub.price_cents) : "?"}</strong> le{" "}
+              Prochain prélèvement : <strong>{sub.price_cents ? euros(sub.price_cents) : "?"}</strong> le{" "}
               <strong>{formatDayFr(sub.current_period_end)}</strong>.
             </p>
             <p className="mt-1 text-sm text-gris">{PRICE_SENTENCE}</p>
@@ -80,10 +80,10 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
       {active && (
         <section id="notifications" className="mt-6 space-y-3">
           <NotificationsCard />
-          <form action={updateNotificationPrefs} className="rounded-3xl border-2 border-encre bg-white p-4">
+          <form action={updateNotificationPrefs} className="card p-4">
             <p className="font-extrabold">Ce que tu reçois</p>
             <label className="mt-3 flex items-start gap-3">
-              <input type="checkbox" name="notify_morning" defaultChecked={p?.notify_morning ?? true} className="mt-0.5 h-6 w-6 accent-encre" />
+              <input type="checkbox" name="notify_morning" defaultChecked={p?.notify_morning ?? true} className="check" />
               <span>
                 Ma mission le matin, à{" "}
                 <select name="morning_hour" defaultValue={p?.morning_hour ?? 9} className="rounded-lg border-2 border-encre bg-white px-1 font-bold">
@@ -96,11 +96,11 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
               </span>
             </label>
             <label className="mt-3 flex items-start gap-3">
-              <input type="checkbox" name="notify_risk" defaultChecked={p?.notify_risk ?? true} className="mt-0.5 h-6 w-6 accent-encre" />
+              <input type="checkbox" name="notify_risk" defaultChecked={p?.notify_risk ?? true} className="check" />
               <span>Un petit mot aux moments où l&apos;envie frappe (2 max par jour)</span>
             </label>
             <label className="mt-3 flex items-start gap-3">
-              <input type="checkbox" name="notify_email" defaultChecked={p?.notify_email ?? true} className="mt-0.5 h-6 w-6 accent-encre" />
+              <input type="checkbox" name="notify_email" defaultChecked={p?.notify_email ?? true} className="check" />
               <span>Ma mission par email si les notifications ne sont pas activées</span>
             </label>
             <SubmitButton className="btn btn-light mt-4 min-h-11 w-full py-1.5 text-base" pendingLabel="Enregistrement…">
@@ -116,6 +116,9 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
 
       {/* ───────── App ───────── */}
       <section className="mt-6 space-y-3">
+        <Link href="/app/aide" className="flex items-center justify-between rounded-2xl border-2 border-encre bg-white p-4 font-bold">
+          Besoin d&apos;aide&nbsp;? <span aria-hidden>→</span>
+        </Link>
         <Link href="/app/installer" className="flex items-center justify-between rounded-2xl border-2 border-encre bg-white p-4 font-bold">
           Installer l&apos;app sur mon téléphone <span aria-hidden>→</span>
         </Link>
@@ -128,7 +131,7 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
 
       {/* ───────── Aide ───────── */}
       <section className="mt-6 rounded-2xl bg-encre p-4 text-creme">
-        <p className="font-bold">Besoin d&apos;un suivi humain ?</p>
+        <p className="font-bold">Besoin d&apos;un suivi humain ?</p>
         <a href={SITE.tabacInfoService.phoneHref} className="mt-1 block text-jaune underline underline-offset-4">
           {SITE.tabacInfoService.label} : {SITE.tabacInfoService.phone} ({SITE.tabacInfoService.note})
         </a>

@@ -15,7 +15,7 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "TejTaPuff : arrête la puff en 21 jours",
+    default: "TejTaPuff : arrête la puff en 21 jours",
     template: "%s · TejTaPuff",
   },
   description: `Calcule combien tu crames en puff, puis arrête en 21 jours avec un programme dans ta poche. ${PRICE_SENTENCE}`,
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     siteName: SITE.name,
-    title: "Combien tu crames en puff ?",
+    title: "Combien tu crames en puff ?",
     description: "Fais le calcul. Puis arrête en 21 jours.",
   },
   formatDetection: { telephone: false },

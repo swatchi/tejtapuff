@@ -23,7 +23,7 @@ export async function sendEmailOnce(params: {
     .single();
   if (error) {
     if (error.code === "23505") return false; // déjà envoyé
-    throw new Error(`email_log : ${error.message}`);
+    throw new Error(`email_log : ${error.message}`);
   }
   try {
     await sendEmail(params.to, params.content);

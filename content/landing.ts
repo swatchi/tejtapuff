@@ -8,13 +8,13 @@ export const HERO = {
   titleHighlight: "crames",
   titleAfter: "en puff\u00a0?",
   subtitle:
-    "Fais le calcul. Ensuite on t'aide à arrêter en 21 jours : une mission par jour, un bouton SOS quand l'envie monte.",
+    "Puff ou cigarette électronique : fais le calcul. Ensuite on t'aide à arrêter en 21 jours, avec une mission par jour et un bouton SOS quand l'envie monte.",
 };
 
 export const CALCULATOR = {
   title: "Ton ticket de caisse",
-  unitQuestion: "Tu vapes quoi ?",
-  perMonthQuestion: "Combien par mois ?",
+  unitQuestion: "Tu vapes quoi ?",
+  perMonthQuestion: "Combien par mois ?",
   priceQuestion: "Prix à l'unité",
   lines: {
     month: "1 mois",
@@ -25,7 +25,7 @@ export const CALCULATOR = {
   /** Comparaison fun, calculée à partir du résultat. Prix à l'unité indiqué pour rester transparent. */
   equivalent: { label: "kebabs", unitPrice: 9 },
   cta: "Je fais mon plan (2 min)",
-  footnote: "Calcul : ta conso × ton prix. Rien n'est enregistré tant que tu ne lances pas le quiz.",
+  footnote: "Calcul : ta conso × ton prix. Rien n'est enregistré tant que tu ne lances pas le quiz.",
 };
 
 export const STEPS = {
@@ -37,7 +37,7 @@ export const STEPS = {
     },
     {
       title: "Tu reçois ton plan 21 jours",
-      text: "Construit sur tes déclencheurs à toi : le réveil, les soirées, le stress, l'ennui…",
+      text: "Construit sur tes déclencheurs à toi : le réveil, les soirées, le stress, l'ennui…",
     },
     {
       title: "Tu avances, un jour à la fois",
@@ -55,7 +55,7 @@ export const APP_FEATURES = {
   },
   sos: {
     title: "Le bouton SOS envie",
-    text: "Une envie, ça monte, puis ça redescend. On t'aide à passer le pic : respiration guidée, défi 5 minutes, tes raisons sous les yeux.",
+    text: "Une envie, ça monte, puis ça redescend. On t'aide à passer le pic : respiration guidée, défi 5 minutes, tes raisons sous les yeux.",
   },
   counter: {
     title: "Ton compteur en direct",
@@ -65,10 +65,31 @@ export const APP_FEATURES = {
     title: "Un coach dans ta poche",
     text: "Tu lui écris quand tu veux. Il connaît ton plan et il te juge pas.",
   },
-  relapse: {
-    title: "Et si tu craques ?",
-    text: "Bouton « J'ai craqué » : ton compteur repart, mais tout ce que tu as fait reste. On repart ensemble.",
+  badges: {
+    title: "Des badges et ton objectif",
+    text: "24 h, 3 jours, 1 semaine… Chaque cap débloque un badge. Et tu choisis ce que tu t'offres avec l'argent gardé : la barre se remplit toute seule.",
   },
+  aide: {
+    title: "De l'aide, pour de vrai",
+    text: "6 exercices SOS, quoi faire selon TES moments à risque, et les numéros pour parler à un humain si tu en as besoin.",
+  },
+  relapse: {
+    title: "Et si tu craques ?",
+    text: "Bouton « J'ai craqué » : ton compteur repart, mais tout ce que tu as fait reste. On repart ensemble.",
+  },
+};
+
+/** Pourquoi on peut nous faire confiance. Que des faits vérifiables, aucun avis ni chiffre inventé. */
+export const TRUST = {
+  title: "Zéro piège",
+  items: [
+    { emoji: "🔒", title: "Paiement sécurisé par Stripe", text: "Ta carte est saisie chez Stripe. Nous, on ne la voit jamais." },
+    { emoji: "⏰", title: "Prévenu avant de payer", text: "Un email 48 h avant le 1er prélèvement à 14,99 €. Pas de surprise." },
+    { emoji: "✋", title: "Résiliable en 1 clic", text: "Depuis ton compte, sans mail ni formulaire. L'accès reste jusqu'à la fin de la semaine payée." },
+    { emoji: "🗑️", title: "Tes données sont à toi", text: "On ne vend aucune donnée. Tu supprimes ton compte et tout ce qu'il contient en 1 clic." },
+    { emoji: "🤝", title: "Zéro jugement", text: "Tu craques ? Le compteur repart, mais tes missions et tes envies battues restent." },
+    { emoji: "🇫🇷", title: "Une entreprise française", text: "TejTaPuff est édité par Nombre One SAS (SIREN 100 954 692)." },
+  ],
 };
 
 export const PRICE_SECTION = {
@@ -84,6 +105,6 @@ export const PRICE_SECTION = {
 };
 
 export const FOOTER = {
-  helpTitle: "Besoin de parler à quelqu'un ?",
+  helpTitle: "Besoin de parler à quelqu'un ?",
   helpText: "Tabac Info Service, des tabacologues au bout du fil.",
 };

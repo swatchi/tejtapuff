@@ -50,7 +50,7 @@ async function claim(userId: string, kind: string, dayKey: string, channel: "pus
   const { error } = await supabaseAdmin().from("notification_log").insert({ user_id: userId, kind, day_key: dayKey, channel });
   if (!error) return true;
   if (error.code === "23505") return false;
-  throw new Error(`notification_log : ${error.message}`);
+  throw new Error(`notification_log : ${error.message}`);
 }
 async function release(userId: string, kind: string, dayKey: string) {
   await supabaseAdmin().from("notification_log").delete().eq("user_id", userId).eq("kind", kind).eq("day_key", dayKey);

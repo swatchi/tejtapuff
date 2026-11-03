@@ -37,10 +37,15 @@ export const PLAN = {
 };
 
 export const PAYWALL = {
-  title: "On commence ?",
+  title: "On commence ?",
   emailLabel: "Ton email",
   emailHint: "Pour ton reçu et pour te connecter à l'app (avec un code, pas de mot de passe).",
   cta: "Je commence",
   secure: "Paiement sécurisé par Stripe.",
+  garanties: [
+    { emoji: "⚡", texte: "Accès tout de suite" },
+    { emoji: "⏰", texte: "Rappel 48 h avant le 1er prélèvement" },
+    { emoji: "✋", texte: "Résiliable en 1 clic" },
+  ],
   cancelled: "Paiement annulé, rien n'a été prélevé. Tu peux réessayer quand tu veux.",
 };

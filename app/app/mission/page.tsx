@@ -55,7 +55,7 @@ export default async function MissionPage() {
         </article>
       ) : (
         <div className="card p-5">
-          <h1 className="text-[2rem] font-extrabold leading-none">Mission du jour : faite ✅</h1>
+          <h1 className="text-[2rem] font-extrabold leading-none">Mission du jour : faite ✅</h1>
           <p className="mt-3 text-encre/80">
             {slot.kind === "program_done_today"
               ? `La mission ${slot.nextNumber} se débloque demain. En attendant, le bouton SOS est là si besoin.`
@@ -76,28 +76,37 @@ export default async function MissionPage() {
               {MISSIONS.slice(phase.from - 1, phase.to).map((mission, i) => {
                 const n = phase.from + i;
                 const done = m.completed.has(mission.id);
-                const locked = n > m.day;
+                if (n > m.day) return null;
                 const p = personalize(mission, triggers);
                 return (
                   <li
                     key={mission.id}
-                    className={`flex items-center gap-3 rounded-2xl border-2 px-3 py-2.5 ${
-                      done ? "border-encre bg-menthe/15" : locked ? "border-encre/15 text-encre/40" : "border-encre bg-white"
-                    }`}
+                    className={`flex items-center gap-3 rounded-2xl border-2 border-encre px-3 py-2.5 ${done ? "bg-menthe/15" : "bg-white"}`}
                   >
                     <span className="w-8 shrink-0 text-sm font-black tabular-nums">J{n}</span>
-                    <span className={`flex-1 font-semibold ${done ? "line-through decoration-2 opacity-70" : ""}`}>
-                      {locked ? "Mission à débloquer" : p.title}
-                    </span>
-                    <span aria-label={done ? "faite" : locked ? "verrouillée" : "à faire"}>{done ? "✅" : locked ? "🔒" : "○"}</span>
+                    <span className={`flex-1 font-semibold ${done ? "line-through decoration-2 opacity-70" : ""}`}>{p.title}</span>
+                    <span aria-label={done ? "faite" : "à faire"}>{done ? "✅" : "○"}</span>
                   </li>
                 );
               })}
+              {(() => {
+                const restantes = phase.to - Math.max(m.day, phase.from - 1);
+                if (restantes <= 0) return null;
+                const debut = Math.max(m.day + 1, phase.from);
+                return (
+                  <li className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-encre/30 px-3 py-2.5 text-encre/60">
+                    <span aria-hidden>🔒</span>
+                    <span className="flex-1 font-semibold">
+                      {restantes} mission{restantes > 1 ? "s" : ""} à débloquer, une par jour à partir du J{debut}
+                    </span>
+                  </li>
+                );
+              })()}
             </ul>
           </div>
         ))}
         <p className="mt-5 rounded-2xl bg-encre p-4 text-creme">
-          <strong className="text-jaune">Après J21 :</strong> une mission par semaine pour rester clean sur la durée.
+          <strong className="text-jaune">Après J21 :</strong> une mission par semaine pour rester clean sur la durée.
         </p>
       </section>
     </main>

@@ -22,17 +22,19 @@ test("de la vidéo TikTok jusqu'au paiement, les UTM suivent", async ({ page }) 
   await page.goto("/?utm_source=tiktok&utm_content=video_042");
   await page.getByRole("button", { name: "Refuser" }).click();
 
-  // Calculateur : 17 pods × 4 € = 68 €/mois → 816 €/an
-  await page.getByRole("button", { name: "Pod / cartouche" }).click();
+  // Calculateur : par défaut 2 puffs × 10 € = 20 €/mois → 240 €/an
+  await expect(page.getByText("240 €").first()).toBeVisible();
+  // Cigarette électronique : 9 recharges × 5 € = 45 €/mois → 540 €/an
+  await page.getByRole("button", { name: "Cigarette électronique" }).click();
   await page.getByRole("button", { name: "Plus" }).first().click();
-  await expect(page.getByText("816 €").first()).toBeVisible();
+  await expect(page.getByText("540 €").first()).toBeVisible();
 
   await page.getByRole("link", { name: /Je fais mon plan/ }).click();
   const start = page.getByRole("button", { name: /C'est parti/ });
   await expect(start).toBeDisabled(); // consentement obligatoire
   await page.getByRole("checkbox").check();
   await start.click();
-  await page.getByRole("button", { name: "Pod / cartouche" }).click();
+  await page.getByRole("button", { name: /^Cigarette électronique/ }).click();
   await page.getByRole("button", { name: "Suivant" }).click();
   await page.getByRole("button", { name: "Suivant" }).click();
   await page.getByRole("button", { name: "1 à 2 ans" }).click();

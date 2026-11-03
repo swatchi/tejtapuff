@@ -61,7 +61,7 @@ export function CoachClient({ initial, remaining: initialRemaining }: { initial:
         appendBot(decoder.decode(value, { stream: true }));
       }
     } catch {
-      setError("Pas de réseau ? Réessaie dans un instant.");
+      setError("Pas de réseau ? Réessaie dans un instant.");
     } finally {
       setStreaming(false);
     }
@@ -95,13 +95,13 @@ export function CoachClient({ initial, remaining: initialRemaining }: { initial:
         {crisis && (
           <div role="alert" className="rounded-3xl border-2 border-encre bg-white p-4">
             <p className="font-extrabold">Si ça ne va pas du tout, tu n&apos;es pas seul·e.</p>
-            <p className="mt-1 text-[0.95rem]">Des gens sont là pour t&apos;écouter, gratuitement, 24h/24 :</p>
+            <p className="mt-1 text-[0.95rem]">Des gens sont là pour t&apos;écouter, gratuitement, 24h/24 :</p>
             <div className="mt-3 grid gap-2">
               <a href="tel:3114" className="btn btn-primary min-h-12 py-2">
                 📞 Appeler le 3114
               </a>
               <a href="tel:112" className="btn btn-light min-h-12 py-2">
-                Danger immédiat : 112
+                Danger immédiat : 112
               </a>
             </div>
           </div>

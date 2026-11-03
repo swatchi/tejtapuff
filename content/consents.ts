@@ -16,7 +16,7 @@ export const CONSENTS = {
   immediate_start: {
     version: "2026-11-02",
     // Brouillon : à faire valider (droit de rétractation, art. L221-25 et L221-28 du Code de la consommation).
-    text: "Je veux commencer tout de suite : je demande l'exécution immédiate du programme avant la fin du délai de rétractation de 14 jours, et je reconnais perdre mon droit de rétractation une fois l'accès ouvert.",
+    text: "Je veux commencer tout de suite : je demande l'exécution immédiate du programme avant la fin du délai de rétractation de 14 jours, et je reconnais perdre mon droit de rétractation une fois l'accès ouvert.",
   },
   followup_emails: {
     version: "2026-11-02",

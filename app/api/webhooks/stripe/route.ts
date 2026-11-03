@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     console.error("[stripe webhook] lecture du secret impossible", err);
   }
   if (!secret) {
-    console.error("[stripe webhook] aucun secret : ouvre /api/setup pour créer le webhook");
+    console.error("[stripe webhook] aucun secret : ouvre /api/setup pour créer le webhook");
     return new Response("Webhook pas encore configuré", { status: 503 });
   }
 

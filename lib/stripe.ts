@@ -58,7 +58,7 @@ export async function ensureCatalog(): Promise<Catalog> {
     try {
       await s.products.create({
         id: PRODUCT_ID,
-        name: "TejTaPuff : programme pour arrêter la puff",
+        name: "TejTaPuff : programme pour arrêter la puff",
         description: "Accès à l'app TejTaPuff, renouvelé chaque semaine, sans engagement.",
       });
     } catch (e) {

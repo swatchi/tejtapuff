@@ -13,11 +13,11 @@ export default async function SupprimerPage() {
   return (
     <main className="wrap pt-8">
       <h1 className="text-[2.4rem] font-extrabold leading-none">Supprimer mon compte</h1>
-      <p className="mt-4 text-lg">On efface définitivement :</p>
+      <p className="mt-4 text-lg">On efface définitivement :</p>
       <ul className="mt-2 list-disc space-y-1 pl-6">
         <li>ton compte et ton email,</li>
         <li>tes réponses au quiz,</li>
-        <li>ta progression : compteur, missions, envies.</li>
+        <li>ta progression : compteur, missions, envies.</li>
       </ul>
       {active && (
         <p className="mt-4 rounded-2xl border-2 border-encre bg-jaune-pale p-4">
