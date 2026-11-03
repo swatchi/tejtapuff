@@ -196,16 +196,16 @@ export default function Home() {
         {/* ───────── Prix ───────── */}
         <section id="prix" className="bg-jaune py-14">
           <div className="wrap">
-            <div className="flex items-start justify-between gap-2">
-              <h2 className="h-section pt-2">{PRICE_SECTION.title}</h2>
-              <Burst className="h-32 w-32 shrink-0 rotate-12 text-creme">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="h-section">{PRICE_SECTION.title}</h2>
+              <Burst className="h-28 w-28 shrink-0 rotate-6 text-creme">
                 <span className="block text-center leading-none">
                   <span className="block text-xl font-black">{FIRST_WEEK}</span>
                   <span className="text-xs font-bold">1re semaine</span>
                 </span>
               </Burst>
             </div>
-            <div className="card mt-4 p-5">
+            <div className="card mt-6 p-5">
               <p className="text-lg font-bold leading-snug">{PRICE_SENTENCE}</p>
               <p className="mt-1 text-encre/70">
                 Soit {FIRST_WEEK} aujourd&apos;hui, puis {WEEKLY} tous les 7 jours tant que tu restes.

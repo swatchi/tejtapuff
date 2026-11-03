@@ -29,7 +29,7 @@ export const FIRST_WEEK = euros(PRICING.firstWeekCents);
 export const WEEKLY = euros(PRICING.weeklyCents);
 
 /** Phrase de prix complète, affichée partout où on parle d'argent. */
-export const PRICE_SENTENCE = `${FIRST_WEEK} la 1re semaine, puis ${WEEKLY}/semaine. Sans engagement, résiliable en 1 clic.`;
+export const PRICE_SENTENCE = `${FIRST_WEEK} la 1re semaine, puis ${WEEKLY} par semaine. Sans engagement, résiliable en 1 clic.`;
 
 /** Remise appliquée à la 1re facture Stripe (prix plein − prix 1re semaine). */
 export const FIRST_WEEK_DISCOUNT_CENTS = PRICING.weeklyCents - PRICING.firstWeekCents;

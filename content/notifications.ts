@@ -56,7 +56,7 @@ export const START_DAY_PUSH = {
 export function reminderPush(p: { weekly: string; date: string }) {
   return {
     title: "Rappel abonnement",
-    body: `Le ${p.date}, ton abonnement passe à ${p.weekly}/semaine. Pour arrêter : Compte → Résilier.`,
+    body: `Le ${p.date}, ton abonnement passe à ${p.weekly} par semaine. Pour arrêter : Compte → Résilier.`,
   };
 }
 

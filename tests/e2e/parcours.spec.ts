@@ -46,7 +46,7 @@ test("de la vidéo TikTok jusqu'au paiement, les UTM suivent", async ({ page }) 
   await page.getByRole("button", { name: /Voir mon plan/ }).click();
 
   await expect(page).toHaveURL(/\/plan/);
-  await expect(page.getByText("4,99 € la 1re semaine, puis 14,99 €/semaine.").first()).toBeVisible();
+  await expect(page.getByText("4,99 € la 1re semaine, puis 14,99 € par semaine.").first()).toBeVisible();
 
   const pay = page.getByRole("button", { name: /Je commence pour/ });
   await page.getByPlaceholder("toi@exemple.fr").fill("test@exemple.fr");

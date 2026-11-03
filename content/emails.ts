@@ -54,7 +54,7 @@ export function welcomeEmail(p: {
 export function firstRenewalReminderEmail(p: { accountUrl: string; weekly: string; date: string }): EmailContent {
   return {
     subject: `Rappel : ${p.weekly} prélevés le ${p.date}`,
-    preheader: `Ta 1re semaine se termine bientôt. Le ${p.date}, ton abonnement passe à ${p.weekly}/semaine.`,
+    preheader: `Ta 1re semaine se termine bientôt. Le ${p.date}, ton abonnement passe à ${p.weekly} par semaine.`,
     heading: "Ta 1re semaine se termine",
     paragraphs: [
       `Le ${p.date}, ton abonnement passe à ${p.weekly} par semaine.`,

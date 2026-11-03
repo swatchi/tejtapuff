@@ -158,14 +158,16 @@ export function PlanClient() {
 
       {/* Paywall */}
       <section id="paiement" className="wrap mt-12">
-        <div className="card relative overflow-visible p-5">
-          <Burst className="absolute -right-3 -top-12 h-28 w-28 rotate-12 text-jaune">
-            <span className="text-center text-base font-black leading-none">
-              {FIRST_WEEK}
-              <span className="block text-[0.6rem] font-bold">1re sem.</span>
-            </span>
-          </Burst>
-          <h2 className="pr-20 text-3xl font-extrabold leading-none">{PAYWALL.title}</h2>
+        <div className="card p-5">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-3xl font-extrabold leading-none">{PAYWALL.title}</h2>
+            <Burst className="h-24 w-24 shrink-0 rotate-6 text-jaune">
+              <span className="block text-center leading-none">
+                <span className="block text-base font-black">{FIRST_WEEK}</span>
+                <span className="text-[0.65rem] font-bold">1re semaine</span>
+              </span>
+            </Burst>
+          </div>
           <p className="mt-4 text-lg font-bold leading-snug">{PRICE_SENTENCE}</p>
           <p className="mt-1 text-[0.95rem] text-encre/70">
             Aujourd&apos;hui : {FIRST_WEEK}. Ensuite : {WEEKLY} tous les 7 jours, avec un rappel 48 h avant le 1er prélèvement à {WEEKLY}.
