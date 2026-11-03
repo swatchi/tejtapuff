@@ -37,8 +37,8 @@ Web app par abonnement pour arrêter la puff en 21 jours. Éditeur : Nombre One 
 4. Fais un paiement test (voir plus bas).
 
 Plus tard :
-- **Domaine** : Vercel → Settings → Domains → `tejtapuff.fr`, puis mets `NEXT_PUBLIC_SITE_URL=https://tejtapuff.fr`, redéploie et **relance `/api/setup`** (le webhook est recréé sur le nouveau domaine).
-- **Emails** : vérifie ton domaine dans Resend (enregistrements DNS) et mets `EMAIL_FROM="TejTaPuff <bonjour@tejtapuff.fr>"`. Avec `onboarding@resend.dev`, Resend n'envoie qu'à l'adresse de ton propre compte.
+- **Domaine** : Vercel → Settings → Domains → `tejtapuff.com`, puis mets `NEXT_PUBLIC_SITE_URL=https://www.tejtapuff.com`, redéploie et **relance `/api/setup`** (le webhook est recréé sur le nouveau domaine).
+- **Emails** : vérifie ton domaine dans Resend (enregistrements DNS) et mets `EMAIL_FROM="TejTaPuff <bonjour@tejtapuff.com>"`. Avec `onboarding@resend.dev`, Resend n'envoie qu'à l'adresse de ton propre compte.
 - **Vercel Pro** avant de vendre pour de vrai (le plan gratuit interdit l'usage commercial).
 - **Passage en live** : remplace `STRIPE_SECRET_KEY` par la clé `sk_live_…`, redéploie, relance `/api/setup`.
 
