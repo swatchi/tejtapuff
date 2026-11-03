@@ -36,7 +36,7 @@ export function SiteFooter() {
 
         <div className="mt-10 flex items-end justify-between gap-4">
           <span className="text-2xl text-creme">
-            <Logo />
+            <Logo fond="sombre" />
           </span>
           <span className="text-sm text-creme/60">© {SITE.company}</span>
         </div>

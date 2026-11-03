@@ -1,16 +1,16 @@
-/** Wordmark : « tej ta puff », avec « puff » barré. */
-export function Logo({ className = "" }: { className?: string }) {
+/**
+ * Logo TejTaPuff : la bulle (fichiers dans public/, textes vectorisés).
+ * La hauteur suit la taille du texte du parent (1.9em) : mets une classe text-* sur le parent pour le grandir.
+ */
+export function Logo({ fond = "clair", className = "" }: { fond?: "clair" | "sombre"; className?: string }) {
   return (
-    <span className={`inline-flex items-baseline gap-[0.22em] font-extrabold tracking-tight ${className}`}>
-      <span>tej</span>
-      <span>ta</span>
-      <span className="relative">
-        puff
-        <span
-          aria-hidden
-          className="absolute left-[-6%] right-[-6%] top-[55%] h-[0.16em] -rotate-6 rounded-full bg-braise"
-        />
-      </span>
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={fond === "sombre" ? "/logo-fond-sombre.svg" : "/logo.svg"}
+      alt="TejTaPuff"
+      width={677}
+      height={312}
+      className={`inline-block h-[1.9em] w-auto align-middle ${className}`}
+    />
   );
 }

@@ -36,7 +36,7 @@ export function renderEmail(c: EmailContent): { html: string; text: string } {
 <span style="display:none;max-height:0;overflow:hidden">${esc(c.preheader)}</span>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fffbef"><tr><td align="center" style="padding:24px 16px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border:2px solid #1b1a17;border-radius:20px">
-<tr><td style="background:#ffd43b;border-radius:18px 18px 0 0;padding:18px 24px;font-size:22px;font-weight:800;color:#1b1a17">tej ta <s style="text-decoration-color:#ff5b3a;text-decoration-thickness:3px">puff</s></td></tr>
+<tr><td style="background:#ffd43b;border-radius:18px 18px 0 0;padding:16px 24px"><img src="${siteUrl()}/logo-email.png" width="170" height="78" alt="TejTaPuff" style="display:block;border:0;width:170px;height:auto"></td></tr>
 <tr><td style="padding:24px">
 <h1 style="margin:0 0 16px;font-size:24px;line-height:1.2;color:#1b1a17">${esc(c.heading)}</h1>
 ${p}${highlight}${image}${cta}${foot}${unsubscribe}
