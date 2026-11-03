@@ -51,19 +51,10 @@ export async function GET(req: Request) {
     );
   }
   if (!key) {
-    return html([{ label: "Il manque la clé dans l'adresse", ok: false, detail: "Ajoute ?cle=TON_CRON_SECRET à la fin de l'adresse." }], "");
+    return keyForm();
   }
   if (key !== expected) {
-    return html(
-      [
-        {
-          label: "La clé dans l'adresse ne correspond pas à CRON_SECRET",
-          ok: false,
-          detail: `Vérifie qu'il n'y a pas d'espace ou de caractère en trop. Clé reçue : ${key.length} caractères, attendue : ${expected.length} caractères.`,
-        },
-      ],
-      "",
-    );
+    return keyForm(`Cette clé ne correspond pas à CRON_SECRET (${key.length} caractères reçus, ${expected.length} attendus). Recolle-la.`);
   }
 
   const base = siteUrl();
@@ -132,8 +123,14 @@ export async function GET(req: Request) {
         checks.push({ label: "Webhook Stripe", ok: true, detail: "Secret fourni dans les variables Vercel (configuration manuelle)" });
       } else {
         const s = stripe();
-        const existing = (await s.webhookEndpoints.list({ limit: 100 })).data.filter((e) => e.url === url);
+        const all = (await s.webhookEndpoints.list({ limit: 100 })).data;
+        const existing = all.filter((e) => e.url === url);
         const storedId = await getSetting("stripe_webhook_id");
+        // Anciens webhooks TejTaPuff sur une autre adresse (ex. passage de vercel.app au vrai domaine)
+        const stale = all.filter(
+          (e) => e.url !== url && (e.id === storedId || (e.description ?? "").startsWith("TejTaPuff (créé automatiquement")),
+        );
+        for (const e of stale) await s.webhookEndpoints.del(e.id);
         const storedSecret = await getSetting("stripe_webhook_secret");
         const mine = existing.find((e) => e.id === storedId);
         if (mine && storedSecret) {
@@ -150,7 +147,11 @@ export async function GET(req: Request) {
           if (!created.secret) throw new Error("Stripe n'a pas renvoyé de secret");
           await setSetting("stripe_webhook_secret", created.secret);
           await setSetting("stripe_webhook_id", created.id);
-          checks.push({ label: "Webhook Stripe", ok: true, detail: `Créé → ${url}` });
+          checks.push({
+            label: "Webhook Stripe",
+            ok: true,
+            detail: `Créé → ${url}${stale.length ? ` (ancienne adresse supprimée : ${stale.map((e) => e.url).join(", ")})` : ""}`,
+          });
         }
       }
     } catch (err) {
@@ -261,6 +262,22 @@ function esc(s: string) {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 }
 
+const STYLE = `body{margin:0;background:#fffbef;color:#1b1a17;font-family:system-ui,-apple-system,sans-serif;padding:24px 16px}main{max-width:560px;margin:auto}h1{font-size:28px;margin:0 0 8px}ul{list-style:none;padding:0}li{display:flex;gap:12px;background:#fff;border:2px solid #1b1a17;border-radius:16px;padding:12px 14px;margin:10px 0}small{color:#5c584f;word-break:break-word}.ok{background:#ffd43b;border:2px solid #1b1a17;border-radius:16px;padding:14px}a{color:#1b1a17}input{box-sizing:border-box;width:100%;font-size:18px;padding:14px;border:2px solid #1b1a17;border-radius:14px;margin:8px 0 12px;font-family:ui-monospace,Menlo,monospace}button{width:100%;font-size:18px;font-weight:700;padding:14px;border-radius:999px;border:2px solid #1b1a17;background:#1b1a17;color:#fff}.err{background:#fff;border:2px solid #ff5b3a;border-radius:14px;padding:12px}`;
+
+/** Champ pour coller la clé CRON_SECRET (plus simple que de modifier l'adresse). */
+function keyForm(error?: string) {
+  const body = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Installation ${SITE.name}</title><style>${STYLE}</style></head>
+<body><main><h1>Installation ${SITE.name}</h1>
+<p>Colle ici la valeur de <strong>CRON_SECRET</strong> (Vercel → Settings → Environment Variables), puis lance la vérification.</p>
+${error ? `<p class="err">${esc(error)}</p>` : ""}
+<form method="get" action="/api/setup">
+<label for="cle"><strong>CRON_SECRET</strong></label>
+<input id="cle" name="cle" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" required>
+<button type="submit">Lancer la vérification</button>
+</form></main></body></html>`;
+  return new Response(body, { status: error ? 403 : 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+}
+
 function html(checks: Check[], base: string) {
   const allOk = checks.every((c) => c.ok !== false);
   const rows = checks
@@ -272,7 +289,7 @@ function html(checks: Check[], base: string) {
     )
     .join("");
   const body = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Installation ${SITE.name}</title>
-<style>body{margin:0;background:#fffbef;color:#1b1a17;font-family:system-ui,-apple-system,sans-serif;padding:24px 16px}main{max-width:560px;margin:auto}h1{font-size:28px;margin:0 0 8px}ul{list-style:none;padding:0}li{display:flex;gap:12px;background:#fff;border:2px solid #1b1a17;border-radius:16px;padding:12px 14px;margin:10px 0}small{color:#5c584f;word-break:break-word}.ok{background:#ffd43b;border:2px solid #1b1a17;border-radius:16px;padding:14px}a{color:#1b1a17}</style></head>
+<style>${STYLE}</style></head>
 <body><main><h1>Installation ${SITE.name}</h1>
 ${allOk ? `<p class="ok"><strong>Tout est prêt 🎉</strong><br>Fais un paiement test sur <a href="${esc(base)}">${esc(base)}</a> avec la carte 4242 4242 4242 4242.</p>` : "<p>Corrige les lignes ❌ puis recharge cette page.</p>"}
 <ul>${rows}</ul></main></body></html>`;
