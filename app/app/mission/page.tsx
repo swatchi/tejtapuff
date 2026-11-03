@@ -5,6 +5,7 @@ import { CONSOLIDATION, MISSIONS, personalize, PHASES } from "@/content/missions
 import { requireMember } from "@/lib/member";
 import { currentMission, PROGRAM_DAYS } from "@/lib/program";
 import { completeMission } from "../actions";
+import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = { title: "Mission", robots: { index: false } };
 
@@ -50,12 +51,12 @@ export default async function MissionPage() {
           </ol>
           <form action={completeMission} className="mt-6">
             <input type="hidden" name="missionId" value={current.id} />
-            <SubmitButton pendingLabel="Enregistrement…">C&apos;est fait ✅</SubmitButton>
+            <SubmitButton pendingLabel="Enregistrement…">C&apos;est fait</SubmitButton>
           </form>
         </article>
       ) : (
         <div className="card p-5">
-          <h1 className="text-[2rem] font-extrabold leading-none">Mission du jour : faite ✅</h1>
+          <h1 className="text-[2rem] font-extrabold leading-none">Mission du jour : faite</h1>
           <p className="mt-3 text-encre/80">
             {slot.kind === "program_done_today"
               ? `La mission ${slot.nextNumber} se débloque demain. En attendant, le bouton SOS est là si besoin.`
@@ -85,7 +86,9 @@ export default async function MissionPage() {
                   >
                     <span className="w-8 shrink-0 text-sm font-black tabular-nums">J{n}</span>
                     <span className={`flex-1 font-semibold ${done ? "line-through decoration-2 opacity-70" : ""}`}>{p.title}</span>
-                    <span aria-label={done ? "faite" : "à faire"}>{done ? "✅" : "○"}</span>
+                    <span aria-label={done ? "faite" : "à faire"} className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 border-encre ${done ? "bg-menthe text-white" : "bg-white"}`}>
+                      {done && <Icon name="check" className="h-4 w-4" strokeWidth={3} />}
+                    </span>
                   </li>
                 );
               })}
@@ -95,7 +98,7 @@ export default async function MissionPage() {
                 const debut = Math.max(m.day + 1, phase.from);
                 return (
                   <li className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-encre/30 px-3 py-2.5 text-encre/60">
-                    <span aria-hidden>🔒</span>
+                    <Icon name="lock" className="h-5 w-5 shrink-0" />
                     <span className="flex-1 font-semibold">
                       {restantes} mission{restantes > 1 ? "s" : ""} à débloquer, une par jour à partir du J{debut}
                     </span>

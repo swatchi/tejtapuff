@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { detectPlatform } from "@/lib/client/platform";
+import { Icon } from "@/components/Icon";
 
 type State = "loading" | "unsupported" | "needs-install" | "off" | "on" | "denied" | "error";
 
@@ -65,7 +66,7 @@ export function NotificationsCard({ compact = false }: { compact?: boolean }) {
       });
       if (!res.ok) throw new Error("Enregistrement impossible");
       setState("on");
-      setMessage("Notifications activées ✅");
+      setMessage("Notifications activées.");
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Activation impossible");
       setState("error");
@@ -99,7 +100,7 @@ export function NotificationsCard({ compact = false }: { compact?: boolean }) {
     try {
       const res = await fetch("/api/push/test", { method: "POST" });
       const { delivered } = await res.json();
-      setMessage(delivered ? "Notification envoyée, regarde ton écran 👀" : "Aucun appareil joignable, réactive les notifications.");
+      setMessage(delivered ? "Notification envoyée, regarde ton écran." : "Aucun appareil joignable, réactive les notifications.");
     } finally {
       setBusy(false);
     }
@@ -110,7 +111,9 @@ export function NotificationsCard({ compact = false }: { compact?: boolean }) {
 
   return (
     <div className="card p-4">
-      <p className="font-extrabold">🔔 Notifications</p>
+      <p className="flex items-center gap-2 font-extrabold">
+        <Icon name="bell" className="h-5 w-5" /> Notifications
+      </p>
       {state === "needs-install" && (
         <p className="mt-1 text-[0.95rem]">
           Sur iPhone, les notifications marchent une fois l&apos;app ajoutée à l&apos;écran d&apos;accueil.{" "}

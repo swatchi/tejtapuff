@@ -29,7 +29,7 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
       )}
       {repris && (
         <p role="status" className="mt-5 rounded-2xl border-2 border-encre bg-menthe/20 p-4 font-semibold">
-          Ton abonnement continue. 💛
+          Ton abonnement continue.
         </p>
       )}
 
@@ -58,7 +58,7 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
           </>
         ) : (
           <>
-            <p className="mt-2 text-2xl font-extrabold">{sub.status === "past_due" ? "Paiement en échec ⚠️" : "Actif"}</p>
+            <p className="mt-2 text-2xl font-extrabold">{sub.status === "past_due" ? "Paiement en échec" : "Actif"}</p>
             <p className="mt-1">
               Prochain prélèvement : <strong>{sub.price_cents ? euros(sub.price_cents) : "?"}</strong> le{" "}
               <strong>{formatDayFr(sub.current_period_end)}</strong>.
@@ -106,7 +106,7 @@ export default async function ComptePage({ searchParams }: PageProps<"/app/compt
             <SubmitButton className="btn btn-light mt-4 min-h-11 w-full py-1.5 text-base" pendingLabel="Enregistrement…">
               Enregistrer
             </SubmitButton>
-            {prefs && <p className="mt-2 text-sm font-semibold">Enregistré ✅</p>}
+            {prefs && <p className="mt-2 text-sm font-semibold">Enregistré.</p>}
             <p className="mt-3 text-xs text-gris">
               Les emails importants (rappel avant prélèvement, résiliation) sont toujours envoyés.
             </p>

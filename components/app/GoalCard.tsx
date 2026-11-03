@@ -21,7 +21,7 @@ export function GoalCard({ goal, savedEuros }: { goal: { label: string | null; c
           </div>
           <p className="mt-2 font-semibold tabular-nums">
             {formatEuros(savedEuros)} sur {formatEuros(cible)}
-            {part >= 1 ? " : c'est à toi, fais-toi plaisir 🎉" : ` · encore ${formatEuros(Math.max(0, cible - savedEuros))}`}
+            {part >= 1 ? " : c'est à toi, fais-toi plaisir" : ` · encore ${formatEuros(Math.max(0, cible - savedEuros))}`}
           </p>
           <details className="mt-3">
             <summary className="cursor-pointer text-sm font-semibold underline underline-offset-4">Changer d&apos;objectif</summary>

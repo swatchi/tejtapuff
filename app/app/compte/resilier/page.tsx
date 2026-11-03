@@ -5,6 +5,7 @@ import { SubmitButton } from "@/components/app/SubmitButton";
 import { formatDayFr } from "@/lib/dates";
 import { ACTIVE_STATUSES, requireMember } from "@/lib/member";
 import { cancelSubscription } from "../../actions";
+import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = { title: "Résilier", robots: { index: false } };
 
@@ -18,11 +19,20 @@ export default async function ResilierPage() {
     <main className="wrap pt-8">
       <h1 className="text-[2.4rem] font-extrabold leading-none">Résilier</h1>
       <ul className="mt-6 space-y-3 text-lg">
-        <li>✔︎ Plus aucun prélèvement après confirmation.</li>
-        <li>
-          ✔︎ Tu gardes l&apos;accès jusqu&apos;au <strong>{formatDayFr(sub.current_period_end)}</strong> (fin de la semaine payée).
-        </li>
-        <li>✔︎ Tu reçois une confirmation par email.</li>
+        {[
+          <>Plus aucun prélèvement après confirmation.</>,
+          <>
+            Tu gardes l&apos;accès jusqu&apos;au <strong>{formatDayFr(sub.current_period_end)}</strong> (fin de la semaine payée).
+          </>,
+          <>Tu reçois une confirmation par email.</>,
+        ].map((t, i) => (
+          <li key={i} className="flex gap-3">
+            <span className="mt-1 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-menthe text-white">
+              <Icon name="check" className="h-3.5 w-3.5" strokeWidth={3.2} />
+            </span>
+            <span>{t}</span>
+          </li>
+        ))}
       </ul>
       <form action={cancelSubscription} className="mt-8">
         <SubmitButton pendingLabel="Résiliation…">Confirmer la résiliation</SubmitButton>

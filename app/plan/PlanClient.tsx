@@ -15,6 +15,7 @@ import { pixelEvent } from "@/lib/client/consent";
 import { KEYS, readSession } from "@/lib/client/storage";
 import type { QuizAnswers } from "@/lib/quiz-schema";
 import { costs, formatEuros } from "@/lib/savings";
+import { Icon } from "@/components/Icon";
 
 type StoredQuiz = { quizId: string; answers: QuizAnswers };
 
@@ -225,15 +226,13 @@ export function PlanClient() {
             <ul className="grid grid-cols-3 gap-2 text-center text-xs font-semibold leading-tight">
               {PAYWALL.garanties.map((g) => (
                 <li key={g.texte} className="rounded-2xl border-2 border-encre/15 bg-creme px-2 py-2.5">
-                  <span aria-hidden className="block text-lg">
-                    {g.emoji}
-                  </span>
+                  <Icon name={g.icon} className="mx-auto mb-1 h-5 w-5" />
                   {g.texte}
                 </li>
               ))}
             </ul>
             <p className="text-center text-sm text-gris">
-              🔒 {PAYWALL.secure} {SITE.medicalDisclaimer}
+              {PAYWALL.secure} {SITE.medicalDisclaimer}
             </p>
           </form>
         </div>

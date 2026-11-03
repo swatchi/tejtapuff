@@ -20,7 +20,7 @@ export function ShareCard({ imageUrl }: { imageUrl: string }) {
       const file = await getFile();
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
-        setStatus("Partagé 🙌");
+        setStatus("Partagé.");
       } else {
         download(file);
         setStatus("Image enregistrée. Ajoute-la à ta story depuis ta galerie.");
@@ -51,7 +51,7 @@ export function ShareCard({ imageUrl }: { imageUrl: string }) {
       </div>
       <div className="mt-8 grid gap-3">
         <button type="button" className="btn btn-primary w-full" disabled={busy} onClick={share}>
-          {busy ? "Préparation…" : "Partager en story 📸"}
+          {busy ? "Préparation…" : "Partager en story"}
         </button>
         <button
           type="button"
@@ -60,7 +60,7 @@ export function ShareCard({ imageUrl }: { imageUrl: string }) {
           onClick={async () => {
             try {
               download(await getFile());
-              setStatus("Image enregistrée ✅");
+              setStatus("Image enregistrée.");
             } catch {
               setStatus("Téléchargement impossible ici : appuie longuement sur l'image pour l'enregistrer.");
             }

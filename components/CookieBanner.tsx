@@ -34,7 +34,7 @@ export function CookieBanner() {
     >
       <div className="card mx-auto max-w-xl p-3">
         <p className="text-sm leading-snug">
-          🍪 Pixels TikTok et Meta pour savoir quelle vidéo t&apos;a amené ici ? Rien n&apos;est chargé si tu refuses.{" "}
+          Pixels TikTok et Meta pour savoir quelle vidéo t&apos;a amené ici ? Rien n&apos;est chargé si tu refuses.{" "}
           <Link href="/legal/cookies" className="underline underline-offset-2">
             Détails
           </Link>

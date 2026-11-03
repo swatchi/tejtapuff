@@ -83,12 +83,12 @@ export const APP_FEATURES = {
 export const TRUST = {
   title: "Zéro piège",
   items: [
-    { emoji: "🔒", title: "Paiement sécurisé par Stripe", text: "Ta carte est saisie chez Stripe. Nous, on ne la voit jamais." },
-    { emoji: "⏰", title: "Prévenu avant de payer", text: "Un email 48 h avant le 1er prélèvement à 14,99 €. Pas de surprise." },
-    { emoji: "✋", title: "Résiliable en 1 clic", text: "Depuis ton compte, sans mail ni formulaire. L'accès reste jusqu'à la fin de la semaine payée." },
-    { emoji: "🗑️", title: "Tes données sont à toi", text: "On ne vend aucune donnée. Tu supprimes ton compte et tout ce qu'il contient en 1 clic." },
-    { emoji: "🤝", title: "Zéro jugement", text: "Tu craques ? Le compteur repart, mais tes missions et tes envies battues restent." },
-    { emoji: "🇫🇷", title: "Une entreprise française", text: "TejTaPuff est édité par Nombre One SAS (SIREN 100 954 692)." },
+    { icon: "lock", title: "Paiement sécurisé par Stripe", text: "Ta carte est saisie chez Stripe. Nous, on ne la voit jamais." },
+    { icon: "clock", title: "Prévenu avant de payer", text: "Un email 48 h avant le 1er prélèvement à 14,99 €. Pas de surprise." },
+    { icon: "exit", title: "Résiliable en 1 clic", text: "Depuis ton compte, sans mail ni formulaire. L'accès reste jusqu'à la fin de la semaine payée." },
+    { icon: "trash", title: "Tes données sont à toi", text: "On ne vend aucune donnée. Tu supprimes ton compte et tout ce qu'il contient en 1 clic." },
+    { icon: "heart", title: "Zéro jugement", text: "Tu craques ? Le compteur repart, mais tes missions et tes envies battues restent." },
+    { icon: "building", title: "Une entreprise française", text: "TejTaPuff est édité par Nombre One SAS (SIREN 100 954 692)." },
   ],
 };
 

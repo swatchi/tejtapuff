@@ -3,6 +3,7 @@ import { ManageCookiesButton } from "@/components/CookieBanner";
 import { Logo } from "@/components/Logo";
 import { SITE } from "@/config/site";
 import { FOOTER } from "@/content/landing";
+import { Icon } from "@/components/Icon";
 
 export function SiteFooter() {
   const tis = SITE.tabacInfoService;
@@ -16,7 +17,9 @@ export function SiteFooter() {
             href={tis.phoneHref}
             className="mt-4 inline-flex items-center gap-3 rounded-full bg-jaune px-5 py-3 font-bold text-encre"
           >
-            <span className="whitespace-nowrap text-xl">📞 {tis.phone}</span>
+            <span className="flex items-center gap-2 whitespace-nowrap text-xl">
+              <Icon name="phone" className="h-5 w-5" /> {tis.phone}
+            </span>
             <span className="text-sm font-semibold">{tis.label} · {tis.note}</span>
           </a>
         </div>

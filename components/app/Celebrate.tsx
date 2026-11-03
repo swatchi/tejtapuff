@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Icon } from "@/components/Icon";
 
 const CLE = "ttp_badges_vus";
 const COULEURS = ["#ffd43b", "#ff5b3a", "#1fb57a", "#8fd3ff", "#ffb8cb", "#9c7cff"];
@@ -49,9 +50,9 @@ export function Celebrate({ earned }: { earned: { id: string; emoji: string; lab
           className="rounded-3xl border-2 border-encre bg-jaune px-6 py-4 text-center shadow-[3px_4px_0_0_#1b1a17]"
           style={{ animation: "ttp-pop .5s ease-out both" }}
         >
-          <p className="text-4xl" aria-hidden>
-            {badge.emoji}
-          </p>
+          <span className="mx-auto grid h-14 w-14 place-items-center rounded-full border-2 border-encre bg-white">
+            <Icon name={badge.emoji} className="h-8 w-8" />
+          </span>
           <p className="mt-1 text-sm font-bold uppercase tracking-wide">Nouveau badge</p>
           <p className="text-xl font-extrabold">{badge.label}</p>
         </div>

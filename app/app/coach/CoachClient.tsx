@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { COACH_SUGGESTIONS, COACH_WELCOME } from "@/content/coach-prompt";
+import { Icon } from "@/components/Icon";
 
 type Msg = { id: string; role: "user" | "assistant"; content: string };
 
@@ -71,8 +72,8 @@ export function CoachClient({ initial, remaining: initialRemaining }: { initial:
     <div className="flex min-h-[calc(100dvh-6rem)] flex-col">
       <header className="sticky top-0 z-10 border-b-2 border-encre bg-ciel">
         <div className="wrap flex items-center gap-3 py-3">
-          <span aria-hidden className="grid h-10 w-10 place-items-center rounded-full border-2 border-encre bg-white text-xl">
-            💬
+          <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-encre bg-white">
+            <Icon name="chat" className="h-5 w-5" />
           </span>
           <div className="flex-1">
             <h1 className="text-xl font-extrabold leading-none">Ton coach</h1>
@@ -98,7 +99,7 @@ export function CoachClient({ initial, remaining: initialRemaining }: { initial:
             <p className="mt-1 text-[0.95rem]">Des gens sont là pour t&apos;écouter, gratuitement, 24h/24 :</p>
             <div className="mt-3 grid gap-2">
               <a href="tel:3114" className="btn btn-primary min-h-12 py-2">
-                📞 Appeler le 3114
+                <Icon name="phone" className="h-5 w-5" /> Appeler le 3114
               </a>
               <a href="tel:112" className="btn btn-light min-h-12 py-2">
                 Danger immédiat : 112
@@ -149,7 +150,7 @@ export function CoachClient({ initial, remaining: initialRemaining }: { initial:
                 void send(input);
               }
             }}
-            placeholder={remaining > 0 ? "Écris au coach…" : "Le coach revient demain 👋"}
+            placeholder={remaining > 0 ? "Écris au coach…" : "Le coach revient demain"}
             className="field max-h-32 min-h-12 flex-1 resize-none py-2.5 text-base"
           />
           <button

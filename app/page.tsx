@@ -10,6 +10,7 @@ import { FEATURES, SITE } from "@/config/site";
 import { FAQ } from "@/content/faq";
 import { APP_FEATURES, HERO, PRICE_SECTION, STEPS, TRUST } from "@/content/landing";
 import { TESTIMONIALS } from "@/content/testimonials";
+import { Icon } from "@/components/Icon";
 
 const STEP_COLORS = ["bg-jaune", "bg-rose", "bg-ciel"];
 
@@ -82,7 +83,7 @@ export default function Home() {
                       <span
                         className={`grid h-6 w-6 shrink-0 place-items-center rounded-md border-2 border-encre text-sm font-black ${i === 0 ? "bg-menthe text-white" : "bg-white"}`}
                       >
-                        {i === 0 ? "✓" : ""}
+                        {i === 0 ? <Icon name="check" className="h-4 w-4" strokeWidth={3} /> : null}
                       </span>
                       <span className={i === 0 ? "line-through decoration-2 opacity-60" : ""}>{m}</span>
                     </li>
@@ -123,12 +124,12 @@ export default function Home() {
               <div className="card bg-jaune p-5 text-encre">
                 <h3 className="text-xl font-bold">{APP_FEATURES.badges.title}</h3>
                 <div className="mt-3 flex gap-2" aria-hidden>
-                  {["🌅", "🔥", "⭐", "🚀", "🏆"].map((e, i) => (
+                  {["sunrise", "flame", "star", "rocket", "trophy"].map((e, i) => (
                     <span
                       key={e}
-                      className={`grid h-11 w-11 place-items-center rounded-xl border-2 border-encre text-xl ${i < 3 ? "bg-white" : "bg-jaune-pale opacity-50"}`}
+                      className={`grid h-11 w-11 place-items-center rounded-xl border-2 border-encre ${i < 3 ? "bg-white" : "bg-jaune-pale opacity-50"}`}
                     >
-                      {e}
+                      <Icon name={e} className="h-5 w-5" />
                     </span>
                   ))}
                 </div>
@@ -163,8 +164,8 @@ export default function Home() {
             <ul className="mt-6 grid gap-3">
               {TRUST.items.map((t) => (
                 <li key={t.title} className="card flex gap-4 p-4">
-                  <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-encre bg-jaune-pale text-xl">
-                    {t.emoji}
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-2 border-encre bg-jaune-pale">
+                    <Icon name={t.icon} className="h-5 w-5" />
                   </span>
                   <span>
                     <span className="block font-extrabold leading-tight">{t.title}</span>
@@ -213,8 +214,8 @@ export default function Home() {
               <ul className="mt-4 space-y-2">
                 {PRICE_SECTION.bullets.map((b) => (
                   <li key={b} className="flex gap-3">
-                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-menthe text-xs font-black text-white">
-                      ✓
+                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-menthe text-white">
+                      <Icon name="check" className="h-3.5 w-3.5" strokeWidth={3.2} />
                     </span>
                     <span>{b}</span>
                   </li>
@@ -225,7 +226,9 @@ export default function Home() {
               {PRICE_SECTION.cta} →
             </Link>
             <p className="mt-3 text-center text-sm">{PRICE_SECTION.ctaNote}</p>
-            <p className="mt-2 text-center text-sm font-semibold">🔒 Paiement sécurisé Stripe · Rappel 48 h avant · Résiliable en 1 clic</p>
+            <p className="mt-2 flex items-center justify-center gap-1.5 text-center text-sm font-semibold">
+              <Icon name="lock" className="h-4 w-4 shrink-0" /> Paiement sécurisé Stripe · Rappel 48 h avant · Résiliable en 1 clic
+            </p>
           </div>
         </section>
 

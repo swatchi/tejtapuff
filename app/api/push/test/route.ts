@@ -8,7 +8,7 @@ export async function POST() {
   const m = await getMember();
   if (!m) return jsonError(401, "Connecte-toi d'abord.");
   const delivered = await sendPush(m.user.id, {
-    title: "C'est bon 🙌",
+    title: "C'est bon",
     body: "Les notifications marchent. On te prévient pour ta mission et aux moments où l'envie frappe.",
     url: "/app",
     tag: "test",

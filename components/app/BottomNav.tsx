@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Icon } from "@/components/Icon";
 
 const ITEMS = [
-  { href: "/app", label: "Accueil", icon: "⌂" },
-  { href: "/app/mission", label: "Mission", icon: "✓" },
+  { href: "/app", label: "Accueil", icon: "home" },
+  { href: "/app/mission", label: "Mission", icon: "check" },
   { href: "/app/sos", label: "SOS", icon: "SOS", sos: true },
-  { href: "/app/coach", label: "Coach", icon: "💬" },
-  { href: "/app/compte", label: "Compte", icon: "☺" },
+  { href: "/app/coach", label: "Coach", icon: "chat" },
+  { href: "/app/compte", label: "Compte", icon: "user" },
 ];
 
 export function BottomNav() {
@@ -35,9 +36,9 @@ export function BottomNav() {
                 ) : (
                   <span
                     aria-hidden
-                    className={`grid h-8 w-12 place-items-center rounded-full text-lg ${active ? "bg-jaune" : ""}`}
+                    className={`grid h-8 w-12 place-items-center rounded-full ${active ? "bg-jaune" : ""}`}
                   >
-                    {item.icon}
+                    <Icon name={item.icon} className="h-5 w-5" />
                   </span>
                 )}
                 <span className={active ? "" : "text-encre/60"}>{item.label}</span>

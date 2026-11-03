@@ -121,7 +121,7 @@ export function Calculator() {
       <div className="relative z-0 mx-2 -mt-3 -rotate-[1.2deg] drop-shadow-[3px_4px_0_#1b1a17]">
         <div className="receipt px-5 pt-7 font-mono text-[0.95rem]">
           <p className="text-center text-xs font-bold uppercase tracking-[0.25em] text-gris">
-            ★ {CALCULATOR.title} ★
+            {CALCULATOR.title}
           </p>
           <p className="mt-1 text-center text-xs text-gris">
             {perMonth} {perMonth > 1 ? unit.plural : unit.singular} × {formatEuros(price)} / mois

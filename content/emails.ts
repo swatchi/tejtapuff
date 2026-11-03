@@ -37,7 +37,7 @@ export function welcomeEmail(p: {
   reminderHours: number;
 }): EmailContent {
   return {
-    subject: "Bienvenue dans TejTaPuff 💛",
+    subject: "Bienvenue dans TejTaPuff",
     preheader: "Ton programme de 21 jours est prêt.",
     heading: "C'est parti.",
     paragraphs: [
@@ -96,7 +96,7 @@ export function paymentFailedEmail(p: { accountUrl: string; amount: string }): E
 export function day7Email(p: { appUrl: string; streakDays: number; saved: string; cravings: number; missions: number }): EmailContent {
   const clean = p.streakDays >= 7;
   return {
-    subject: clean ? "1 semaine sans puff 💪" : "Ta 1re semaine de programme",
+    subject: clean ? "1 semaine sans puff" : "Ta 1re semaine de programme",
     preheader: clean ? `${p.saved} économisés, et ce n'est que le début.` : "On fait le point, sans jugement.",
     heading: clean ? "Une semaine. Respect." : "Une semaine de programme",
     paragraphs: [
@@ -112,9 +112,9 @@ export function day7Email(p: { appUrl: string; streakDays: number; saved: string
 
 export function day21Email(p: { shareUrl: string; cardUrl: string; streakDays: number; saved: string; cravings: number }): EmailContent {
   return {
-    subject: "21 jours. Tu l'as fait. 🎉",
+    subject: "21 jours. Tu l'as fait.",
     preheader: `${p.saved} économisés, ${p.cravings} envies battues.`,
-    heading: "21 jours de programme ✅",
+    heading: "21 jours de programme",
     paragraphs: [
       "Tu as tenu le programme jusqu'au bout. Prends deux secondes pour mesurer le chemin.",
       `Tes chiffres : ${p.saved} économisés, ${p.cravings} envie${p.cravings > 1 ? "s" : ""} battue${p.cravings > 1 ? "s" : ""}, série en cours : ${p.streakDays} jour${p.streakDays > 1 ? "s" : ""}.`,

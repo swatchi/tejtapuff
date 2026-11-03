@@ -16,6 +16,7 @@ import { badgesOf, nextTimeBadge } from "@/lib/milestones";
 import { currentMission, PROGRAM_DAYS, savedEuros, streakDays } from "@/lib/program";
 import { unitsPerWeekOf } from "@/lib/savings";
 import { startProgram } from "./actions";
+import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = { title: "Mon programme", robots: { index: false } };
 
@@ -60,7 +61,7 @@ export default async function Dashboard() {
           </div>
           {m.subscription?.status === "past_due" && (
             <Link href="/app/compte" className="mt-4 block rounded-2xl border-2 border-encre bg-white p-3 font-semibold">
-              ⚠️ Ton dernier paiement n&apos;est pas passé. Mets à jour ta carte →
+              Ton dernier paiement n&apos;est pas passé. Mets à jour ta carte →
             </Link>
           )}
         </div>
@@ -130,8 +131,8 @@ export default async function Dashboard() {
             {prochain && (
               <div className="tile mt-3">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="font-extrabold">
-                    <span aria-hidden>{prochain.emoji}</span> Prochain cap : {prochain.label}
+                  <p className="flex items-center gap-2 font-extrabold">
+                    <Icon name={prochain.emoji} className="h-5 w-5 shrink-0" /> Prochain cap : {prochain.label}
                   </p>
                   <p className="shrink-0 text-sm font-semibold text-gris">{prochain.remaining}</p>
                 </div>
@@ -160,7 +161,7 @@ export default async function Dashboard() {
                 </>
               ) : (
                 <>
-                  <h2 className="mt-1 text-2xl font-extrabold leading-tight">C&apos;est fait pour aujourd&apos;hui ✅</h2>
+                  <h2 className="mt-1 text-2xl font-extrabold leading-tight">C&apos;est fait pour aujourd&apos;hui</h2>
                   <p className="mt-1 text-encre/75">
                     {slot.kind === "program_done_today"
                       ? `La mission ${slot.nextNumber} se débloque demain.`
@@ -187,11 +188,11 @@ export default async function Dashboard() {
             </Link>
             <div className="grid grid-cols-2 gap-3">
               <Link href="/app/coach" className="card bg-ciel p-4">
-                <span aria-hidden className="text-2xl">💬</span>
+                <Icon name="chat" className="h-7 w-7" />
                 <span className="mt-1 block font-extrabold leading-tight">Parler au coach</span>
               </Link>
               <Link href="/app/partager" className="card bg-rose p-4">
-                <span aria-hidden className="text-2xl">📸</span>
+                <Icon name="camera" className="h-7 w-7" />
                 <span className="mt-1 block font-extrabold leading-tight">Partager ma carte</span>
               </Link>
             </div>
@@ -215,9 +216,7 @@ export default async function Dashboard() {
                     className={`flex flex-col items-center rounded-2xl border-2 p-2 text-center ${b.done ? "border-encre bg-jaune" : "border-encre/15 bg-creme"}`}
                     title={b.done ? b.label : `${b.label} · ${b.remaining}`}
                   >
-                    <span aria-hidden className={`text-2xl ${b.done ? "" : "opacity-30 grayscale"}`}>
-                      {b.emoji}
-                    </span>
+                    <Icon name={b.emoji} className={`h-6 w-6 ${b.done ? "" : "opacity-30"}`} />
                     <span className={`mt-1 text-[0.7rem] font-bold leading-tight ${b.done ? "" : "text-gris"}`}>{b.label}</span>
                   </li>
                 ))}

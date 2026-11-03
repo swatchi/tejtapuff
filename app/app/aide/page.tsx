@@ -4,6 +4,7 @@ import { SITE } from "@/config/site";
 import { AIDE } from "@/content/aide";
 import { TRIGGERS } from "@/content/quiz";
 import { requireMember } from "@/lib/member";
+import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = { title: "Besoin d'aide", robots: { index: false } };
 
@@ -24,7 +25,7 @@ export default async function AidePage() {
           <span className="mt-1 block font-semibold leading-tight">Une envie, là, maintenant</span>
         </Link>
         <Link href="/app/coach" className="card bg-ciel p-4">
-          <span aria-hidden className="block text-2xl">💬</span>
+          <Icon name="chat" className="h-7 w-7" />
           <span className="mt-1 block font-semibold leading-tight">Écrire au coach</span>
         </Link>
       </section>
@@ -56,7 +57,7 @@ export default async function AidePage() {
         <h2 className="text-xl font-extrabold text-jaune">{AIDE.humains.titre}</h2>
         <p className="mt-2 text-creme/90">{AIDE.humains.texte}</p>
         <a href={tis.phoneHref} className="btn mt-4 w-full whitespace-nowrap border-jaune bg-jaune text-encre">
-          📞 {tis.label} : {tis.phone}
+          <Icon name="phone" className="h-5 w-5" /> {tis.label} : {tis.phone}
         </a>
         <p className="mt-2 text-center text-sm text-creme/75">
           {tis.note} ·{" "}
@@ -72,10 +73,10 @@ export default async function AidePage() {
         <p className="mt-1">{AIDE.urgence.texte}</p>
         <div className="mt-3 grid grid-cols-2 gap-2">
           <a href={SITE.suicidePrevention.phoneHref} className="btn btn-light whitespace-nowrap">
-            📞 3114
+            <Icon name="phone" className="h-5 w-5" /> 3114
           </a>
           <a href="tel:112" className="btn btn-light whitespace-nowrap">
-            📞 112
+            <Icon name="phone" className="h-5 w-5" /> 112
           </a>
         </div>
       </section>
@@ -99,8 +100,8 @@ function Moment({ id, ouvert = false }: { id: string; ouvert?: boolean }) {
       <ul className="mt-3 space-y-2">
         {m.conseils.map((c) => (
           <li key={c} className="flex gap-3">
-            <span aria-hidden className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-menthe text-xs font-black text-white">
-              ✓
+            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-menthe text-white">
+              <Icon name="check" className="h-3.5 w-3.5" strokeWidth={3.2} />
             </span>
             <span>{c}</span>
           </li>

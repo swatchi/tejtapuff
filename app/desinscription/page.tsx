@@ -22,7 +22,7 @@ export default async function DesinscriptionPage({ searchParams }: PageProps<"/d
   }
   return (
     <main className="wrap pt-16">
-      <h1 className="text-3xl font-extrabold">{ok ? "C'est noté ✅" : "Lien invalide"}</h1>
+      <h1 className="text-3xl font-extrabold">{ok ? "C'est noté" : "Lien invalide"}</h1>
       <p className="mt-3 text-lg">
         {ok ? "Tu ne recevras plus de rappel." : "Ce lien ne fonctionne pas. Écris-nous si tu reçois encore des rappels."}
       </p>

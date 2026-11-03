@@ -6,6 +6,7 @@ import { DAY_MS } from "@/lib/program";
 
 export type Badge = {
   id: string;
+  /** nom d'icône (components/Icon.tsx) */
   emoji: string;
   label: string;
   done: boolean;
@@ -43,23 +44,23 @@ export function badgesOf(input: { currentMs: number; bestMs: number; cravings: n
   });
   const argent = (id: string, label: string, cible: number): Badge => ({
     id,
-    emoji: "💶",
+    emoji: "euro",
     label,
     done: input.savedEuros >= cible,
     progress: Math.min(1, input.savedEuros / cible),
     remaining: input.savedEuros >= cible ? "" : `encore ${Math.ceil(cible - input.savedEuros)} €`,
   });
   return [
-    temps("h24", "🌅", "24 h sans", DAY_MS),
-    temps("j3", "🔥", "3 jours sans", 3 * DAY_MS),
-    temps("j7", "⭐", "1 semaine sans", 7 * DAY_MS),
-    temps("j14", "🚀", "2 semaines sans", 14 * DAY_MS),
-    temps("j21", "🏆", "21 jours sans", 21 * DAY_MS),
-    temps("j30", "👑", "1 mois sans", 30 * DAY_MS),
-    compte("envie1", "💪", "1re envie battue", input.cravings, 1, ["envie", "envies"]),
-    compte("envie10", "🛡️", "10 envies battues", input.cravings, 10, ["envie", "envies"]),
-    compte("envie25", "🧠", "25 envies battues", input.cravings, 25, ["envie", "envies"]),
-    compte("mission21", "🎓", "21 missions", input.missions, 21, ["mission", "missions"]),
+    temps("h24", "sunrise", "24 h sans", DAY_MS),
+    temps("j3", "flame", "3 jours sans", 3 * DAY_MS),
+    temps("j7", "star", "1 semaine sans", 7 * DAY_MS),
+    temps("j14", "rocket", "2 semaines sans", 14 * DAY_MS),
+    temps("j21", "trophy", "21 jours sans", 21 * DAY_MS),
+    temps("j30", "crown", "1 mois sans", 30 * DAY_MS),
+    compte("envie1", "zap", "1re envie battue", input.cravings, 1, ["envie", "envies"]),
+    compte("envie10", "shield", "10 envies battues", input.cravings, 10, ["envie", "envies"]),
+    compte("envie25", "target", "25 envies battues", input.cravings, 25, ["envie", "envies"]),
+    compte("mission21", "award", "21 missions", input.missions, 21, ["mission", "missions"]),
     argent("euro20", "20 € gardés", 20),
     argent("euro100", "100 € gardés", 100),
   ];

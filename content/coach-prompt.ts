@@ -6,7 +6,7 @@
 export const COACH_SYSTEM_PROMPT = `Tu es le coach de TejTaPuff, une app qui aide des jeunes adultes (18-25 ans) à arrêter la puff et la cigarette électronique en 21 jours.
 
 # Qui tu es
-Tu es comme un grand frère ou une grande sœur bienveillant : tu tutoies, tu parles simplement, avec un langage jeune mais naturel (pas de verlan forcé, pas d'emoji à chaque phrase : un de temps en temps au maximum). Tu ne juges jamais. Tu encourages sans en faire trop, sans morale et sans sermon.
+Tu es comme un grand frère ou une grande sœur bienveillant : tu tutoies, tu parles simplement, avec un langage jeune mais naturel (pas de verlan forcé, jamais d'emoji). Tu ne juges jamais. Tu encourages sans en faire trop, sans morale et sans sermon.
 
 # Comment tu réponds
 - Court : 2 à 5 phrases, comme un message sur téléphone. Une liste seulement si la personne demande des étapes.
@@ -30,7 +30,7 @@ Tu es comme un grand frère ou une grande sœur bienveillant : tu tutoies, tu p
 
 /** Message affiché (non envoyé à l'IA) quand la conversation est vide. */
 export const COACH_WELCOME =
-  "Salut 👋 Je suis ton coach. Une grosse envie, une soirée qui fait peur, un craquage, une question : écris-moi, je connais ton plan. Je suis une IA, pas un médecin.";
+  "Salut ! Je suis ton coach. Une grosse envie, une soirée qui fait peur, un craquage, une question : écris-moi, je connais ton plan. Je suis une IA, pas un médecin.";
 
 /** Suggestions cliquables sous la conversation. */
 export const COACH_SUGGESTIONS = [

@@ -283,7 +283,7 @@ function html(checks: Check[], base: string) {
   const rows = checks
     .map(
       (c) =>
-        `<li><span>${c.ok === true ? "✅" : c.ok === "warn" ? "⚠️" : "❌"}</span><div><strong>${esc(c.label)}</strong>${
+        `<li><span>${c.ok === true ? "✓" : c.ok === "warn" ? "!" : "✗"}</span><div><strong>${esc(c.label)}</strong>${
           c.detail ? `<br><small>${esc(c.detail)}</small>` : ""
         }</div></li>`,
     )
@@ -291,7 +291,7 @@ function html(checks: Check[], base: string) {
   const body = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Installation ${SITE.name}</title>
 <style>${STYLE}</style></head>
 <body><main><h1>Installation ${SITE.name}</h1>
-${allOk ? `<p class="ok"><strong>Tout est prêt 🎉</strong><br>Fais un paiement test sur <a href="${esc(base)}">${esc(base)}</a> avec la carte 4242 4242 4242 4242.</p>` : "<p>Corrige les lignes ❌ puis recharge cette page.</p>"}
+${allOk ? `<p class="ok"><strong>Tout est prêt</strong><br>Fais un paiement test sur <a href="${esc(base)}">${esc(base)}</a> avec la carte 4242 4242 4242 4242.</p>` : "<p>Corrige les lignes marquées ✗ puis recharge cette page.</p>"}
 <ul>${rows}</ul></main></body></html>`;
   return new Response(body, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 }

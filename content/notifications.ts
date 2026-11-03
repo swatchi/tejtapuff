@@ -20,7 +20,7 @@ export const RISK_SLOTS: Record<TriggerId, { hour: number; days?: number[] } | n
 
 export const RISK_MESSAGES: Record<Exclude<TriggerId, "reveil">, { title: string; body: string }[]> = {
   repas: [
-    { title: "Après le repas 🍽️", body: "Lève-toi de table, un chewing-gum, et enchaîne sur autre chose. L'envie va passer." },
+    { title: "Après le repas", body: "Lève-toi de table, un chewing-gum, et enchaîne sur autre chose. L'envie va passer." },
     { title: "Pause déj", body: "C'est souvent là que l'envie pointe. Un grand verre d'eau et tu passes à la suite." },
   ],
   ennui: [
@@ -29,10 +29,10 @@ export const RISK_MESSAGES: Record<Exclude<TriggerId, "reveil">, { title: string
   ],
   stress: [
     { title: "Grosse journée ?", body: "Si le stress monte : 1 minute de respiration 4-6 avant toute décision." },
-    { title: "Respire 🌬️", body: "Inspire 4 secondes, expire 6. Trois fois. Ton cerveau te remerciera." },
+    { title: "Respire", body: "Inspire 4 secondes, expire 6. Trois fois. Ton cerveau te remerciera." },
   ],
   soiree: [
-    { title: "La soirée commence 🌙", body: "C'est souvent là que l'envie frappe. Ton plan B est prêt, et le bouton SOS aussi." },
+    { title: "La soirée commence", body: "C'est souvent là que l'envie frappe. Ton plan B est prêt, et le bouton SOS aussi." },
     { title: "Ce soir, tu gères", body: "Garde quelque chose dans les mains, et sors prendre l'air si ça tire." },
   ],
   potes: [
@@ -43,13 +43,13 @@ export const RISK_MESSAGES: Record<Exclude<TriggerId, "reveil">, { title: string
 
 export function morningPush(p: { day: number; missionTitle: string; saved: string; consolidation: boolean }) {
   return {
-    title: p.consolidation ? "Ta mission de la semaine 🎯" : `Jour ${p.day} 🌞`,
+    title: p.consolidation ? "Ta mission de la semaine" : `Jour ${p.day}`,
     body: p.saved ? `${p.missionTitle} · ${p.saved} économisés` : `Ta mission : ${p.missionTitle}`,
   };
 }
 
 export const START_DAY_PUSH = {
-  title: "C'est le jour J 💪",
+  title: "C'est le jour J",
   body: "Quand tu as tej ta dernière puff, appuie sur « Je démarre ». On est là.",
 };
 

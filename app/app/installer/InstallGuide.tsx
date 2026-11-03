@@ -24,7 +24,7 @@ export function InstallGuide() {
   if (!p) return null;
 
   if (p.standalone) {
-    return <Box title="C'est installé ✅">Tu utilises déjà l&apos;app depuis ton écran d&apos;accueil.</Box>;
+    return <Box title="C'est installé">Tu utilises déjà l&apos;app depuis ton écran d&apos;accueil.</Box>;
   }
 
   const appUrl = `${window.location.origin}/app`;
@@ -50,7 +50,7 @@ export function InstallGuide() {
               }
             }}
           >
-            {copied ? "Lien copié ✅ colle-le dans Safari/Chrome" : "Ou copier le lien de l'app"}
+            {copied ? "Lien copié : colle-le dans Safari ou Chrome" : "Ou copier le lien de l'app"}
           </button>
         </Box>
       )}

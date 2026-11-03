@@ -5,6 +5,7 @@ import { SITE } from "@/config/site";
 import { RELAPSE } from "@/content/sos";
 import { requireMember } from "@/lib/member";
 import { relapse } from "../actions";
+import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = { title: "J'ai craqué", robots: { index: false } };
 
@@ -30,7 +31,7 @@ export default async function CraquePage({ searchParams }: PageProps<"/app/craqu
           ))}
         </ul>
         <Link href="/app/coach" className="card mt-8 flex items-center gap-3 bg-ciel p-4 font-bold">
-          <span aria-hidden className="text-2xl">💬</span>
+          <Icon name="chat" className="h-7 w-7" />
           <span className="flex-1">Ton coach t&apos;a écrit un message</span>
           <span aria-hidden>→</span>
         </Link>

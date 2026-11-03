@@ -43,9 +43,9 @@ export const PAYWALL = {
   cta: "Je commence",
   secure: "Paiement sécurisé par Stripe.",
   garanties: [
-    { emoji: "⚡", texte: "Accès tout de suite" },
-    { emoji: "⏰", texte: "Rappel 48 h avant le 1er prélèvement" },
-    { emoji: "✋", texte: "Résiliable en 1 clic" },
+    { icon: "zap", texte: "Accès tout de suite" },
+    { icon: "clock", texte: "Rappel 48 h avant le 1er prélèvement" },
+    { icon: "exit", texte: "Résiliable en 1 clic" },
   ],
   cancelled: "Paiement annulé, rien n'a été prélevé. Tu peux réessayer quand tu veux.",
 };

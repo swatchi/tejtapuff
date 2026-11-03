@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { detectPlatform } from "@/lib/client/platform";
+import { Icon } from "@/components/Icon";
 
 /** Petit bandeau « Installe l'app », masqué si déjà installée ou refermé. */
 export function InstallBanner() {
@@ -20,7 +21,7 @@ export function InstallBanner() {
   if (!show) return null;
   return (
     <div className="flex items-center gap-3 rounded-2xl border-2 border-encre bg-ciel p-3">
-      <span aria-hidden className="text-2xl">📲</span>
+      <Icon name="smartphone" className="h-7 w-7 shrink-0" />
       <Link href="/app/installer" className="flex-1 font-bold leading-tight underline-offset-4 hover:underline">
         Ajoute l&apos;app sur ton écran d&apos;accueil
       </Link>

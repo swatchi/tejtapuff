@@ -36,7 +36,7 @@ export default async function MerciPage({ searchParams }: PageProps<"/merci">) {
         {status === "paid" && sessionId ? (
           <>
             <PurchasePixel sessionId={sessionId} value={PRICING.firstWeekCents / 100} />
-            <h1 className="mt-8 text-[2.75rem] font-extrabold leading-[0.95] tracking-tight">C&apos;est validé 🎉</h1>
+            <h1 className="mt-8 text-[2.75rem] font-extrabold leading-[0.95] tracking-tight">C&apos;est validé</h1>
             <p className="mt-3 text-lg">Bienvenue dans le programme. Dernière étape : te connecter à ton app.</p>
             <div className="card mt-6 p-5">
               <OtpForm mode="checkout" checkoutSessionId={sessionId} />

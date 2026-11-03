@@ -67,7 +67,7 @@ export const SOS = {
   ],
   after: {
     question: "Alors, cette envie ?",
-    overcome: "C'est passé 💪",
+    overcome: "C'est passé",
     again: "Encore un peu",
     relapse: "J'ai craqué",
     overcomeMessage: "Bien joué. Une envie de plus que tu as battue.",

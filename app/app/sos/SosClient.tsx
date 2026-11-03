@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { SOS } from "@/content/sos";
 import { logCravingOvercome } from "../actions";
+import { Icon } from "@/components/Icon";
 
 type Step = { kind: "choose" } | { kind: "exercise"; id: string } | { kind: "after"; id: string } | { kind: "won"; total: number };
 
@@ -119,9 +120,9 @@ export function SosClient({ reasons, savedLabel, streakLabel }: { reasons: strin
 
   return (
     <>
-      <p className="text-6xl" aria-hidden>
-        💪
-      </p>
+      <span className="grid h-20 w-20 place-items-center rounded-full border-2 border-encre bg-jaune shadow-[3px_4px_0_0_#1b1a17]">
+        <Icon name="trophy" className="h-10 w-10" />
+      </span>
       <h1 className="mt-4 text-[2.4rem] font-extrabold leading-none">{SOS.after.overcomeMessage}</h1>
       <p className="mt-4 text-xl">
         Envies battues : <strong className="tabular-nums">{step.total}</strong>
@@ -179,7 +180,7 @@ function Pote({ message }: { message: string }) {
           SMS
         </a>
         <button type="button" className="btn btn-light" onClick={partager}>
-          {copie ? "Copié ✓" : "Autre appli"}
+          {copie ? "Copié" : "Autre appli"}
         </button>
       </div>
       <p className="mt-3 text-sm text-encre/70">Pendant qu&apos;il ou elle répond, bois un verre d&apos;eau. L&apos;envie redescend toute seule.</p>
@@ -250,7 +251,10 @@ function Countdown({ seconds, actions, onDone }: { seconds: number; actions: str
                 className="chip w-full justify-start"
                 onClick={() => setChecked((c) => (on ? c.filter((x) => x !== a) : [...c, a]))}
               >
-                <span aria-hidden>{on ? "✅" : "○"}</span> {a}
+                <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-encre ${on ? "bg-menthe text-white" : "bg-white"}`}>
+                  {on && <Icon name="check" className="h-3.5 w-3.5" strokeWidth={3.2} />}
+                </span>
+                {a}
               </button>
             </li>
           );
